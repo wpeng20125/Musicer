@@ -1,4 +1,7 @@
 PODS:
+  - GCDWebServer/Core (3.5.4)
+  - GCDWebServer/WebUploader (3.5.4):
+    - GCDWebServer/Core
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
@@ -8,23 +11,26 @@ PODS:
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
+  - GCDWebServer/WebUploader (~> 3.0)
   - NVActivityIndicatorView
   - R.swift
   - SnapKit (~> 5.0.1)
 
 SPEC REPOS:
   trunk:
+    - GCDWebServer
     - NVActivityIndicatorView
     - R.swift
     - R.swift.Library
     - SnapKit
 
 SPEC CHECKSUMS:
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
   R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: e5f475e76f93d36c6d906d0e8962b4179724ac8f
+PODFILE CHECKSUM: bfce04cddf6c7956eebb6c84459606795175db8d
 
 COCOAPODS: 1.9.3

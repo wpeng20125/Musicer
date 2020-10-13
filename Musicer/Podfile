@@ -8,5 +8,7 @@ target 'Musicer' do
   pod 'R.swift'
   pod 'SnapKit', '~> 5.0.1'
   pod 'NVActivityIndicatorView'
+  #pod "GCDWebServer", "~> 3.0"
+  pod "GCDWebServer/WebUploader", "~> 3.0"
 
 end
