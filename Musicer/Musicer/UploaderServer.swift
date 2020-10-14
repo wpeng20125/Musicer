@@ -11,7 +11,7 @@ import GCDWebServer
 class UploaderServer: UIViewController {
     
     override func viewDidLoad() {
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = R.color.uploader_backgroundColor()
         self.setupSubViews()
     }
     

@@ -105,10 +105,12 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.color` struct is generated, and contains static references to 3 colors.
+  /// This `R.color` struct is generated, and contains static references to 4 colors.
   struct color {
     /// Color `AccentColor`.
     static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
+    /// Color `uploader_backgroundColor`.
+    static let uploader_backgroundColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "uploader_backgroundColor")
     /// Color `uploader_header_backgroundColor`.
     static let uploader_header_backgroundColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "uploader_header_backgroundColor")
     /// Color `uploader_header_titleColor`.
@@ -120,6 +122,15 @@ struct R: Rswift.Validatable {
     @available(iOS 11.0, *)
     static func accentColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
       return UIKit.UIColor(resource: R.color.accentColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "uploader_backgroundColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func uploader_backgroundColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.uploader_backgroundColor, compatibleWith: traitCollection)
     }
     #endif
 
@@ -144,15 +155,33 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 1 images.
+  /// This `R.image` struct is generated, and contains static references to 3 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
+    /// Image `uploader_header_close`.
+    static let uploader_header_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "uploader_header_close")
+    /// Image `uploader_header_wifi`.
+    static let uploader_header_wifi = Rswift.ImageResource(bundle: R.hostingBundle, name: "uploader_header_wifi")
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "LaunchScreen", bundle: ..., traitCollection: ...)`
     static func launchScreen(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.launchScreen, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "uploader_header_close", bundle: ..., traitCollection: ...)`
+    static func uploader_header_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.uploader_header_close, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "uploader_header_wifi", bundle: ..., traitCollection: ...)`
+    static func uploader_header_wifi(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.uploader_header_wifi, compatibleWith: traitCollection)
     }
     #endif
 
