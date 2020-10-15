@@ -14,5 +14,10 @@ class ViewController: UIViewController {
         self.view.backgroundColor = UIColor.gray
         
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let server = UploaderServer()
+        self.present(server, animated: true, completion: nil)
+    }
 }
 
