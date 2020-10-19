@@ -105,16 +105,22 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.color` struct is generated, and contains static references to 4 colors.
+  /// This `R.color` struct is generated, and contains static references to 7 colors.
   struct color {
     /// Color `AccentColor`.
     static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
-    /// Color `uploader_backgroundColor`.
-    static let uploader_backgroundColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "uploader_backgroundColor")
-    /// Color `uploader_header_backgroundColor`.
-    static let uploader_header_backgroundColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "uploader_header_backgroundColor")
-    /// Color `uploader_header_titleColor`.
-    static let uploader_header_titleColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "uploader_header_titleColor")
+    /// Color `mu_color_alpha_zero`.
+    static let mu_color_alpha_zero = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_alpha_zero")
+    /// Color `mu_color_black`.
+    static let mu_color_black = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black")
+    /// Color `mu_color_gray`.
+    static let mu_color_gray = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_gray")
+    /// Color `mu_color_orange_one`.
+    static let mu_color_orange_one = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_orange_one")
+    /// Color `mu_color_orange_two`.
+    static let mu_color_orange_two = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_orange_two")
+    /// Color `mu_color_white`.
+    static let mu_color_white = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_white")
 
     #if os(iOS) || os(tvOS)
     /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
@@ -126,29 +132,56 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "uploader_backgroundColor", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_alpha_zero", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func uploader_backgroundColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.uploader_backgroundColor, compatibleWith: traitCollection)
+    static func mu_color_alpha_zero(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_alpha_zero, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "uploader_header_backgroundColor", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func uploader_header_backgroundColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.uploader_header_backgroundColor, compatibleWith: traitCollection)
+    static func mu_color_black(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "uploader_header_titleColor", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_gray", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func uploader_header_titleColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.uploader_header_titleColor, compatibleWith: traitCollection)
+    static func mu_color_gray(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_gray, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_orange_one", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_orange_one(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_orange_one, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_orange_two", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_orange_two(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_orange_two, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_white", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_white(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_white, compatibleWith: traitCollection)
     }
     #endif
 
@@ -159,10 +192,10 @@ struct R: Rswift.Validatable {
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
-    /// Image `uploader_header_close`.
-    static let uploader_header_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "uploader_header_close")
-    /// Image `uploader_header_wifi`.
-    static let uploader_header_wifi = Rswift.ImageResource(bundle: R.hostingBundle, name: "uploader_header_wifi")
+    /// Image `mu_image_close`.
+    static let mu_image_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_close")
+    /// Image `mu_image_wifi`.
+    static let mu_image_wifi = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_wifi")
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "LaunchScreen", bundle: ..., traitCollection: ...)`
@@ -172,16 +205,16 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "uploader_header_close", bundle: ..., traitCollection: ...)`
-    static func uploader_header_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.uploader_header_close, compatibleWith: traitCollection)
+    /// `UIImage(named: "mu_image_close", bundle: ..., traitCollection: ...)`
+    static func mu_image_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_close, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "uploader_header_wifi", bundle: ..., traitCollection: ...)`
-    static func uploader_header_wifi(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.uploader_header_wifi, compatibleWith: traitCollection)
+    /// `UIImage(named: "mu_image_wifi", bundle: ..., traitCollection: ...)`
+    static func mu_image_wifi(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_wifi, compatibleWith: traitCollection)
     }
     #endif
 

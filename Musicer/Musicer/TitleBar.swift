@@ -1,5 +1,5 @@
 //
-//  NavigationBar.swift
+//  TitleBar.swift
 //  Musicer
 //
 //  Created by 王朋 on 2020/10/14.
@@ -14,7 +14,7 @@ enum ItemPosition: Int {
     case right = 3
 }
 
-class TitleBarItem {
+class ItemProperty {
     var title: String?
     var titleColor: UIColor?
     var fontSize: Float?
@@ -28,23 +28,20 @@ class TitleBarItem {
 
 //MARK: -- datasource / delegate
 protocol TitleBarDataSource: NSObjectProtocol {
-    func item(forNavigationBar nav: TitleBar, atPosition p: ItemPosition)->TitleBarItem?
+    func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition)->ItemProperty?
 }
 
 protocol TitleBarDelegate: NSObjectProtocol {
-    func itemDidClicked(atPosition p: ItemPosition)
+    func itemDidClick(atPosition p: ItemPosition)
 }
 
 //MARK: -- Bar itself
 class TitleBar: UIView {
     
-    weak var dataSource: TitleBarDataSource?
-    weak var delegate: TitleBarDelegate?
+   weak var dataSource: TitleBarDataSource?
+   weak var delegate: TitleBarDelegate?
     
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    func reload() {
         self.setupSubViews()
     }
 }
@@ -53,36 +50,35 @@ fileprivate extension TitleBar {
     
     func setupSubViews() {
         
-        if let btn = button(atPosition: .left) {
-            self.addSubview(btn)
-            btn.snp.makeConstraints { (maker) in
-                maker.left.equalTo(self).offset(10.0)
-                maker.centerY.equalTo(self.snp.bottom).offset(22.0)
-                maker.size.equalTo(CGSize(width: 50.0, height: 30.0))
+        if let item = getItem(atPosition: .left) {
+            self.addSubview(item)
+            item.snp.makeConstraints { (make) in
+                make.left.equalTo(self).offset(20.0)
+                make.centerY.equalTo(self.snp.bottom).offset(-22.0)
+                make.size.equalTo(CGSize(width: 20.0, height: 20.0))
             }
         }
         
-        if let btn = button(atPosition: .middle) {
-            self.addSubview(btn)
-            btn.snp.makeConstraints { (maker) in
-                maker.centerX.equalTo(self)
-                maker.centerY.equalTo(self.snp.bottom).offset(22.0)
-                maker.size.equalTo(CGSize(width: 50.0, height: 30.0))
+        if let item = getItem(atPosition: .middle) {
+            self.addSubview(item)
+            item.snp.makeConstraints { (make) in
+                make.centerX.equalTo(self)
+                make.centerY.equalTo(self.snp.bottom).offset(-22.0)
             }
         }
         
-        if let btn = button(atPosition: .right) {
-            self.addSubview(btn)
-            btn.snp.makeConstraints { (maker) in
-                maker.right.equalTo(self).offset(-10.0)
-                maker.centerY.equalTo(self.snp.bottom).offset(22.0)
-                maker.size.equalTo(CGSize(width: 50.0, height: 30.0))
+        if let item = getItem(atPosition: .right) {
+            self.addSubview(item)
+            item.snp.makeConstraints { (make) in
+                make.right.equalTo(self).offset(-20.0)
+                make.centerY.equalTo(self.snp.bottom).offset(-22.0)
+                make.size.equalTo(CGSize(width: 20.0, height: 20.0))
             }
         }
     }
     
-    func button(atPosition p: ItemPosition)->UIButton? {
-        guard let item = dataSource?.item(forNavigationBar: self, atPosition: p) else { return nil }
+    func getItem(atPosition p: ItemPosition)->UIView? {
+        guard let item = dataSource?.property(forNavigationBar: self, atPosition: p) else { return nil }
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.tag = p.rawValue
@@ -104,6 +100,6 @@ fileprivate extension TitleBar {
     
     @objc func clickItem(_ item: UIButton) {
         guard let p = ItemPosition(rawValue: item.tag) else { return }
-        self.delegate?.itemDidClicked(atPosition: p)
+        self.delegate?.itemDidClick(atPosition: p)
     }
 }
