@@ -38,8 +38,19 @@ class UploaderController: UIViewController {
     fileprivate lazy var loaderServer: GCDWebUploader? = {
         let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
         guard let wrappedDoc = unwrappedDoc else { return nil }
-        
-        let uploader = GCDWebUploader(uploadDirectory: wrappedDoc)
+        let path = wrappedDoc + "/songs"
+        let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+        let exist = FileManager.default.fileExists(atPath: path, isDirectory: isDir)
+        if !exist {
+            do {
+                try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+            } catch let error {
+                print(error.localizedDescription)
+                return nil
+            }
+        }
+        let uploader = GCDWebUploader(uploadDirectory: path)
+        uploader.delegate = self
         kDefaultPort = UInt.random(in: 1000...9999)
         return uploader
     }()
@@ -112,7 +123,10 @@ fileprivate extension UploaderController {
     }
     
     func connect() {
-        guard let server = self.loaderServer else { return }
+        guard let server = self.loaderServer else {
+            Toaster().flash(withText: "服务初始化失败，请退出重试")
+            return
+        }
         server.start(withPort: kDefaultPort, bonjourName: "MUSICER_HELLO_WORLD")
         guard let address = server.serverURL?.absoluteString else {
             self.addressLbl.text = "服务地址获取失败喽！"
@@ -162,5 +176,12 @@ extension UploaderController: TitleBarDelegate, TitleBarDataSource {
             alert.addAction(confiem)
             self.present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+extension UploaderController: GCDWebUploaderDelegate {
+    
+    func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
+        print(path)
     }
 }

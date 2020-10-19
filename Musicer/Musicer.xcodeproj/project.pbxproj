@@ -16,7 +16,6 @@
 		AA56E2782535AF3900EA50C3 /* UploaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2772535AF3900EA50C3 /* UploaderController.swift */; };
 		AA56E2B32536E30400EA50C3 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2B22536E30400EA50C3 /* Common.swift */; };
 		AA56E2B62536F10700EA50C3 /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2B52536F10700EA50C3 /* TitleBar.swift */; };
-		AAC326ED253D77EA00DF4030 /* PathManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC326EC253D77EA00DF4030 /* PathManager.swift */; };
 		BCFF9EC6512F4B880103B042 /* Pods_Musicer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A56B6967E3363E13A9BC6D /* Pods_Musicer.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +33,6 @@
 		AA56E2772535AF3900EA50C3 /* UploaderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploaderController.swift; sourceTree = "<group>"; };
 		AA56E2B22536E30400EA50C3 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		AA56E2B52536F10700EA50C3 /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
-		AAC326EC253D77EA00DF4030 /* PathManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathManager.swift; sourceTree = "<group>"; };
 		B175C3B0C20768A00F7AE69C /* Pods-Musicer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Musicer.debug.xcconfig"; path = "Target Support Files/Pods-Musicer/Pods-Musicer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,7 +82,6 @@
 				AA56E2042534363D00EA50C3 /* ViewController.swift */,
 				AA56E2772535AF3900EA50C3 /* UploaderController.swift */,
 				AA56E2B52536F10700EA50C3 /* TitleBar.swift */,
-				AAC326EC253D77EA00DF4030 /* PathManager.swift */,
 				AA2EDDF025397C6200D18524 /* Toaster.swift */,
 				AA56E2B22536E30400EA50C3 /* Common.swift */,
 				AA56E20E2534363F00EA50C3 /* Info.plist */,
@@ -249,7 +246,6 @@
 				AA56E2012534363D00EA50C3 /* AppDelegate.swift in Sources */,
 				AA56E2782535AF3900EA50C3 /* UploaderController.swift in Sources */,
 				AA56E2B32536E30400EA50C3 /* Common.swift in Sources */,
-				AAC326ED253D77EA00DF4030 /* PathManager.swift in Sources */,
 				AA56E22B2534480400EA50C3 /* R.generated.swift in Sources */,
 				AA56E2B62536F10700EA50C3 /* TitleBar.swift in Sources */,
 				AA2EDDF125397C6200D18524 /* Toaster.swift in Sources */,
