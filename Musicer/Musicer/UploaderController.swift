@@ -45,13 +45,13 @@ class UploaderController: UIViewController {
             do {
                 try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
             } catch let error {
-                print(error.localizedDescription)
+                Toaster().flash(withText: "文件上传目录创建失败，请退出重试")
                 return nil
             }
         }
         let uploader = GCDWebUploader(uploadDirectory: path)
         uploader.delegate = self
-        kDefaultPort = UInt.random(in: 1000...9999)
+        kDefaultPort = UInt.random(in: 8000...8999)
         return uploader
     }()
 }
@@ -184,4 +184,10 @@ extension UploaderController: GCDWebUploaderDelegate {
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
         print(path)
     }
+    
+    /*TODO：
+     1、文件上传格式的限制
+     2、文件名的获取
+     3、文件的本地存储目录和app中自定义歌曲目录的映射设计
+     */
 }
