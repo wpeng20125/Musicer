@@ -1,16 +1,13 @@
 //
-//  UploaderController.swift
+//  UploadController.swift
 //  Musicer
 //
 //  Created by 王朋 on 2020/10/13.
 //
 
 import UIKit
-import GCDWebServer
 
-fileprivate var kDefaultPort: UInt = 8080
-
-class UploaderController: UIViewController {
+class UploadController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,44 +16,14 @@ class UploaderController: UIViewController {
         self.connect()
     }
     
-    //MARK: -- lazy
-    fileprivate lazy var addressLbl: UILabel = {
-        let tipLbl = UILabel()
-        tipLbl.font = UIFont.systemFont(ofSize: 14.0)
-        tipLbl.textColor = R.color.mu_color_white()
-        tipLbl.textAlignment = .center
-        tipLbl.backgroundColor = R.color.mu_color_orange_two()
-        tipLbl.layer.cornerRadius = 5.0
-        tipLbl.layer.masksToBounds = true
-        tipLbl.isUserInteractionEnabled = true
-        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
-        gesture.minimumPressDuration = 1.0
-        tipLbl.addGestureRecognizer(gesture)
-        return tipLbl
-    }()
+    fileprivate var addressLbl: UILabel?
     
-    fileprivate lazy var loaderServer: GCDWebUploader? = {
-        let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-        guard let wrappedDoc = unwrappedDoc else { return nil }
-        let path = wrappedDoc + "/songs"
-        let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
-        let exist = FileManager.default.fileExists(atPath: path, isDirectory: isDir)
-        if !exist {
-            do {
-                try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-            } catch let error {
-                Toaster().flash(withText: "文件上传目录创建失败，请退出重试")
-                return nil
-            }
-        }
-        let uploader = GCDWebUploader(uploadDirectory: path)
-        uploader.delegate = self
-        kDefaultPort = UInt.random(in: 8000...8999)
-        return uploader
-    }()
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+    }
 }
 
-fileprivate extension UploaderController {
+fileprivate extension UploadController {
     
     func setupSubViews() {
         
@@ -99,7 +66,7 @@ fileprivate extension UploaderController {
         tipLbl.numberOfLines = 0
         tipLbl.font = UIFont.systemFont(ofSize: 13.0)
         tipLbl.textColor = R.color.mu_color_white()
-        let str = "确保你的 iPhone 和 PC 连接的是同一个网络\n在 PC 浏览器上打开下面的链接\n在传输的过程中请勿关闭此页面"
+        let str = "确保你的 iPhone 和 PC 连接的是同一个网络\n在 PC 浏览器上打开下面的链接\n(长按复制)\n在传输的过程中请勿关闭此页面"
         let attribute = NSMutableAttributedString(string: str)
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 5.0
@@ -113,8 +80,19 @@ fileprivate extension UploaderController {
             make.right.equalTo(header).offset(-20.0)
         }
         
-        self.view.addSubview(self.addressLbl)
-        self.addressLbl.snp.makeConstraints { (make) in
+        self.addressLbl = UILabel()
+        self.addressLbl!.font = UIFont.systemFont(ofSize: 14.0)
+        self.addressLbl!.textColor = R.color.mu_color_white()
+        self.addressLbl!.textAlignment = .center
+        self.addressLbl!.backgroundColor = R.color.mu_color_orange_two()
+        self.addressLbl!.layer.cornerRadius = 5.0
+        self.addressLbl!.layer.masksToBounds = true
+        self.addressLbl!.isUserInteractionEnabled = true
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
+        gesture.minimumPressDuration = 1.0
+        self.addressLbl!.addGestureRecognizer(gesture)
+        self.view.addSubview(self.addressLbl!)
+        self.addressLbl!.snp.makeConstraints { (make) in
             make.top.equalTo(header.snp.bottom).offset(50.0)
             make.left.equalTo(self.view).offset(20.0)
             make.right.equalTo(self.view).offset(-20.0)
@@ -123,21 +101,16 @@ fileprivate extension UploaderController {
     }
     
     func connect() {
-        guard let server = self.loaderServer else {
-            Toaster().flash(withText: "服务初始化失败，请退出重试")
-            return
+        let error: Uploader.UploaderError = Uploader.default.connect()
+        switch error {
+        case let .none(info): self.addressLbl?.text = info
+        case let .some(desc): Toaster().flash(withText: desc)
         }
-        server.start(withPort: kDefaultPort, bonjourName: "MUSICER_HELLO_WORLD")
-        guard let address = server.serverURL?.absoluteString else {
-            self.addressLbl.text = "服务地址获取失败喽！"
-            return
-        }
-        self.addressLbl.text = address
     }
     
     @objc func longPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-        guard let str = self.addressLbl.text else { return }
+        guard let str = self.addressLbl?.text else { return }
         let address = str.trimmingCharacters(in: CharacterSet.whitespaces)
         guard address.count > 0 else { return }
         UIPasteboard.general.string = address
@@ -145,7 +118,7 @@ fileprivate extension UploaderController {
     }
 }
 
-extension UploaderController: TitleBarDelegate, TitleBarDataSource {
+extension UploadController: TitleBarDelegate, TitleBarDataSource {
     
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         if case .left = p { return nil }
@@ -168,26 +141,12 @@ extension UploaderController: TitleBarDelegate, TitleBarDataSource {
                                           preferredStyle: .alert)
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let confiem = UIAlertAction(title: "确定", style: .default) { (action) in
+                Uploader.default.disconnect()
                 self.dismiss(animated: true, completion: nil)
-                guard let server = self.loaderServer else { return }
-                server.stop()
             }
             alert.addAction(cancel)
             alert.addAction(confiem)
             self.present(alert, animated: true, completion: nil)
         }
     }
-}
-
-extension UploaderController: GCDWebUploaderDelegate {
-    
-    func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
-        print(path)
-    }
-    
-    /*TODO：
-     1、文件上传格式的限制
-     2、文件名的获取
-     3、文件的本地存储目录和app中自定义歌曲目录的映射设计
-     */
 }

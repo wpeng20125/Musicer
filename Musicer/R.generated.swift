@@ -188,12 +188,38 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 3 images.
+  /// This `R.image` struct is generated, and contains static references to 16 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
+    /// Image `mu_image_add_songs`.
+    static let mu_image_add_songs = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_add_songs")
     /// Image `mu_image_close`.
     static let mu_image_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_close")
+    /// Image `mu_image_collect`.
+    static let mu_image_collect = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_collect")
+    /// Image `mu_image_last_song`.
+    static let mu_image_last_song = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_last_song")
+    /// Image `mu_image_list_loop_play`.
+    static let mu_image_list_loop_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_list_loop_play")
+    /// Image `mu_image_list_play`.
+    static let mu_image_list_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_list_play")
+    /// Image `mu_image_mode_ speaker`.
+    static let mu_image_mode_Speaker = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_mode_ speaker")
+    /// Image `mu_image_mode_headset`.
+    static let mu_image_mode_headset = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_mode_headset")
+    /// Image `mu_image_next_song`.
+    static let mu_image_next_song = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_next_song")
+    /// Image `mu_image_play`.
+    static let mu_image_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play")
+    /// Image `mu_image_random_play`.
+    static let mu_image_random_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_random_play")
+    /// Image `mu_image_single_loop_play`.
+    static let mu_image_single_loop_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_single_loop_play")
+    /// Image `mu_image_songs_folder_current`.
+    static let mu_image_songs_folder_current = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_current")
+    /// Image `mu_image_songs_folders`.
+    static let mu_image_songs_folders = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folders")
     /// Image `mu_image_wifi`.
     static let mu_image_wifi = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_wifi")
 
@@ -205,9 +231,100 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_add_songs", bundle: ..., traitCollection: ...)`
+    static func mu_image_add_songs(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_add_songs, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_close", bundle: ..., traitCollection: ...)`
     static func mu_image_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_close, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_collect", bundle: ..., traitCollection: ...)`
+    static func mu_image_collect(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_collect, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_last_song", bundle: ..., traitCollection: ...)`
+    static func mu_image_last_song(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_last_song, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_list_loop_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_list_loop_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_list_loop_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_list_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_list_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_list_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_mode_ speaker", bundle: ..., traitCollection: ...)`
+    static func mu_image_mode_Speaker(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_mode_Speaker, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_mode_headset", bundle: ..., traitCollection: ...)`
+    static func mu_image_mode_headset(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_mode_headset, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_next_song", bundle: ..., traitCollection: ...)`
+    static func mu_image_next_song(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_next_song, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_random_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_random_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_random_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_single_loop_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_single_loop_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_single_loop_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_current", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_current(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_current, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folders", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folders(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folders, compatibleWith: traitCollection)
     }
     #endif
 

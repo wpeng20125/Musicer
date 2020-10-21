@@ -11,12 +11,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.gray
+        self.view.backgroundColor = R.color.mu_color_gray()
      
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let server = UploaderController()
+        let server = UploadController()
         self.present(server, animated: true, completion: nil)
     }
 }
