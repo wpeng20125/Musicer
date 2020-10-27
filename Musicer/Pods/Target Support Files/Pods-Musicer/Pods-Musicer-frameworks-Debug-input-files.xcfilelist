@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-Musicer/Pods-Musicer-frameworks.sh
+${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework
 ${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework
 ${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework
 ${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework

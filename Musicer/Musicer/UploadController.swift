@@ -11,7 +11,7 @@ class UploadController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = R.color.mu_color_orange_one()
+        self.view.backgroundColor = R.color.mu_color_orange_light()
         self.setupSubViews()
         self.connect()
     }
@@ -30,7 +30,7 @@ fileprivate extension UploadController {
         let titleBar = TitleBar()
         titleBar.dataSource = self
         titleBar.delegate = self
-        titleBar.backgroundColor = R.color.mu_color_orange_one()
+        titleBar.backgroundColor = R.color.mu_color_orange_light()
         self.view.addSubview(titleBar)
         titleBar.snp.makeConstraints { (make) in
             make.left.top.right.equalTo(self.view)
@@ -39,22 +39,19 @@ fileprivate extension UploadController {
         titleBar.reload()
         
         let header = UIView()
-        header.backgroundColor = R.color.mu_color_orange_two()
+        header.backgroundColor = R.color.mu_color_orange_dark()
         header.layer.cornerRadius = 10.0
         header.layer.masksToBounds = true
-        header.layer.shadowColor = R.color.mu_color_orange_two()?.cgColor
-        header.layer.shadowRadius = 5.0
-        header.layer.shadowOpacity = 0.6
         self.view.addSubview(header)
         header.snp.makeConstraints { (make) in
-            make.top.equalTo(titleBar.snp.bottom)
+            make.top.equalTo(titleBar.snp.bottom).offset(20.0)
             make.left.equalTo(self.view).offset(10.0)
             make.right.equalTo(self.view).offset(-10.0)
             make.height.equalTo(250.0)
         }
         
         let wifiImgView = UIImageView()
-        wifiImgView.image = R.image.mu_image_wifi()
+        wifiImgView.image = R.image.mu_image_upload_wifi()
         header.addSubview(wifiImgView)
         wifiImgView.snp.makeConstraints { (make) in
             make.centerX.equalTo(header)
@@ -84,7 +81,7 @@ fileprivate extension UploadController {
         self.addressLbl!.font = UIFont.systemFont(ofSize: 14.0)
         self.addressLbl!.textColor = R.color.mu_color_white()
         self.addressLbl!.textAlignment = .center
-        self.addressLbl!.backgroundColor = R.color.mu_color_orange_two()
+        self.addressLbl!.backgroundColor = R.color.mu_color_orange_dark()
         self.addressLbl!.layer.cornerRadius = 5.0
         self.addressLbl!.layer.masksToBounds = true
         self.addressLbl!.isUserInteractionEnabled = true
@@ -129,7 +126,7 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
             property.fontSize = 15.0
         }
         if case ItemPosition.right = p {
-            property.image = R.image.mu_image_close()
+            property.image = R.image.mu_image_upload_close()
         }
         return property
     }

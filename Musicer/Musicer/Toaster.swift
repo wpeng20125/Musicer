@@ -27,7 +27,7 @@ fileprivate extension Toaster {
     func make(withText text: String) {
         
         self.groundView = UIView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight))
-        self.groundView!.backgroundColor = R.color.mu_color_alpha_zero()
+        self.groundView!.backgroundColor = R.color.mu_color_clear()
         UIApplication.shared.keyWindow?.addSubview(self.groundView!)
         
         let str = NSString(string: text)
@@ -52,7 +52,7 @@ fileprivate extension Toaster {
         let y = (kScreenHeight - h) / 2
         
         self.tipBgView = UIView(frame: CGRect(x: x, y: y, width: w, height: h))
-        self.tipBgView!.backgroundColor = R.color.mu_color_gray()
+        self.tipBgView!.backgroundColor = R.color.mu_color_gray_dark()
         self.tipBgView!.layer.cornerRadius = 10.0
         self.tipBgView!.layer.masksToBounds = true
         self.groundView!.addSubview(self.tipBgView!)

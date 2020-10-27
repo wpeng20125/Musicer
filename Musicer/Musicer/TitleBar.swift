@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 enum ItemPosition: Int {
     case left = 1
