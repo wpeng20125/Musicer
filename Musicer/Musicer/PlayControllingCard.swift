@@ -7,22 +7,33 @@
 
 import UIKit
 
-protocol PlayControllingCardDelegate: NSObjectProtocol {
-    
-}
-
-enum PlayControllingMode: Int {
+enum PlayingMode: Int {
     case squence
     case singleLoop
     case squenceLoop
     case random
 }
 
+enum PlayingState {
+    case defaulty
+    case playing
+    case pause
+}
+
+protocol PlayControllingCardDelegate: NSObjectProtocol {
+    
+}
+
 class PlayControllingCard: UIView {
     
-    private let w_h: CGFloat = 30.0
-    
+    //MARK: -- public
     weak var delegate: PlayControllingCardDelegate?
+    
+    
+    //MARK: -- private
+    private let w_h: CGFloat = 30.0
+    private var state: PlayingState = .defaulty
+    private var mode: PlayingMode = .squence
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
@@ -32,11 +43,15 @@ class PlayControllingCard: UIView {
     }
     
     //MARK: -- lazy
-    private lazy var pullBtn: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.adjustsImageWhenHighlighted = false
-        btn.setImage(R.image.mu_image_control_pull(), for: .normal)
-        return btn
+    private lazy var pullBtn: UIImageView = {
+        let puller = UIImageView()
+        puller.isUserInteractionEnabled = true
+        puller.image = R.image.mu_image_control_pull()
+        puller.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pullerTriggered(_:))))
+        let pan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(pullerTriggered(_:)))
+        pan.edges = .bottom
+        puller.addGestureRecognizer(pan)
+        return puller
     }()
     
     private lazy var bgView: UIView = {
@@ -62,6 +77,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_squence(), for: .normal)
         btn.h_size = CGSize(width: w_h, height: w_h)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -69,6 +85,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_last(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -76,6 +93,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -83,6 +101,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_next(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -90,6 +109,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_current(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -97,6 +117,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_all(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -104,6 +125,7 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_favourite(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
     
@@ -111,11 +133,12 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_add(), for: .normal)
+        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
         return btn
     }()
 }
 
-//MARK: -- 布局子控件
+//MARK: -- layout subviews
 fileprivate extension PlayControllingCard {
     
     func setupSubViews() {
@@ -196,9 +219,31 @@ fileprivate extension PlayControllingCard {
         }
         
     }
+}
+
+//MARK: -- Actions
+fileprivate extension PlayControllingCard {
     
+    //MARK: -- playing controlling button action
     @objc func click(atButton btn: UIButton) {
         
+    }
+    
+    //MARK: -- puller gesture
+    @objc func pullerTriggered(_ gesture: UIGestureRecognizer) {
+        if !gesture.isKind(of: UITapGestureRecognizer.self) {
+            if gesture.state != .began { return }
+        }
+        let show = (kScreenHeight == self.frame.origin.y ? true : false)
+        self.showCard(show)
+    }
+}
+
+//MARK: --  animations
+fileprivate extension PlayControllingCard {
+    
+    func showCard(_ show: Bool) {
+        let cardAnimation = CASpringAnimation(keyPath: "position.y")
     }
 }
 
