@@ -36,7 +36,7 @@ fileprivate extension UploadController {
             make.left.top.right.equalTo(self.view)
             make.height.equalTo(kTitleBarHeight)
         }
-        titleBar.reload()
+        titleBar.configure()
         
         let header = UIView()
         header.backgroundColor = R.color.mu_color_orange_dark()

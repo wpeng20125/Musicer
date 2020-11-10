@@ -37,10 +37,10 @@ protocol TitleBarDelegate: NSObjectProtocol {
 //MARK: -- Bar itself
 class TitleBar: UIView {
     
-   weak var dataSource: TitleBarDataSource?
-   weak var delegate: TitleBarDelegate?
+    weak var dataSource: TitleBarDataSource?
+    weak var delegate: TitleBarDelegate?
     
-    func reload() {
+    func configure() {
         self.setupSubViews()
     }
 }

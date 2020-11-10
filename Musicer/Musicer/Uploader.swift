@@ -27,7 +27,7 @@ class Uploader: NSObject {
     //MARK: -- private
     fileprivate var server: GCDWebUploader?
     
-    private override init() {
+    override init() {
         super.init()
         self.filePath = self.createPath()
     }

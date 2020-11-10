@@ -22,6 +22,8 @@ enum PlayingState {
 
 protocol PlayControllingCardDelegate: NSObjectProtocol {
     
+    func palyControllingCardSwipGestureDidTriggered(_ card: PlayControllingCard)
+    
 }
 
 class PlayControllingCard: UIView {
@@ -29,6 +31,13 @@ class PlayControllingCard: UIView {
     //MARK: -- public
     weak var delegate: PlayControllingCardDelegate?
     
+    func show() {
+        self.showCard(true)
+    }
+    
+    func hide() {
+        self.showCard(false)
+    }
     
     //MARK: -- private
     private let w_h: CGFloat = 30.0
@@ -40,20 +49,12 @@ class PlayControllingCard: UIView {
         super.init(frame: frame)
         self.backgroundColor = R.color.mu_color_clear()
         self.setupSubViews()
+        let swipper = UISwipeGestureRecognizer(target: self, action: #selector(swipDown(gesture:)))
+        swipper.direction = .down
+        self.addGestureRecognizer(swipper)
     }
     
     //MARK: -- lazy
-    private lazy var pullBtn: UIImageView = {
-        let puller = UIImageView()
-        puller.isUserInteractionEnabled = true
-        puller.image = R.image.mu_image_control_pull()
-        puller.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pullerTriggered(_:))))
-        let pan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(pullerTriggered(_:)))
-        pan.edges = .bottom
-        puller.addGestureRecognizer(pan)
-        return puller
-    }()
-    
     private lazy var bgView: UIView = {
         let backgroundVeiw = UIView()
         backgroundVeiw.backgroundColor = R.color.mu_color_orange_light()
@@ -143,16 +144,9 @@ fileprivate extension PlayControllingCard {
     
     func setupSubViews() {
         
-        self.addSubview(self.pullBtn)
-        self.pullBtn.snp.makeConstraints { (make) in
-            make.top.centerX.equalTo(self)
-            make.size.equalTo(CGSize(width: 30.0, height: 20.0))
-        }
-        
         self.addSubview(self.bgView)
         self.bgView.snp.makeConstraints { (make) in
-            make.top.equalTo(pullBtn.snp.bottom)
-            make.left.bottom.right.equalTo(self)
+            make.edges.equalTo(self)
         }
         
         self.bgView.addSubview(self.progressView)
@@ -229,13 +223,10 @@ fileprivate extension PlayControllingCard {
         
     }
     
-    //MARK: -- puller gesture
-    @objc func pullerTriggered(_ gesture: UIGestureRecognizer) {
-        if !gesture.isKind(of: UITapGestureRecognizer.self) {
-            if gesture.state != .began { return }
-        }
-        let show = (kScreenHeight == self.frame.origin.y ? true : false)
-        self.showCard(show)
+    //MARK: -- swip gesture
+    @objc func swipDown(gesture: UISwipeGestureRecognizer) {
+        self.hide()
+        self.delegate?.palyControllingCardSwipGestureDidTriggered(self)
     }
 }
 
@@ -243,7 +234,9 @@ fileprivate extension PlayControllingCard {
 fileprivate extension PlayControllingCard {
     
     func showCard(_ show: Bool) {
-        let cardAnimation = CASpringAnimation(keyPath: "position.y")
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+            self.h_y = show ? Double(kScreenHeight) - 200.0 - kSafeAreaInsetBottom : Double(kScreenHeight)
+        } completion: { (complete) in }
     }
 }
 
