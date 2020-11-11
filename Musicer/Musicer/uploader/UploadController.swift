@@ -34,7 +34,7 @@ fileprivate extension UploadController {
         self.view.addSubview(titleBar)
         titleBar.snp.makeConstraints { (make) in
             make.left.top.right.equalTo(self.view)
-            make.height.equalTo(kTitleBarHeight)
+            make.height.equalTo(TitleBarHeight)
         }
         titleBar.configure()
         

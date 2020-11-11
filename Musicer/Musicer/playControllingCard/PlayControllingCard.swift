@@ -8,51 +8,63 @@
 import UIKit
 
 enum PlayingMode: Int {
-    case squence
-    case singleLoop
-    case squenceLoop
-    case random
+    case squence = 1, singleLoop, squenceLoop, random
 }
 
 enum PlayingState {
-    case defaulty
-    case playing
-    case pause
+    case defaulty, playing, pause
+}
+
+fileprivate enum ButtonTag: Int {
+    case play = 1, next, last, mode, currentList, allList, favourite, adding
 }
 
 protocol PlayControllingCardDelegate: NSObjectProtocol {
     
-    func palyControllingCardSwipGestureDidTriggered(_ card: PlayControllingCard)
-    
+    func playControllingCardPlayNextSong(_ card: PlayControllingCard)
+    func playControllingCardPlayLastSong(_ card: PlayControllingCard)
+    func playControllingCardUploadSongs(_ card: PlayControllingCard)
+    func playControllingCardShowAllList(_ card: PlayControllingCard)
+    func playControllingCardShowCurrentList(_ card: PlayControllingCard)
+    func playControllingCardFavouriteThisSong(_ card: PlayControllingCard)
+    func playControllingCard(_ card: PlayControllingCard, displayCompleted byShowing: Bool)
+    func playControllingCard(_ card: PlayControllingCard, playingModeChanged mode: PlayingMode)
+    func playControllingCard(_ card: PlayControllingCard, playingStateChanged state: PlayingState)
 }
 
 class PlayControllingCard: UIView {
     
-    //MARK: -- public
-    weak var delegate: PlayControllingCardDelegate?
-    
-    func show() {
-        self.showCard(true)
-    }
-    
-    func hide() {
-        self.showCard(false)
-    }
-    
-    //MARK: -- private
+    static let CardHeight = 200.0 + SafeAreaInsetBottom
     private let w_h: CGFloat = 30.0
-    private var state: PlayingState = .defaulty
-    private var mode: PlayingMode = .squence
     
+    //MARK: -- 各个button的tag
+    let PlayingBtnTag = 1000
+    let NextBtnTag = 1010
+    let LastBtnTag = 1020
+    let ModeBtnTag = 1030
+    let CurrentListBtnTag = 1040
+    
+    //MARK: -- public
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        let f = CGRect(x: 0, y: ScreenHeight, width: ScreenWidth, height: CGFloat(PlayControllingCard.CardHeight))
+        super.init(frame: f)
         self.backgroundColor = R.color.mu_color_clear()
         self.setupSubViews()
         let swipper = UISwipeGestureRecognizer(target: self, action: #selector(swipDown(gesture:)))
         swipper.direction = .down
         self.addGestureRecognizer(swipper)
+        
     }
+    
+    weak var delegate: PlayControllingCardDelegate?
+    private(set) var isShowing: Bool = false
+    private(set) var playingMode: PlayingMode = .squence
+    private(set) var playingState: PlayingState = .defaulty
+
+    func show() { self.showCard(true) }
+    
+    func hide() { self.showCard(false) }
     
     //MARK: -- lazy
     private lazy var bgView: UIView = {
@@ -75,6 +87,7 @@ class PlayControllingCard: UIView {
     
     private lazy var modeBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.mode.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_squence(), for: .normal)
         btn.h_size = CGSize(width: w_h, height: w_h)
@@ -84,6 +97,7 @@ class PlayControllingCard: UIView {
     
     private lazy var lastBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.last.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_last(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -92,6 +106,7 @@ class PlayControllingCard: UIView {
     
     private lazy var playBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.play.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -100,6 +115,7 @@ class PlayControllingCard: UIView {
     
     private lazy var nextBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.next.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_next(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -108,6 +124,7 @@ class PlayControllingCard: UIView {
     
     private lazy var currentListBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.currentList.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_current(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -116,6 +133,7 @@ class PlayControllingCard: UIView {
     
     private lazy var allListBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.allList.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_all(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -124,6 +142,7 @@ class PlayControllingCard: UIView {
     
     private lazy var faverBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.favourite.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_favourite(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -132,6 +151,7 @@ class PlayControllingCard: UIView {
     
     private lazy var addBtn: UIButton = {
         let btn = UIButton(type: .custom)
+        btn.tag = ButtonTag.adding.rawValue
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_add(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
@@ -151,8 +171,9 @@ fileprivate extension PlayControllingCard {
         
         self.bgView.addSubview(self.progressView)
         self.progressView.snp.makeConstraints { (make) in
-            make.center.equalTo(self.bgView)
-            make.width.equalTo(kScreenWidth - 30.0 * 2)
+            make.top.equalTo(self.bgView).offset(100.0)
+            make.centerX.equalTo(self.bgView)
+            make.width.equalTo(ScreenWidth - 30.0 * 2)
         }
     
         self.bgView.addSubview(self.playBtn)
@@ -176,7 +197,7 @@ fileprivate extension PlayControllingCard {
             make.size.equalTo(CGSize(width: w_h, height: w_h))
         }
         
-        let margin = (kScreenWidth / 2 - 30.0) / 2
+        let margin = (ScreenWidth / 2 - 30.0) / 2
         self.bgView.addSubview(self.lastBtn)
         self.lastBtn.snp.makeConstraints { (make) in
             make.centerY.equalTo(self.playBtn)
@@ -211,7 +232,6 @@ fileprivate extension PlayControllingCard {
             make.centerX.equalTo(self.faverBtn).offset(margin)
             make.size.equalTo(CGSize(width: w_h, height: w_h))
         }
-        
     }
 }
 
@@ -219,14 +239,60 @@ fileprivate extension PlayControllingCard {
 fileprivate extension PlayControllingCard {
     
     //MARK: -- playing controlling button action
-    @objc func click(atButton btn: UIButton) {
-        
+    @objc func click(atButton sender: UIButton) {
+        guard let tag = ButtonTag(rawValue: sender.tag) else { return }
+        switch tag {
+        case .play:
+            if self.playingState == .defaulty || self.playingState == .pause  {
+                self.playingState = .playing
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                    self.startPlayingAnimation()
+                }
+            }else if self.playingState == .playing {
+                self.playingState = .pause
+                self.stopPlayingAnimation()
+            }
+            self.delegate?.playControllingCard(self, playingStateChanged: self.playingState)
+        case .next:
+            self.delegate?.playControllingCardPlayNextSong(self)
+        case .last:
+            self.delegate?.playControllingCardPlayLastSong(self)
+        case .adding:
+            self.delegate?.playControllingCardUploadSongs(self)
+        case .allList:
+            self.delegate?.playControllingCardShowAllList(self)
+        case .currentList:
+            self.delegate?.playControllingCardShowCurrentList(self)
+        case .favourite:
+            self.delegate?.playControllingCardFavouriteThisSong(self)
+        case .mode:
+            if self.playingMode == .squence {
+                self.playingMode = .squenceLoop
+                self.modeBtn.setImage(R.image.mu_image_play_list_loop(), for: .normal)
+            }else if self.playingMode == .squenceLoop {
+                self.playingMode = .random
+                self.modeBtn.setImage(R.image.mu_image_play_random(), for: .normal)
+            }else if self.playingMode == .random {
+                self.playingMode = .singleLoop
+                self.modeBtn.setImage(R.image.mu_image_play_single_loop(), for: .normal)
+            }else if self.playingMode == .singleLoop {
+                self.playingMode = .squence
+                self.modeBtn.setImage(R.image.mu_image_play_squence(), for: .normal)
+            }
+            self.delegate?.playControllingCard(self, playingModeChanged: self.playingMode)
+        }
+        let zoom = CABasicAnimation(keyPath: "transform.scale")
+        zoom.duration = 0.09
+        zoom.fromValue = 1.0
+        zoom.toValue = 0.7
+        zoom.autoreverses = true
+        zoom.isRemovedOnCompletion = true
+        sender.layer.add(zoom, forKey: "kZoomAniamtionKey")
     }
     
     //MARK: -- swip gesture
     @objc func swipDown(gesture: UISwipeGestureRecognizer) {
         self.hide()
-        self.delegate?.palyControllingCardSwipGestureDidTriggered(self)
     }
 }
 
@@ -234,9 +300,26 @@ fileprivate extension PlayControllingCard {
 fileprivate extension PlayControllingCard {
     
     func showCard(_ show: Bool) {
+        if (show && self.isShowing) || (!show && !self.isShowing) { return }
+        self.isShowing = show
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.h_y = show ? Double(kScreenHeight) - 200.0 - kSafeAreaInsetBottom : Double(kScreenHeight)
-        } completion: { (complete) in }
+            self.h_y = show ? Double(ScreenHeight - PlayControllingCard.CardHeight) : Double(ScreenHeight)
+        } completion: { (complete) in
+            self.delegate?.playControllingCard(self, displayCompleted: show)
+        }
+    }
+    
+    func startPlayingAnimation() {
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+        animation.duration = 5
+        animation.fromValue = 0
+        animation.toValue = Double.pi * 2
+        animation.repeatCount = MAXFLOAT
+        self.playBtn.layer.add(animation, forKey: "kClockwiseRotationAnimationKey")
+    }
+    
+    func stopPlayingAnimation() {
+        self.playBtn.layer.removeAllAnimations()
     }
 }
 

@@ -41,14 +41,14 @@ class Toaster: NSObject {
 fileprivate extension Toaster {
     
     private func make() {
-        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight))
+        let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight))
         backgroundView.backgroundColor = R.color.mu_color_clear()
         backgroundView.tag = kBackgroundViewTag
         backgroundView.alpha = 0
         UIApplication.shared.keyWindow?.addSubview(backgroundView)
         
-        let x = (kScreenWidth - kCustomBackgroundViewW) / 2
-        let y = (kScreenHeight - kCustomBackgroundViewH) / 2
+        let x = (ScreenWidth - kCustomBackgroundViewW) / 2
+        let y = (ScreenHeight - kCustomBackgroundViewH) / 2
         let customBackgroundView = UIView(frame: CGRect(x: x, y: y, width: kCustomBackgroundViewW, height: kCustomBackgroundViewH))
         customBackgroundView.backgroundColor = R.color.mu_color_gray_dark()
         customBackgroundView.layer.cornerRadius = 10.0
@@ -83,7 +83,7 @@ fileprivate extension Toaster {
     func makeTipToast(withText text: String) {
 
         let str = NSString(string: text)
-        let maxWidth = kScreenWidth - kTipToastInset * 2 - kTipLblInset * 2 - kTipTextInset * 2
+        let maxWidth = ScreenWidth - kTipToastInset * 2 - kTipLblInset * 2 - kTipTextInset * 2
         var textHeight: CGFloat = 30.0
         var textWidth = str.boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: textHeight),
                                          options: [.usesLineFragmentOrigin, .usesFontLeading],
@@ -100,8 +100,8 @@ fileprivate extension Toaster {
         
         let w = textWidth + kTipLblInset * 2 + kTipTextInset * 2
         let h = textHeight + kTipLblInset * 2 + kTipTextInset * 2
-        let x = (kScreenWidth - w) / 2
-        let y = (kScreenHeight - h) / 2
+        let x = (ScreenWidth - w) / 2
+        let y = (ScreenHeight - h) / 2
         
         let lblW = textWidth + kTipTextInset * 2
         let lblH = textHeight + kTipTextInset * 2
@@ -157,14 +157,14 @@ fileprivate extension Toaster {
         animation_one.fromValue = 0
         animation_one.toValue = Double.pi * 2
         animation_one.repeatCount = MAXFLOAT
-        imgView_one.layer.add(animation_one, forKey: "kRotationAnimationKey")
+        imgView_one.layer.add(animation_one, forKey: "kClockwiseRotationAnimationKey")
         
         let animation_two = CABasicAnimation(keyPath: "transform.rotation.z")
         animation_two.duration = 1
         animation_two.fromValue = 0
         animation_two.toValue = -Double.pi * 2
         animation_two.repeatCount = MAXFLOAT
-        imgView_two.layer.add(animation_two, forKey: "kRotationAnimationKey")
+        imgView_two.layer.add(animation_two, forKey: "kAnticlockwiseRotationAnimationKey")
     }
     
     func stopAnimation() {
