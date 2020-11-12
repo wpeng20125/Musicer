@@ -1,5 +1,5 @@
 PODS:
-  - FLEX (4.1.1)
+  - FLEX (4.2.2)
   - GCDWebServer/Core (3.5.4)
   - GCDWebServer/WebUploader (3.5.4):
     - GCDWebServer/Core
@@ -28,7 +28,7 @@ SPEC REPOS:
     - SnapKit
 
 SPEC CHECKSUMS:
-  FLEX: 81096107977a09836eb440173010ceeef01105d6
+  FLEX: dbd68ae9c67fcc872c79c9e5a728f38243dfaa78
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
