@@ -19,23 +19,6 @@ class PlayingController: UIViewController {
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.configure()
         
-        self.view.addSubview(self.modeBtn)
-        self.modeBtn.h_x = 200
-        self.modeBtn.h_y = 200
-        self.modeBtn.h_size = CGSize(width: 30, height: 30.0)
-        self.modeBtn.expand(50, 50, 50, 50)
-    }
-
-    private lazy var modeBtn: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.adjustsImageWhenHighlighted = false
-        btn.setImage(R.image.mu_image_play_squence(), for: .normal)
-        btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
-        return btn
-    }()
-    
-    @objc func click(atButton sender: UIButton) {
-        print("hello world")
     }
     
     //MARK: -- lazy

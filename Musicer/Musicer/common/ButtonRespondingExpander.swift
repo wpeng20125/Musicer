@@ -10,7 +10,6 @@ import UIKit
 extension UIButton {
     
     private struct AssociatedObjectKey {
-        
         static var edgeInsetsKey = "edgeInsetsKey"
     }
     
