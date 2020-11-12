@@ -12,6 +12,7 @@
 		AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68D3255AAB63005E6495 /* PlayControllingCardAssist.swift */; };
 		AA4F68DE255BDAE3005E6495 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68DD255BDAE3005E6495 /* Song.swift */; };
 		AA4F68E0255BDE8D005E6495 /* SongsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68DF255BDE8D005E6495 /* SongsManager.swift */; };
+		AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */; };
 		AA56E2012534363D00EA50C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2002534363D00EA50C3 /* AppDelegate.swift */; };
 		AA56E2052534363D00EA50C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2042534363D00EA50C3 /* ViewController.swift */; };
 		AA56E20A2534363F00EA50C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA56E2092534363F00EA50C3 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		AA4F68D3255AAB63005E6495 /* PlayControllingCardAssist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayControllingCardAssist.swift; sourceTree = "<group>"; };
 		AA4F68DD255BDAE3005E6495 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		AA4F68DF255BDE8D005E6495 /* SongsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsManager.swift; sourceTree = "<group>"; };
+		AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRespondingExpander.swift; sourceTree = "<group>"; };
 		AA56E1FD2534363D00EA50C3 /* Musicer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Musicer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA56E2002534363D00EA50C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA56E2042534363D00EA50C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			children = (
 				AA56E2B52536F10700EA50C3 /* TitleBar.swift */,
 				AA2EDDF025397C6200D18524 /* Toaster.swift */,
+				AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */,
 				AA72A5E8254180D000B1A731 /* FrameHandy.swift */,
 				AA56E2B22536E30400EA50C3 /* Common.swift */,
 				AA72A5E625416E9400B1A731 /* PubHeaders.swift */,
@@ -304,6 +307,7 @@
 				AA56E2012534363D00EA50C3 /* AppDelegate.swift in Sources */,
 				AA56E2782535AF3900EA50C3 /* UploadController.swift in Sources */,
 				AA4F68E0255BDE8D005E6495 /* SongsManager.swift in Sources */,
+				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
 				AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */,
 				AA56E2B32536E30400EA50C3 /* Common.swift in Sources */,
 				AA56E22B2534480400EA50C3 /* R.generated.swift in Sources */,
