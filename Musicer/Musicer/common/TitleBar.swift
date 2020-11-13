@@ -94,6 +94,7 @@ fileprivate extension TitleBar {
             btn.layer.masksToBounds = true
         }
         btn.addTarget(self, action:#selector(clickItem(_:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }
     

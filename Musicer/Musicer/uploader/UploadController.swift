@@ -9,18 +9,35 @@ import UIKit
 
 class UploadController: UIViewController {
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Toaster.showLoading()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { self.connect() }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_orange_light()
         self.setupSubViews()
-        self.connect()
     }
     
-    fileprivate var addressLbl: UILabel?
+    //MARK: -- lazy
+    private lazy var addressLbl: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.systemFont(ofSize: 14.0)
+        lbl.textColor = R.color.mu_color_white()
+        lbl.textAlignment = .center
+        lbl.backgroundColor = R.color.mu_color_orange_dark()
+        lbl.layer.cornerRadius = 5.0
+        lbl.layer.masksToBounds = true
+        lbl.isUserInteractionEnabled = true
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
+        gesture.minimumPressDuration = 1.0
+        lbl.addGestureRecognizer(gesture)
+        return lbl
+    }()
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-    }
+    private lazy var uploader: Uploader = { Uploader() }()
 }
 
 fileprivate extension UploadController {
@@ -77,19 +94,8 @@ fileprivate extension UploadController {
             make.right.equalTo(header).offset(-20.0)
         }
         
-        self.addressLbl = UILabel()
-        self.addressLbl!.font = UIFont.systemFont(ofSize: 14.0)
-        self.addressLbl!.textColor = R.color.mu_color_white()
-        self.addressLbl!.textAlignment = .center
-        self.addressLbl!.backgroundColor = R.color.mu_color_orange_dark()
-        self.addressLbl!.layer.cornerRadius = 5.0
-        self.addressLbl!.layer.masksToBounds = true
-        self.addressLbl!.isUserInteractionEnabled = true
-        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
-        gesture.minimumPressDuration = 1.0
-        self.addressLbl!.addGestureRecognizer(gesture)
-        self.view.addSubview(self.addressLbl!)
-        self.addressLbl!.snp.makeConstraints { (make) in
+        self.view.addSubview(self.addressLbl)
+        self.addressLbl.snp.makeConstraints { (make) in
             make.top.equalTo(header.snp.bottom).offset(50.0)
             make.left.equalTo(self.view).offset(20.0)
             make.right.equalTo(self.view).offset(-20.0)
@@ -98,20 +104,21 @@ fileprivate extension UploadController {
     }
     
     func connect() {
-        let error: Uploader.UploaderError = Uploader.default.connect()
+        let error: Uploader.UploaderError = self.uploader.connect()
         switch error {
-        case let .none(info): self.addressLbl?.text = info
-        case let .some(desc): Toaster().flash(withText: desc)
+        case let .none(info): self.addressLbl.text = info
+        case let .some(desc): Toaster.flash(withText: desc)
         }
+        Toaster.hideLoading()
     }
     
     @objc func longPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-        guard let str = self.addressLbl?.text else { return }
+        guard let str = self.addressLbl.text else { return }
         let address = str.trimmingCharacters(in: CharacterSet.whitespaces)
         guard address.count > 0 else { return }
         UIPasteboard.general.string = address
-        Toaster().flash(withText: "链接地址已复制")
+        Toaster.flash(withText: "链接地址已复制")
     }
 }
 
@@ -138,7 +145,7 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
                                           preferredStyle: .alert)
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let confiem = UIAlertAction(title: "确定", style: .default) { (action) in
-                Uploader.default.disconnect()
+                self.uploader.disconnect()
                 self.dismiss(animated: true, completion: nil)
             }
             alert.addAction(cancel)

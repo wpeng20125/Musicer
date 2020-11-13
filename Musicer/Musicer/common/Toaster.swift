@@ -20,19 +20,19 @@ fileprivate let kTipTextInset: CGFloat = 2.5
 
 class Toaster: NSObject {
         
-    func flash(withText text: String) {
+    static func flash(withText text: String) {
         self.make()
         self.makeTipToast(withText: text)
         self.show(comlete: { DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) { self.hide() } })
     }
     
-    func showLoading() {
+    static func showLoading() {
         self.make()
         self.makeLoading()
         self.show(comlete: { self.startAnimation() })
     }
     
-    func hideLoading() {
+    static func hideLoading() {
         self.stopAnimation()
         self.hide()
     }
@@ -40,7 +40,7 @@ class Toaster: NSObject {
 
 fileprivate extension Toaster {
     
-    private func make() {
+    static  func make() {
         let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight))
         backgroundView.backgroundColor = R.color.mu_color_clear()
         backgroundView.tag = kBackgroundViewTag
@@ -57,7 +57,7 @@ fileprivate extension Toaster {
         backgroundView.addSubview(customBackgroundView)
     }
     
-    func show(comlete cp: @escaping ()->Void) {
+    static func show(comlete cp: @escaping ()->Void) {
         guard let background = UIApplication.shared.keyWindow?.viewWithTag(kBackgroundViewTag) else { return }
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
             background.alpha = 1.0
@@ -67,7 +67,7 @@ fileprivate extension Toaster {
         }
     }
     
-    func hide() {
+    static func hide() {
         guard let background = UIApplication.shared.keyWindow?.viewWithTag(kBackgroundViewTag) else { return }
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
             background.alpha = 0
@@ -80,7 +80,7 @@ fileprivate extension Toaster {
 //MARK: -- tip toast
 fileprivate extension Toaster {
     
-    func makeTipToast(withText text: String) {
+    static func makeTipToast(withText text: String) {
 
         let str = NSString(string: text)
         let maxWidth = ScreenWidth - kTipToastInset * 2 - kTipLblInset * 2 - kTipTextInset * 2
@@ -115,17 +115,17 @@ fileprivate extension Toaster {
         guard let customBackgroundView = UIApplication.shared.keyWindow?.viewWithTag(kCustomBackgroundViewTag) else { return }
         customBackgroundView.addSubview(lbl)
 
-        customBackgroundView.h_x = Double(x)
-        customBackgroundView.h_y = Double(y)
-        customBackgroundView.h_w = Double(w)
-        customBackgroundView.h_h = Double(h)
+        customBackgroundView.x = Double(x)
+        customBackgroundView.y = Double(y)
+        customBackgroundView.w = Double(w)
+        customBackgroundView.h = Double(h)
     }
 }
 
 //MARK: -- loading toast
 fileprivate extension Toaster {
     
-    func makeLoading() {
+    static func makeLoading() {
         guard let ground = UIApplication.shared.keyWindow?.viewWithTag(kBackgroundViewTag) else { return }
         ground.backgroundColor = R.color.mu_color_black_with_alpha()
         
@@ -134,22 +134,22 @@ fileprivate extension Toaster {
         
         let imgView_one = UIImageView()
         imgView_one.image = R.image.mu_image_toast_loading_2()
-        imgView_one.h_x = (customBackgroundView.h_w - 50.0) / 2
-        imgView_one.h_y = (customBackgroundView.h_h - 50.0) / 2
-        imgView_one.h_size = CGSize(width: 50.0, height: 50.0)
+        imgView_one.x = (customBackgroundView.w - 50.0) / 2
+        imgView_one.y = (customBackgroundView.h - 50.0) / 2
+        imgView_one.size = CGSize(width: 50.0, height: 50.0)
         imgView_one.tag = kLoadingImageViewTagOne
         customBackgroundView.addSubview(imgView_one)
         
         let imgView_two = UIImageView()
         imgView_two.image = R.image.mu_image_toast_loading_1()
-        imgView_two.h_x = (customBackgroundView.h_w - 70.0) / 2
-        imgView_two.h_y = (customBackgroundView.h_h - 70.0) / 2
-        imgView_two.h_size = CGSize(width: 70.0, height: 70.0)
+        imgView_two.x = (customBackgroundView.w - 70.0) / 2
+        imgView_two.y = (customBackgroundView.h - 70.0) / 2
+        imgView_two.size = CGSize(width: 70.0, height: 70.0)
         imgView_two.tag = kLoadingImageViewTagTwo
         customBackgroundView.addSubview(imgView_two)
     }
     
-    func startAnimation() {
+    static func startAnimation() {
         guard let imgView_one = UIApplication.shared.keyWindow?.viewWithTag(kLoadingImageViewTagOne) else { return }
         guard let imgView_two = UIApplication.shared.keyWindow?.viewWithTag(kLoadingImageViewTagTwo) else { return }
         let animation_one = CABasicAnimation(keyPath: "transform.rotation.z")
@@ -167,7 +167,7 @@ fileprivate extension Toaster {
         imgView_two.layer.add(animation_two, forKey: "kAnticlockwiseRotationAnimationKey")
     }
     
-    func stopAnimation() {
+    static func stopAnimation() {
         guard let imgView_one = UIApplication.shared.keyWindow?.viewWithTag(kLoadingImageViewTagOne) else { return }
         guard let imgView_two = UIApplication.shared.keyWindow?.viewWithTag(kLoadingImageViewTagTwo) else { return }
         imgView_one.layer.removeAllAnimations()
