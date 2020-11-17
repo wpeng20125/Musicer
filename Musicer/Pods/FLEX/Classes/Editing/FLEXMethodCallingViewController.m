@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 5/23/14.
-//  Copyright (c) 2020 FLEX Team. All rights reserved.
+//  Copyright (c) 2020 Flipboard. All rights reserved.
 //
 
 #import "FLEXMethodCallingViewController.h"
@@ -16,7 +16,7 @@
 #import "FLEXUtility.h"
 
 @interface FLEXMethodCallingViewController ()
-@property (nonatomic, readonly) FLEXMethod *method;
+@property (nonatomic) FLEXMethod *method;
 @end
 
 @implementation FLEXMethodCallingViewController
@@ -28,8 +28,9 @@
 - (id)initWithTarget:(id)target method:(FLEXMethod *)method {
     NSParameterAssert(method.isInstanceMethod == !object_isClass(target));
 
-    self = [super initWithTarget:target data:method commitHandler:nil];
+    self = [super initWithTarget:target];
     if (self) {
+        self.method = method;
         self.title = method.isInstanceMethod ? @"Method: " : @"Class Method: ";
         self.title = [self.title stringByAppendingString:method.selectorString];
     }
@@ -71,6 +72,8 @@
 }
 
 - (void)actionButtonPressed:(id)sender {
+    [super actionButtonPressed:sender];
+
     // Gather arguments
     NSMutableArray *arguments = [NSMutableArray new];
     for (FLEXArgumentInputView *inputView in self.fieldEditorView.argumentInputViews) {
@@ -86,9 +89,6 @@
         withArguments:arguments
         error:&error
     ];
-    
-    // Dismiss keyboard and handle committed changes
-    [super actionButtonPressed:sender];
 
     // Display return value or error
     if (error) {
@@ -101,10 +101,6 @@
     } else {
         [self exploreObjectOrPopViewController:returnValue];
     }
-}
-
-- (FLEXMethod *)method {
-    return _data;
 }
 
 @end

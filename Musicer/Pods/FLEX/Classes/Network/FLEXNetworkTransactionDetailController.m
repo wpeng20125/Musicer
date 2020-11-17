@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 2/10/15.
-//  Copyright (c) 2020 FLEX Team. All rights reserved.
+//  Copyright (c) 2020 Flipboard. All rights reserved.
 //
 
 #import "FLEXColor.h"
@@ -64,9 +64,7 @@ typedef UIViewController *(^FLEXNetworkDetailRowSelectionFuture)(void);
         self.toolbarItems = @[
             UIBarButtonItem.flex_flexibleSpace,
             [UIBarButtonItem
-                flex_itemWithTitle:@"Copy curl"
-                target:self
-                action:@selector(copyButtonPressed:)
+                itemWithTitle:@"Copy curl" target:self action:@selector(copyButtonPressed:)
             ]
         ];
     }

@@ -96,7 +96,7 @@
 }
 
 - (void)jsonViewerSettingToggled:(UISwitch *)sender {
-    [NSUserDefaults.standardUserDefaults flex_toggleBoolForKey:kFLEXDefaultsRegisterJSONExplorerKey];
+    [NSUserDefaults.standardUserDefaults toggleBoolForKey:kFLEXDefaultsRegisterJSONExplorerKey];
 }
 
 - (void)cacheLimitAdjusted:(UISlider *)sender {

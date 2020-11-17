@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Ryan Olson on 9/19/15.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2015 Flipboard. All rights reserved.
 //
 
 #import "FLEXKeyboardShortcutManager.h"
@@ -212,14 +212,9 @@
 - (void)registerSimulatorShortcutWithKey:(NSString *)key
                                modifiers:(UIKeyModifierFlags)modifiers
                                   action:(dispatch_block_t)action
-                             description:(NSString *)description
-                           allowOverride:(BOOL)allowOverride {
+                             description:(NSString *)description {
     FLEXKeyInput *keyInput = [FLEXKeyInput keyInputForKey:key flags:modifiers helpDescription:description];
-    if (!allowOverride && self.actionsForKeyInputs[keyInput] != nil) {
-        return;
-    } else {
-        [self.actionsForKeyInputs setObject:action forKey:keyInput];
-    }
+    [self.actionsForKeyInputs setObject:action forKey:keyInput];
 }
 
 static const long kFLEXControlKeyCode = 0xe0;

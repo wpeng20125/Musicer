@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 5/16/14.
-//  Copyright (c) 2020 FLEX Team. All rights reserved.
+//  Copyright (c) 2020 Flipboard. All rights reserved.
 //
 
 #import "FLEXColor.h"
@@ -19,22 +19,21 @@
 
 @interface FLEXVariableEditorViewController () <UIScrollViewDelegate>
 @property (nonatomic) UIScrollView *scrollView;
+@property (nonatomic) id target;
 @end
 
 @implementation FLEXVariableEditorViewController
 
 #pragma mark - Initialization
 
-+ (instancetype)target:(id)target data:(nullable id)data commitHandler:(void(^_Nullable)())onCommit {
-    return [[self alloc] initWithTarget:target data:data commitHandler:onCommit];
++ (instancetype)target:(id)target {
+    return [[self alloc] initWithTarget:target];
 }
 
-- (id)initWithTarget:(id)target data:(nullable id)data commitHandler:(void(^_Nullable)())onCommit {
+- (id)initWithTarget:(id)target {
     self = [super init];
     if (self) {
-        _target = target;
-        _data = data;
-        _commitHandler = onCommit;
+        self.target = target;
         [NSNotificationCenter.defaultCenter
             addObserver:self selector:@selector(keyboardDidShow:)
             name:UIKeyboardDidShowNotification object:nil
@@ -121,9 +120,6 @@
 - (void)actionButtonPressed:(id)sender {
     // Subclasses can override
     [self.fieldEditorView endEditing:YES];
-    if (_commitHandler) {
-        _commitHandler();
-    }
 }
 
 - (void)exploreObjectOrPopViewController:(id)objectOrNil {

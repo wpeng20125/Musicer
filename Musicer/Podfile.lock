@@ -1,8 +1,11 @@
 PODS:
-  - FLEX (4.2.2)
+  - FLEX (4.1.1)
   - GCDWebServer/Core (3.5.4)
   - GCDWebServer/WebUploader (3.5.4):
     - GCDWebServer/Core
+  - Kingfisher (5.15.5):
+    - Kingfisher/Core (= 5.15.5)
+  - Kingfisher/Core (5.15.5)
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
@@ -14,6 +17,7 @@ PODS:
 DEPENDENCIES:
   - FLEX
   - GCDWebServer/WebUploader (~> 3.0)
+  - Kingfisher
   - NVActivityIndicatorView
   - R.swift
   - SnapKit (~> 5.0.1)
@@ -22,19 +26,21 @@ SPEC REPOS:
   trunk:
     - FLEX
     - GCDWebServer
+    - Kingfisher
     - NVActivityIndicatorView
     - R.swift
     - R.swift.Library
     - SnapKit
 
 SPEC CHECKSUMS:
-  FLEX: dbd68ae9c67fcc872c79c9e5a728f38243dfaa78
+  FLEX: 81096107977a09836eb440173010ceeef01105d6
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  Kingfisher: e3ec347a5ab8817b7585ef46923a2d2b9a7d8fbe
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   R.swift: 7c52cdc57a66840ffe6cbd8a823d732059d42a32
   R.swift.Library: 5ba4f1631300caf9a4d890186930da85d540769d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 3132cdd48461ad01d3ff1e0b4a8b452592e4c21c
+PODFILE CHECKSUM: 3e03829ab4fe74b74af048e4ba90eb9abd533e2e
 
 COCOAPODS: 1.9.3

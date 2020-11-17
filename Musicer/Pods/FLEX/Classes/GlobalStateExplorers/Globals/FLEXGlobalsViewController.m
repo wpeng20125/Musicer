@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 2014-05-03.
-//  Copyright (c) 2020 FLEX Team. All rights reserved.
+//  Copyright (c) 2020 Flipboard. All rights reserved.
 //
 
 #import "FLEXGlobalsViewController.h"
@@ -39,14 +39,14 @@
 
 + (NSString *)globalsTitleForSection:(FLEXGlobalsSectionKind)section {
     switch (section) {
-        case FLEXGlobalsSectionCustom:
-            return @"Custom Additions";
         case FLEXGlobalsSectionProcessAndEvents:
             return @"Process and Events";
         case FLEXGlobalsSectionAppShortcuts:
             return @"App Shortcuts";
         case FLEXGlobalsSectionMisc:
             return @"Miscellaneous";
+        case FLEXGlobalsSectionCustom:
+            return @"Custom Additions";
 
         default:
             @throw NSInternalInconsistencyException;
@@ -104,11 +104,11 @@
 }
 
 + (NSArray<FLEXGlobalsSection *> *)defaultGlobalSections {
-    static NSMutableArray<FLEXGlobalsSection *> *sections = nil;
+    static NSArray<FLEXGlobalsSection *> *sections = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSDictionary<NSNumber *, NSArray<FLEXGlobalsEntry *> *> *rowsBySection = @{
-            @(FLEXGlobalsSectionProcessAndEvents) : @[
+        NSArray *rowsBySection = @[
+            @[
                 [self globalsEntryForRow:FLEXGlobalsRowNetworkHistory],
                 [self globalsEntryForRow:FLEXGlobalsRowSystemLog],
                 [self globalsEntryForRow:FLEXGlobalsRowProcessInfo],
@@ -116,7 +116,7 @@
                 [self globalsEntryForRow:FLEXGlobalsRowAddressInspector],
                 [self globalsEntryForRow:FLEXGlobalsRowBrowseRuntime],
             ],
-            @(FLEXGlobalsSectionAppShortcuts) : @[
+            @[ // FLEXGlobalsSectionAppShortcuts
                 [self globalsEntryForRow:FLEXGlobalsRowBrowseBundle],
                 [self globalsEntryForRow:FLEXGlobalsRowBrowseContainer],
                 [self globalsEntryForRow:FLEXGlobalsRowMainBundle],
@@ -128,7 +128,7 @@
                 [self globalsEntryForRow:FLEXGlobalsRowRootViewController],
                 [self globalsEntryForRow:FLEXGlobalsRowCookies],
             ],
-            @(FLEXGlobalsSectionMisc) : @[
+            @[ // FLEXGlobalsSectionMisc
                 [self globalsEntryForRow:FLEXGlobalsRowPasteboard],
                 [self globalsEntryForRow:FLEXGlobalsRowMainScreen],
                 [self globalsEntryForRow:FLEXGlobalsRowCurrentDevice],
@@ -144,13 +144,12 @@
                 [self globalsEntryForRow:FLEXGlobalsRowMainThread],
                 [self globalsEntryForRow:FLEXGlobalsRowOperationQueue],
             ]
-        };
-
-        sections = [NSMutableArray array];
-        for (FLEXGlobalsSectionKind i = FLEXGlobalsSectionCustom + 1; i < FLEXGlobalsSectionCount; ++i) {
+        ];
+        
+        sections = [NSArray flex_forEachUpTo:rowsBySection.count map:^FLEXGlobalsSection *(NSUInteger i) {
             NSString *title = [self globalsTitleForSection:i];
-            [sections addObject:[FLEXGlobalsSection title:title rows:rowsBySection[@(i)]]];
-        }
+            return [FLEXGlobalsSection title:title rows:rowsBySection[i]];
+        }];
     });
     
     return sections;
@@ -165,7 +164,7 @@
     self.title = @"💪  FLEX";
     self.showsSearchBar = YES;
     self.searchBarDebounceInterval = kFLEXDebounceInstant;
-    self.navigationItem.backBarButtonItem = [UIBarButtonItem flex_backItemWithTitle:@"Back"];
+    self.navigationItem.backBarButtonItem = [UIBarButtonItem backItemWithTitle:@"Back"];
     
     _manuallyDeselectOnAppear = NSProcessInfo.processInfo.operatingSystemVersion.majorVersion < 10;
 }
@@ -181,7 +180,8 @@
 }
 
 - (NSArray<FLEXGlobalsSection *> *)makeSections {
-    NSMutableArray<FLEXGlobalsSection *> *sections = [NSMutableArray array];
+    NSArray *sections = [self.class defaultGlobalSections];
+    
     // Do we have custom sections to add?
     if (FLEXManager.sharedManager.userGlobalEntries.count) {
         NSString *title = [[self class] globalsTitleForSection:FLEXGlobalsSectionCustom];
@@ -189,11 +189,9 @@
             title:title
             rows:FLEXManager.sharedManager.userGlobalEntries
         ];
-        [sections addObject:custom];
+        sections = [sections arrayByAddingObject:custom];
     }
-
-    [sections addObjectsFromArray:[self.class defaultGlobalSections]];
-
+    
     return sections;
 }
 

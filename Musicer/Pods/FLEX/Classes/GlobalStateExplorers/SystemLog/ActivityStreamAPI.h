@@ -14,8 +14,6 @@
 #ifndef ActivityStreamSPI_h
 #define ActivityStreamSPI_h
 
-#include <Foundation/Foundation.h>
-
 #include <sys/time.h>
 // #include <xpc/xpc.h>
 

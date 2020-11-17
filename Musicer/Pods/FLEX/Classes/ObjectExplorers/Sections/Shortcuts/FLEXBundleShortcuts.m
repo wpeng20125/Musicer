@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 12/12/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXBundleShortcuts.h"
@@ -18,7 +18,6 @@
 #pragma mark Overrides
 
 + (instancetype)forObject:(NSBundle *)bundle {
-    __weak __typeof(self) weakSelf = self;
     return [self forObject:bundle additionalRows:@[
         [FLEXActionShortcut
             title:@"Browse Bundle Directory" subtitle:nil
@@ -31,10 +30,7 @@
         ],
         [FLEXActionShortcut title:@"Browse Bundle as Database…" subtitle:nil
             selectionHandler:^(UIViewController *host, NSBundle *bundle) {
-                __strong __typeof(self) strongSelf = weakSelf;
-                if (strongSelf) {
-                    [strongSelf promptToExportBundleAsDatabase:bundle host:host];
-                }
+                [self promptToExportBundleAsDatabase:bundle host:host];
             }
             accessoryType:^UITableViewCellAccessoryType(NSBundle *bundle) {
                 return UITableViewCellAccessoryDisclosureIndicator;
@@ -66,22 +62,22 @@
 
 + (void)browseBundleAsDatabase:(NSBundle *)bundle host:(UIViewController *)host name:(NSString *)name {
     NSParameterAssert(name.length);
-
+    
     UIAlertController *progress = [FLEXAlert makeAlert:^(FLEXAlert *make) {
         make.title(@"Generating Database");
         // Some iOS version glitch out of there is
         // no initial message and you add one later
         make.message(@"…");
     }];
-
+    
     [host presentViewController:progress animated:YES completion:^{
         // Generate path to store db
         NSString *path = [NSSearchPathForDirectoriesInDomains(
             NSLibraryDirectory, NSUserDomainMask, YES
         )[0] stringByAppendingPathComponent:name];
-
+        
         progress.message = [path stringByAppendingString:@"\n\nCreating database…"];
-
+        
         // Generate db and show progress
         [FLEXRuntimeExporter createRuntimeDatabaseAtPath:path
             forImages:@[bundle.executablePath]

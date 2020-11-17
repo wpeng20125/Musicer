@@ -23,27 +23,21 @@ class SongInfoCell: UITableViewCell {
     //MARK: -- private
     private lazy var iconView: UIImageView = {
        let icon = UIImageView()
-        
         return icon
     }()
     
     private lazy var titleLbl: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 15.0)
+        lbl.font = UIFont.systemFont(ofSize: 16.0)
         lbl.textColor = R.color.mu_color_white()
         return lbl
     }()
     
-    private lazy var bottomLine_dark: UIView = {
-       let line = UIView()
-        line.backgroundColor = R.color.mu_color_black()
-        return line
-    }()
-    
-    private lazy var bottomLine_light: UIView = {
-       let line = UIView()
-        line.backgroundColor = R.color.mu_color_gray_light()
-        return line
+    private lazy var authorLbl: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.systemFont(ofSize: 14.0)
+        lbl.textColor = R.color.mu_color_white()
+        return lbl
     }()
 }
 
@@ -76,25 +70,25 @@ fileprivate extension SongInfoCell {
         self.contentView.addSubview(self.titleLbl)
         self.titleLbl.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(20.0)
+            make.bottom.equalTo(self.contentView.snp.centerY).offset(-5.0)
             make.right.equalTo(self.contentView).offset(-20.0)
-            make.top.bottom.equalTo(self.contentView)
         }
         
-        self.contentView.addSubview(self.bottomLine_light)
-        self.bottomLine_light.snp.makeConstraints { (make) in
-            make.left.bottom.right.equalTo(self.contentView)
-            make.height.equalTo(1.0)
-        }
-        
-        self.contentView.addSubview(self.bottomLine_dark)
-        self.bottomLine_dark.snp.makeConstraints { (make) in
-            make.left.right.equalTo(self.contentView)
-            make.bottom.equalTo(self.bottomLine_light.snp.top)
-            make.height.equalTo(1.0)
+        self.contentView.addSubview(self.authorLbl)
+        self.authorLbl.snp.makeConstraints { (make) in
+            make.left.equalTo(self.iconView.snp.right).offset(20.0)
+            make.top.equalTo(self.contentView.snp.centerY).offset(5.0)
+            make.right.equalTo(self.contentView).offset(-20.0)
         }
     }
     
     func setData(_ song: Song) {
+        
+        self.iconView.image = song.authorPortrait.local
+        
+        self.titleLbl.text = song.name
+        
+        self.authorLbl.text = song.author
         
     }
 }

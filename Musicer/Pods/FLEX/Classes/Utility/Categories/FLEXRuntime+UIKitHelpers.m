@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 12/16/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXRuntime+UIKitHelpers.h"
@@ -91,11 +91,9 @@ FLEXObjectExplorerDefaultsImpl
     return [FLEXObjectExplorerFactory explorerViewControllerForObject:value];
 }
 
-- (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
+- (UIViewController *)editorWithTarget:(id)object {
     id target = [self appropriateTargetForPropertyType:object];
-    return [FLEXFieldEditorViewController target:target property:self commitHandler:^{
-        [section reloadData:YES];
-    }];
+    return [FLEXFieldEditorViewController target:target property:self];
 }
 
 - (UITableViewCellAccessoryType)suggestedAccessoryTypeWithTarget:(id)object {
@@ -158,7 +156,7 @@ FLEXObjectExplorerDefaultsImpl
     if (targetNotNil) {
         id value = [self currentValueBeforeUnboxingWithTarget:object];
         [items addObjectsFromArray:@[
-            @"Value Preview",         [self previewWithTarget:object] ?: @"",
+            @"Value Preview",         [self previewWithTarget:object],
             @"Value Address",         returnsObject ? [FLEXUtility addressOfObject:value] : @"",
         ]];
     }
@@ -228,11 +226,9 @@ FLEXObjectExplorerDefaultsImpl
     return [FLEXObjectExplorerFactory explorerViewControllerForObject:value];
 }
 
-- (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
+- (UIViewController *)editorWithTarget:(id)object {
     NSAssert(!object_isClass(object), @"Unreachable state: editing ivar on class object");
-    return [FLEXFieldEditorViewController target:object ivar:self commitHandler:^{
-        [section reloadData:YES];
-    }];
+    return [FLEXFieldEditorViewController target:object ivar:self];
 }
 
 - (UITableViewCellAccessoryType)suggestedAccessoryTypeWithTarget:(id)object {
@@ -346,7 +342,7 @@ FLEXObjectExplorerDefaultsImpl
     return nil;
 }
 
-- (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
+- (UIViewController *)editorWithTarget:(id)object {
     // Methods cannot be edited
     @throw NSInternalInconsistencyException;
     return nil;
@@ -445,9 +441,7 @@ FLEXObjectExplorerDefaultsImpl
     return [FLEXObjectExplorerFactory explorerViewControllerForObject:self];
 }
 
-- (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
-    // Protocols cannot be edited
-    @throw NSInternalInconsistencyException;
+- (UIViewController *)editorWithTarget:(id)object {
     return nil;
 }
 
@@ -468,7 +462,7 @@ FLEXObjectExplorerDefaultsImpl
     NSString *conformances = [conformanceNames componentsJoinedByString:@"\n"];
     return @[
         @"Name",         self.name ?: @"",
-        @"Conformances", conformances ?: @"",
+        @"Conformances", conformances,
     ];
 }
 
@@ -559,9 +553,7 @@ FLEXObjectExplorerDefaultsImpl
     return nil;
 }
 
-- (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
-    // Static metadata cannot be edited
-    @throw NSInternalInconsistencyException;
+- (UIViewController *)editorWithTarget:(id)object {
     return nil;
 }
 

@@ -65,7 +65,6 @@
 #import "FLEXShortcut.h"
 #import "FLEXShortcutsFactory+Defaults.h"
 #import "FLEXShortcutsSection.h"
-#import "FLEXUIAppShortcuts.h"
 #import "FLEXViewControllerShortcuts.h"
 #import "FLEXViewShortcuts.h"
 #import "FLEXArgumentInputColorView.h"

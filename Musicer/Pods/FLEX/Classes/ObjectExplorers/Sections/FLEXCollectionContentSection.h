@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 8/28/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXTableViewSection.h"
@@ -11,11 +11,7 @@
 @class FLEXCollectionContentSection, FLEXTableViewCell;
 @protocol FLEXCollection, FLEXMutableCollection;
 
-/// Any foundation collection implicitly conforms to FLEXCollection.
-/// This future should return one. We don't explicitly put FLEXCollection
-/// here because making generic collections conform to FLEXCollection breaks
-/// compile-time features of generic arrays, such as \c someArray[0].property
-typedef id<NSObject, NSFastEnumeration /* FLEXCollection */>(^FLEXCollectionContentFuture)(__kindof FLEXCollectionContentSection *section);
+typedef id<FLEXCollection>(^FLEXCollectionContentFuture)(__kindof FLEXCollectionContentSection *section);
 
 #pragma mark Collection
 /// A protocol that enables \c FLEXCollectionContentSection to operate on any arbitrary collection.
@@ -45,6 +41,18 @@ typedef id<NSObject, NSFastEnumeration /* FLEXCollection */>(^FLEXCollectionCont
 - (void)filterUsingPredicate:(NSPredicate *)predicate;
 @end
 
+@interface NSArray (FLEXCollection) <FLEXCollection> @end
+@interface NSSet (FLEXCollection) <FLEXCollection> @end
+@interface NSOrderedSet (FLEXCollection) <FLEXCollection> @end
+@interface NSDictionary (FLEXCollection) <FLEXCollection> @end
+
+@interface NSMutableArray (FLEXMutableCollection) <FLEXMutableCollection> @end
+@interface NSMutableSet (FLEXMutableCollection) <FLEXMutableCollection> @end
+@interface NSMutableOrderedSet (FLEXMutableCollection) <FLEXMutableCollection> @end
+@interface NSMutableDictionary (FLEXMutableCollection) <FLEXMutableCollection>
+- (void)filterUsingPredicate:(NSPredicate *)predicate;
+@end
+
 
 #pragma mark - FLEXCollectionContentSection
 /// A custom section for viewing collection elements.
@@ -60,7 +68,7 @@ typedef id<NSObject, NSFastEnumeration /* FLEXCollection */>(^FLEXCollectionCont
     id<FLEXCollection> _cachedCollection;
 }
 
-+ (instancetype)forCollection:(id)collection;
++ (instancetype)forCollection:(id<FLEXCollection>)collection;
 /// The future given should be safe to call more than once.
 /// The result of calling this future multiple times may yield
 /// different results each time if the data is changing by nature.
@@ -69,7 +77,7 @@ typedef id<NSObject, NSFastEnumeration /* FLEXCollection */>(^FLEXCollectionCont
 /// Defaults to \c NO
 @property (nonatomic) BOOL hideSectionTitle;
 /// Defaults to \c nil
-@property (nonatomic, copy) NSString *customTitle;
+@property (nonatomic) NSString *customTitle;
 /// Defaults to \c NO
 ///
 /// Settings this to \c NO will not display the element index for ordered collections.
@@ -86,8 +94,5 @@ typedef id<NSObject, NSFastEnumeration /* FLEXCollection */>(^FLEXCollectionCont
 /// Get the object in the collection associated with the given row.
 /// For dictionaries, this returns the value, not the key.
 - (ObjectType)objectForRow:(NSInteger)row;
-
-/// Subclasses may override.
-- (UITableViewCellAccessoryType)accessoryTypeForRow:(NSInteger)row;
 
 @end

@@ -18,6 +18,8 @@ class SongsManager: NSObject {
      歌曲文件的存储目录
      */
     var folder: String? { self.createPath() }
+    
+    
 }
 
 fileprivate extension SongsManager {

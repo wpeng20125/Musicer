@@ -3,12 +3,10 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 8/29/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXShortcutsSection.h"
-
-@interface FLEXShortcutsFactory (UIApplication) @end
 
 @interface FLEXShortcutsFactory (Views) @end
 

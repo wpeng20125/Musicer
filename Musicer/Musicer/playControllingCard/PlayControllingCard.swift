@@ -47,17 +47,17 @@ class PlayControllingCard: UIView {
     /**
      播放
      */
-    func play() { self.delegate?.playControllingCard(self, playingStateChanged: .playing) }
+    func play() { self.startPlay() }
     
     /**
      暂停播放
      */
-    func pause() { self.delegate?.playControllingCard(self, playingStateChanged: .pause) }
+    func pause() { self.pausePlay() }
     
     /**
      停止播放
      */
-    func stop() { self.delegate?.playControllingCard(self, playingStateChanged: .defaulty) }
+    func stop() { self.stopPlay() }
     
     /**
      显示控制卡片
@@ -285,12 +285,11 @@ fileprivate extension PlayControllingCard {
         case .play:
             if self.playingState == .defaulty || self.playingState == .pause  {
                 self.playingState = .playing
-                CATransaction.setCompletionBlock { self.startPlayingAnimation() }
+                CATransaction.setCompletionBlock { self.play() }
             }else {
                 self.playingState = .pause
-                CATransaction.setCompletionBlock { self.stopPlayingAnimation() }
+                CATransaction.setCompletionBlock { self.pause() }
             }
-            self.delegate?.playControllingCard(self, playingStateChanged: self.playingState)
         case .next:
             self.delegate?.playControllingCardPlayNextSong(self)
         case .last:
@@ -320,6 +319,21 @@ fileprivate extension PlayControllingCard {
 //MARK: --  animations
 fileprivate extension PlayControllingCard {
     
+    func startPlay() {
+        self.startPlayingAnimation()
+        self.delegate?.playControllingCard(self, playingStateChanged: .playing)
+    }
+    
+    func pausePlay() {
+        self.pausePlayingAnimation()
+        self.delegate?.playControllingCard(self, playingStateChanged: .pause)
+    }
+    
+    func stopPlay() {
+        self.stopPlayingAnimation()
+        self.delegate?.playControllingCard(self, playingStateChanged: .defaulty)
+    }
+    
     func showCard(_ show: Bool) {
         if (show && self.isShowing) || (!show && !self.isShowing) { return }
         self.isShowing = show
@@ -337,7 +351,12 @@ fileprivate extension PlayControllingCard {
         animation.fromValue = 0
         animation.toValue = Double.pi * 2
         animation.repeatCount = MAXFLOAT
+        animation.isRemovedOnCompletion = false
         self.playBtn.layer.add(animation, forKey: "kClockwiseRotationAnimationKey")
+    }
+    
+    func pausePlayingAnimation() {
+        
     }
     
     func stopPlayingAnimation() {

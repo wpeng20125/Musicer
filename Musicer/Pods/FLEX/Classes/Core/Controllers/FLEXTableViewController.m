@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner on 7/5/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXTableViewController.h"
@@ -224,10 +224,10 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
     
     _shareToolbarItem = FLEXBarButtonItemSystem(Action, self, @selector(shareButtonPressed:));
     _bookmarksToolbarItem = [UIBarButtonItem
-        flex_itemWithImage:FLEXResources.bookmarksIcon target:self action:@selector(showBookmarks)
+        itemWithImage:FLEXResources.bookmarksIcon target:self action:@selector(showBookmarks)
     ];
     _openTabsToolbarItem = [UIBarButtonItem
-        flex_itemWithImage:FLEXResources.openTabsIcon target:self action:@selector(showTabSwitcher)
+        itemWithImage:FLEXResources.openTabsIcon target:self action:@selector(showTabSwitcher)
     ];
     
     self.leftmostToolbarItem = UIBarButtonItem.flex_fixedSpace;

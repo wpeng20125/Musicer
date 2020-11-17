@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 12/10/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXShortcut.h"
@@ -104,9 +104,9 @@
     return [self.metadata viewerWithTarget:object];
 }
 
-- (UIViewController *)editorWith:(id)object forSection:(FLEXTableViewSection *)section {
+- (UIViewController *)editorWith:(id)object {
     NSAssert(self.metadataKind, @"Static titles cannot be edited");
-    return [self.metadata editorWithTarget:object section:section];
+    return [self.metadata editorWithTarget:object];
 }
 
 - (UITableViewCellAccessoryType)accessoryTypeWith:(id)object {

@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 8/29/19.
-//  Copyright © 2020 FLEX Team. All rights reserved.
+//  Copyright © 2019 Flipboard. All rights reserved.
 //
 
 #import "FLEXShortcutsFactory+Defaults.h"
@@ -11,36 +11,11 @@
 #import "FLEXRuntimeUtility.h"
 #import "NSObject+FLEX_Reflection.h"
 
-#pragma mark - UIApplication
-
-@implementation FLEXShortcutsFactory (UIApplication)
-
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
-    // sharedApplication class property possibly not added
-    // as a literal class property until iOS 10
-    FLEXRuntimeUtilityTryAddObjectProperty(
-        2, sharedApplication, UIApplication.flex_metaclass, UIApplication, PropertyKey(ReadOnly)
-    );
-    
-    self.append.classProperties(@[@"sharedApplication"]).forClass(UIApplication.flex_metaclass);
-    self.append.properties(@[
-        @"delegate", @"keyWindow", @"windows"
-    ]).forClass(UIApplication.class);
-
-    if (@available(iOS 13, *)) {
-        self.append.properties(@[
-            @"connectedScenes", @"openSessions", @"supportsMultipleScenes"
-        ]).forClass(UIApplication.class);
-    }
-}
-
-@end
-
 #pragma mark - Views
 
 @implementation FLEXShortcutsFactory (Views)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     // A quirk of UIView and some other classes: a lot of the `@property`s are
     // not actually properties from the perspective of the runtime.
     //
@@ -131,7 +106,7 @@
 
 @implementation FLEXShortcutsFactory (ViewControllers)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     // toolbarItems is not really a property, make it one 
     FLEXRuntimeUtilityTryAddObjectProperty(3, toolbarItems, UIViewController.class, NSArray);
     
@@ -151,7 +126,7 @@
 
 @implementation FLEXShortcutsFactory (UIImage)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     self.append.methods(@[
         @"CGImage", @"CIImage"
     ]).properties(@[
@@ -160,7 +135,7 @@
     ]).forClass(UIImage.class);
 
     if (@available(iOS 13, *)) {
-        self.append.properties(@[@"symbolImage"]).forClass(UIImage.class);
+        self.append.properties(@[@"symbolImage"]);
     }
 }
 
@@ -171,7 +146,7 @@
 
 @implementation FLEXShortcutsFactory (NSBundle)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     self.append.properties(@[
         @"bundleIdentifier", @"principalClass",
         @"infoDictionary", @"bundlePath",
@@ -186,7 +161,7 @@
 
 @implementation FLEXShortcutsFactory (Classes)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     self.append.classMethods(@[@"new", @"alloc"]).forClass(NSObject.flex_metaclass);
 }
 
@@ -197,7 +172,7 @@
 
 @implementation FLEXShortcutsFactory (Activities)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     // Property was added in iOS 10 but we want it on iOS 9 too
     FLEXRuntimeUtilityTryAddNonatomicProperty(9, item, UIActivityItemProvider.class, id, PropertyKey(ReadOnly));
     
@@ -217,7 +192,7 @@
 
 @implementation FLEXShortcutsFactory (Blocks)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     self.append.methods(@[@"invoke"]).forClass(NSClassFromString(@"NSBlock"));
 }
 
@@ -227,7 +202,7 @@
 
 @implementation FLEXShortcutsFactory (Foundation)
 
-+ (void)load { FLEX_EXIT_IF_NO_CTORS()
++ (void)load { FLEX_EXIT_IF_TESTING()
     self.append.properties(@[
         @"configuration", @"delegate", @"delegateQueue", @"sessionDescription",
     ]).methods(@[
@@ -262,6 +237,24 @@
     self.append.classProperties(@[
         @"defaultTimeZone", @"systemTimeZone", @"localTimeZone"
     ]).forClass(NSTimeZone.class);
+    
+    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
+//    
+//    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
+//    
+//    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
+//    
+//    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
+//    
+//    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
+//    
+//    
+//    self.append.<#type#>(@[@"<#value#>"]).forClass(NSURLSession.class);
 }
 
 @end

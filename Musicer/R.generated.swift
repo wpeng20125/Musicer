@@ -267,7 +267,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 50 images.
+  /// This `R.image` struct is generated, and contains static references to 51 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
@@ -291,6 +291,8 @@ struct R: Rswift.Validatable {
     static let mu_image_play_squence = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_squence")
     /// Image `mu_image_play`.
     static let mu_image_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play")
+    /// Image `mu_image_portrait_placeholder`.
+    static let mu_image_portrait_placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_portrait_placeholder")
     /// Image `mu_image_song_share`.
     static let mu_image_song_share = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_share")
     /// Image `mu_image_songs_add`.
@@ -444,6 +446,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_play_squence", bundle: ..., traitCollection: ...)`
     static func mu_image_play_squence(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_play_squence, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_portrait_placeholder", bundle: ..., traitCollection: ...)`
+    static func mu_image_portrait_placeholder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_portrait_placeholder, compatibleWith: traitCollection)
     }
     #endif
 

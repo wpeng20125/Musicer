@@ -68,11 +68,9 @@ static Class RLMRealmClass = nil;
 
 - (NSArray<NSString *> *)queryAllTables {
     // Map each schema to its name
-    NSArray<NSString *> *tableNames = [self.realm.schema.objectSchema flex_mapped:^id(RLMObjectSchema *schema, NSUInteger idx) {
+    return [self.realm.schema.objectSchema flex_mapped:^id(RLMObjectSchema *schema, NSUInteger idx) {
         return schema.className ?: nil;
     }];
-
-    return [tableNames sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 - (NSArray<NSString *> *)queryAllColumnsOfTable:(NSString *)tableName {

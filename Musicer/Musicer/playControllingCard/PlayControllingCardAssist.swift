@@ -103,6 +103,7 @@ fileprivate extension PlayControllingCardAssist {
         animationGroup.duration = 0.5
         animationGroup.autoreverses = true
         animationGroup.repeatCount = MAXFLOAT
+        animationGroup.isRemovedOnCompletion = false
         
         return animationGroup
     }
