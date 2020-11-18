@@ -105,6 +105,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_squence(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -114,6 +115,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_last(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -121,8 +123,9 @@ class PlayControllingCard: UIView {
         let btn = UIButton(type: .custom)
         btn.tag = ButtonTag.play.rawValue
         btn.adjustsImageWhenHighlighted = false
-        btn.setImage(R.image.mu_image_play(), for: .normal)
+        btn.setBackgroundImage(R.image.mu_image_play(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -132,6 +135,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_play_next(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -141,6 +145,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_current(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -150,6 +155,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_all(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -159,6 +165,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_folder_favourite(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
     
@@ -168,6 +175,7 @@ class PlayControllingCard: UIView {
         btn.adjustsImageWhenHighlighted = false
         btn.setImage(R.image.mu_image_songs_add(), for: .normal)
         btn.addTarget(self, action: #selector(click(atButton:)), for: .touchUpInside)
+        btn.expand(5.0, 5.0, 5.0, 5.0)
         return btn
     }()
 }
@@ -203,7 +211,7 @@ fileprivate extension PlayControllingCard {
         self.playBtn.snp.makeConstraints { (make) in
             make.top.equalTo(self.progressView.snp.bottom).offset(25.0)
             make.centerX.equalTo(self.bgView)
-            make.size.equalTo(ButtonSize)
+            make.size.equalTo(CGSize(width: ButtonSize.width + 5.0, height: ButtonSize.height + 5.0))
         }
         
         self.bgView.addSubview(self.modeBtn)
@@ -270,7 +278,7 @@ fileprivate extension PlayControllingCard {
     
     var zoomAnimation: CABasicAnimation {
         let zoom = CABasicAnimation(keyPath: "transform.scale")
-        zoom.duration = 0.09
+        zoom.duration = 0.1
         zoom.fromValue = 1.0
         zoom.toValue = 0.7
         zoom.autoreverses = true
@@ -281,14 +289,15 @@ fileprivate extension PlayControllingCard {
     //MARK: -- playing controlling button action
     @objc func click(atButton sender: UIButton) {
         guard let tag = ButtonTag(rawValue: sender.tag) else { return }
+        if tag != .play {
+            sender.layer.add(self.zoomAnimation, forKey: "kZoomAniamtionKey")
+        }
         switch tag {
         case .play:
             if self.playingState == .defaulty || self.playingState == .pause  {
-                self.playingState = .playing
-                CATransaction.setCompletionBlock { self.play() }
+                self.play()
             }else {
-                self.playingState = .pause
-                CATransaction.setCompletionBlock { self.pause() }
+                self.pause()
             }
         case .next:
             self.delegate?.playControllingCardPlayNextSong(self)
@@ -307,7 +316,6 @@ fileprivate extension PlayControllingCard {
             self.modeBtn.setImage(self.modeMaps[self.playingMode]?.img, for: .normal)
             self.delegate?.playControllingCard(self, playingModeChanged: self.playingMode)
         }
-        sender.layer.add(self.zoomAnimation, forKey: "kZoomAniamtionKey")
     }
     
     //MARK: -- swip gesture
@@ -320,16 +328,19 @@ fileprivate extension PlayControllingCard {
 fileprivate extension PlayControllingCard {
     
     func startPlay() {
+        self.playingState = .playing
         self.startPlayingAnimation()
         self.delegate?.playControllingCard(self, playingStateChanged: .playing)
     }
     
     func pausePlay() {
+        self.playingState = .pause
         self.pausePlayingAnimation()
         self.delegate?.playControllingCard(self, playingStateChanged: .pause)
     }
     
     func stopPlay() {
+        self.playingState = .defaulty
         self.stopPlayingAnimation()
         self.delegate?.playControllingCard(self, playingStateChanged: .defaulty)
     }
@@ -346,17 +357,29 @@ fileprivate extension PlayControllingCard {
     }
     
     func startPlayingAnimation() {
-        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-        animation.duration = 5
-        animation.fromValue = 0
-        animation.toValue = Double.pi * 2
-        animation.repeatCount = MAXFLOAT
-        animation.isRemovedOnCompletion = false
-        self.playBtn.layer.add(animation, forKey: "kClockwiseRotationAnimationKey")
+        guard nil != self.playBtn.layer.animation(forKey: "kClockwiseRotationAnimationKey") else {
+            let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+            animation.duration = 3
+            animation.fromValue = 0
+            animation.toValue = Double.pi * 2
+            animation.repeatCount = MAXFLOAT
+            animation.isRemovedOnCompletion = false
+            self.playBtn.layer.add(animation, forKey: "kClockwiseRotationAnimationKey")
+            return
+        }
+        let pausedTime = self.playBtn.layer.timeOffset
+        self.playBtn.layer.speed = 1.0
+        self.playBtn.layer.timeOffset = 0
+        self.playBtn.layer.beginTime = 0
+        self.playBtn.layer.beginTime = self.playBtn.layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
     }
     
     func pausePlayingAnimation() {
-        
+        guard nil != self.playBtn.layer.animation(forKey: "kClockwiseRotationAnimationKey") else { return }
+        guard 0 != self.playBtn.layer.speed else { return }
+        let pausedTime = self.playBtn.layer.convertTime(CACurrentMediaTime(), from: nil)
+        self.playBtn.layer.speed = 0
+        self.playBtn.layer.timeOffset = pausedTime
     }
     
     func stopPlayingAnimation() {
