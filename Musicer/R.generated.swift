@@ -275,8 +275,6 @@ struct R: Rswift.Validatable {
     static let mu_image_control_pull = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_control_pull")
     /// Image `mu_image_play_last`.
     static let mu_image_play_last = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_last")
-    /// Image `mu_image_play_list_loop`.
-    static let mu_image_play_list_loop = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_list_loop")
     /// Image `mu_image_play_mode_headset`.
     static let mu_image_play_mode_headset = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_mode_headset")
     /// Image `mu_image_play_mode_speaker`.
@@ -287,6 +285,8 @@ struct R: Rswift.Validatable {
     static let mu_image_play_random = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_random")
     /// Image `mu_image_play_single_loop`.
     static let mu_image_play_single_loop = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_single_loop")
+    /// Image `mu_image_play_squence_loop`.
+    static let mu_image_play_squence_loop = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_squence_loop")
     /// Image `mu_image_play_squence`.
     static let mu_image_play_squence = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_squence")
     /// Image `mu_image_play`.
@@ -401,13 +401,6 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_list_loop", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_list_loop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_list_loop, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_play_mode_headset", bundle: ..., traitCollection: ...)`
     static func mu_image_play_mode_headset(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_play_mode_headset, compatibleWith: traitCollection)
@@ -446,6 +439,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_play_squence", bundle: ..., traitCollection: ...)`
     static func mu_image_play_squence(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_play_squence, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_play_squence_loop", bundle: ..., traitCollection: ...)`
+    static func mu_image_play_squence_loop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_play_squence_loop, compatibleWith: traitCollection)
     }
     #endif
 

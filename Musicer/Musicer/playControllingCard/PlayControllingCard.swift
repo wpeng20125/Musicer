@@ -75,7 +75,7 @@ class PlayControllingCard: UIView {
     func setProgress(_ progress: Float) { self.progressView.setProgress(progress, animated: true) }
     
     //MARK: -- private
-    fileprivate let ButtonSize = CGSize(width: 30.0, height: 30.0)
+    fileprivate let ButtonSize = CGSize(width: 35.0, height: 35.0)
     fileprivate var isShowing: Bool = false
     fileprivate var playingMode: PlayingMode = .squence
     fileprivate var playingState: PlayingState = .defaulty
@@ -190,6 +190,7 @@ fileprivate extension PlayControllingCard {
         swip.direction = .down
         card.addGestureRecognizer(swip)
         card.setupSubViews()
+        card.addNotification()
         return card
     }
     
@@ -206,7 +207,7 @@ fileprivate extension PlayControllingCard {
             make.centerX.equalTo(self.bgView)
             make.width.equalTo(ScreenWidth - 30.0 * 2)
         }
-    
+        
         self.bgView.addSubview(self.playBtn)
         self.playBtn.snp.makeConstraints { (make) in
             make.top.equalTo(self.progressView.snp.bottom).offset(25.0)
@@ -218,7 +219,7 @@ fileprivate extension PlayControllingCard {
         self.modeBtn.snp.makeConstraints { (make) in
             make.centerY.equalTo(self.playBtn)
             make.centerX.equalTo(self.progressView.snp.leading)
-            make.size.equalTo(CGSize(width: ButtonSize.width + 5.0, height: ButtonSize.height + 5.0))
+            make.size.equalTo(CGSize(width: ButtonSize.width, height: ButtonSize.height))
         }
         
         self.bgView.addSubview(self.currentListBtn)
@@ -264,40 +265,49 @@ fileprivate extension PlayControllingCard {
             make.size.equalTo(ButtonSize)
         }
     }
+    
+    func addNotification() {
+        NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: OperationQueue.main) { (noti) in
+            if self.playingState == .playing { self.pausePlayingAnimation() }
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: OperationQueue.main) { (noti) in
+            if self.playingState == .playing { self.startPlayingAnimation() }
+        }
+    }
+    
+    
+    
 }
 
 //MARK: -- Actions
 fileprivate extension PlayControllingCard {
     
-    var modeMaps: [PlayingMode : (mode: PlayingMode, img: UIImage?)] {
-        return [PlayingMode.squence : (PlayingMode.squenceLoop, R.image.mu_image_play_list_loop()),
-                PlayingMode.squenceLoop : (PlayingMode.random, R.image.mu_image_play_random()),
-                PlayingMode.random : (PlayingMode.singleLoop, R.image.mu_image_play_single_loop()),
-                PlayingMode.singleLoop : (PlayingMode.squence, R.image.mu_image_play_squence())]
-    }
-    
-    var zoomAnimation: CABasicAnimation {
-        let zoom = CABasicAnimation(keyPath: "transform.scale")
-        zoom.duration = 0.1
-        zoom.fromValue = 1.0
-        zoom.toValue = 0.7
-        zoom.autoreverses = true
-        zoom.isRemovedOnCompletion = true
-        return zoom
+    var modeMaps: [PlayingMode : (mode: PlayingMode, img: UIImage?, tip: String)] {
+        return [PlayingMode.squence : (PlayingMode.squenceLoop, R.image.mu_image_play_squence_loop(), "列表循环"),
+                PlayingMode.squenceLoop : (PlayingMode.random, R.image.mu_image_play_random(), "随机播放"),
+                PlayingMode.random : (PlayingMode.singleLoop, R.image.mu_image_play_single_loop(), "单曲循环"),
+                PlayingMode.singleLoop : (PlayingMode.squence, R.image.mu_image_play_squence(), "列表播放")]
     }
     
     //MARK: -- playing controlling button action
     @objc func click(atButton sender: UIButton) {
         guard let tag = ButtonTag(rawValue: sender.tag) else { return }
         if tag != .play {
-            sender.layer.add(self.zoomAnimation, forKey: "kZoomAniamtionKey")
+            let zoom = CABasicAnimation(keyPath: "transform.scale")
+            zoom.duration = 0.1
+            zoom.fromValue = 1.0
+            zoom.toValue = 0.7
+            zoom.autoreverses = true
+            zoom.isRemovedOnCompletion = true
+            sender.layer.add(zoom, forKey: "kZoomAniamtionKey")
         }
         switch tag {
         case .play:
-            if self.playingState == .defaulty || self.playingState == .pause  {
-                self.play()
-            }else {
+            if self.playingState == .playing  {
                 self.pause()
+            }else {
+                self.play()
             }
         case .next:
             self.delegate?.playControllingCardPlayNextSong(self)
@@ -312,8 +322,11 @@ fileprivate extension PlayControllingCard {
         case .favourite:
             self.delegate?.playControllingCardFavouriteThisSong(self)
         case .mode:
-            self.playingMode = self.modeMaps[self.playingMode]?.mode ?? .squence
+            if let msg = self.modeMaps[self.playingMode]?.tip {
+                Toaster.flash(withText: msg, backgroundColor: R.color.mu_color_orange_dark())
+            }
             self.modeBtn.setImage(self.modeMaps[self.playingMode]?.img, for: .normal)
+            self.playingMode = self.modeMaps[self.playingMode]?.mode ?? .squence
             self.delegate?.playControllingCard(self, playingModeChanged: self.playingMode)
         }
     }

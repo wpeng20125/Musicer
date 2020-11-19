@@ -7,6 +7,11 @@
 
 import UIKit
 
+typealias SongName = String
+typealias SongNameList = [SongName]
+typealias SongListName = String
+typealias SongListNameList = [SongListName]
+
 class SongsManager: NSObject {
     
     /**
@@ -15,9 +20,17 @@ class SongsManager: NSObject {
     static let `default` = SongsManager()
     
     /**
+     歌曲列表名称的列表，列表中的每一个值都对应着一个用户创建的列表实体
+     */
+    
+    
+    
+    //MARK: -- private
+    
+    /**
      歌曲文件的存储目录
      */
-    var folder: String? { self.createPath() }
+    private lazy var folder: String? = { self.createPath() }()
     
     
 }

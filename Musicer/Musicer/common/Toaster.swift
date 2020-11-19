@@ -20,14 +20,15 @@ fileprivate let kTipTextInset: CGFloat = 2.5
 
 class Toaster: NSObject {
         
-    static func flash(withText text: String) {
-        self.make()
+    static func flash(withText text: String, backgroundColor color: UIColor? = R.color.mu_color_gray_dark()) {
+        guard text.count > 0 else { return }
+        self.make(withBackgroundColor: color)
         self.makeTipToast(withText: text)
         self.show(comlete: { DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) { self.hide() } })
     }
     
-    static func showLoading() {
-        self.make()
+    static func showLoading(withBackgroundColor color: UIColor? = R.color.mu_color_gray_dark()) {
+        self.make(withBackgroundColor: color)
         self.makeLoading()
         self.show(comlete: { self.startAnimation() })
     }
@@ -40,7 +41,7 @@ class Toaster: NSObject {
 
 fileprivate extension Toaster {
     
-    static  func make() {
+    static  func make(withBackgroundColor color: UIColor?) {
         let backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight))
         backgroundView.backgroundColor = R.color.mu_color_clear()
         backgroundView.tag = kBackgroundViewTag
@@ -50,7 +51,7 @@ fileprivate extension Toaster {
         let x = (ScreenWidth - kCustomBackgroundViewW) / 2
         let y = (ScreenHeight - kCustomBackgroundViewH) / 2
         let customBackgroundView = UIView(frame: CGRect(x: x, y: y, width: kCustomBackgroundViewW, height: kCustomBackgroundViewH))
-        customBackgroundView.backgroundColor = R.color.mu_color_gray_dark()
+        customBackgroundView.backgroundColor = color
         customBackgroundView.layer.cornerRadius = 10.0
         customBackgroundView.layer.masksToBounds = true
         customBackgroundView.tag = kCustomBackgroundViewTag
@@ -126,27 +127,24 @@ fileprivate extension Toaster {
 fileprivate extension Toaster {
     
     static func makeLoading() {
-        guard let ground = UIApplication.shared.keyWindow?.viewWithTag(kBackgroundViewTag) else { return }
-        ground.backgroundColor = R.color.mu_color_black_with_alpha()
         
-        guard let customBackgroundView = UIApplication.shared.keyWindow?.viewWithTag(kCustomBackgroundViewTag) else { return }
-        customBackgroundView.backgroundColor = R.color.mu_color_clear()
+        guard let customBgView = UIApplication.shared.keyWindow?.viewWithTag(kCustomBackgroundViewTag) else { return }
         
         let imgView_one = UIImageView()
         imgView_one.image = R.image.mu_image_toast_loading_2()
-        imgView_one.x = (customBackgroundView.w - 50.0) / 2
-        imgView_one.y = (customBackgroundView.h - 50.0) / 2
+        imgView_one.x = (customBgView.w - 50.0) / 2
+        imgView_one.y = (customBgView.h - 50.0) / 2
         imgView_one.size = CGSize(width: 50.0, height: 50.0)
         imgView_one.tag = kLoadingImageViewTagOne
-        customBackgroundView.addSubview(imgView_one)
+        customBgView.addSubview(imgView_one)
         
         let imgView_two = UIImageView()
         imgView_two.image = R.image.mu_image_toast_loading_1()
-        imgView_two.x = (customBackgroundView.w - 70.0) / 2
-        imgView_two.y = (customBackgroundView.h - 70.0) / 2
+        imgView_two.x = (customBgView.w - 70.0) / 2
+        imgView_two.y = (customBgView.h - 70.0) / 2
         imgView_two.size = CGSize(width: 70.0, height: 70.0)
         imgView_two.tag = kLoadingImageViewTagTwo
-        customBackgroundView.addSubview(imgView_two)
+        customBgView.addSubview(imgView_two)
     }
     
     static func startAnimation() {

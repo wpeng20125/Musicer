@@ -8,9 +8,9 @@
 import UIKit
 
 protocol SongsTableDelegate: NSObjectProtocol {
-    
     func songsTable(_ table: SongsTable, didSelectSong song: Song)
 }
+
 extension SongsTableDelegate {
     func songsTable(_ table: SongsTable, didSelectSong song: Song) { }
 }
