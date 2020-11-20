@@ -24,3 +24,21 @@ let SafeAreaInsetBottom = HasSafeArea.has ? HasSafeArea.inset.bottom : 0
 let SafeAreaInsetTop = HasSafeArea.has ? HasSafeArea.inset.top : 0
 let TitleBarHeight = HasSafeArea.has ? (HasSafeArea.inset.top + 44.0) : 64.0
 let TabBarHeight = HasSafeArea.has ? (HasSafeArea.inset.bottom + 49.0) : 49.0
+
+
+
+
+
+
+func ffprint<T>(_ msg: T, _ file: String = #file, _ line:Int = #line, _ method: String = #function) {
+    #if DEBUG
+    print("""
+*************************************** Print Start ***************************************
+ File : \((file as NSString).lastPathComponent)
+ Line : \(line)
+ Func : \(method)
+ Info : \(msg)
+*************************************** Print End *****************************************\n\n
+""")
+    #endif
+}

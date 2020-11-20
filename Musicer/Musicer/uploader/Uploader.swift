@@ -16,9 +16,9 @@ class Uploader: NSObject {
         case some(desc: String)
     }
     
-    func connect()->UploaderError { return self._connect() }
+    func connect()->UploaderError { return self.f_connect() }
     
-    func disconnect() { self._disconnect() }
+    func disconnect() { self.f_disconnect() }
     
     //MARK: -- private
     fileprivate var server: GCDWebUploader?
@@ -26,8 +26,8 @@ class Uploader: NSObject {
 
 fileprivate extension Uploader {
     
-    func _connect()->UploaderError {
-        guard let wrappedPath = SongsManager.default.folder else {
+    func f_connect()->UploaderError {
+        guard let wrappedPath = SongsManager.shared.baseFolder else {
             return UploaderError.some(desc: "文件目录创建失败，请退出重试")
         }
         let unwrappedServer: GCDWebUploader? = GCDWebUploader(uploadDirectory: wrappedPath)
@@ -43,10 +43,11 @@ fileprivate extension Uploader {
             return UploaderError.some(desc: "服务器地址获取失败，请退出重试")
         }
         self.server = wrappedServer
+        ffprint(address)
         return UploaderError.none(info: address)
     }
     
-    func _disconnect() {
+    func f_disconnect() {
         guard let wrappedServer = self.server else { return }
         wrappedServer.stop()
         self.server = nil
@@ -56,7 +57,7 @@ fileprivate extension Uploader {
 extension Uploader: GCDWebUploaderDelegate {
     
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
-        print(path)
+        ffprint(path)
     }
     
     /*TODO：

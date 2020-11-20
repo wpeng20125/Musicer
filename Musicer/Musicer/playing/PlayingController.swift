@@ -63,6 +63,7 @@ fileprivate extension PlayingController {
 fileprivate extension PlayingController {
     
     func loadData() {
+        ffprint("正在加载本地歌曲文件")
         Toaster.showLoading()
         var songs = [Song]()
         for i in 0..<20 {
@@ -73,6 +74,7 @@ fileprivate extension PlayingController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             Toaster.hideLoading()
             self.table.reload(songs)
+            ffprint("本地歌曲文件加载完毕")
         }
     }
 }
