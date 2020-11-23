@@ -22,6 +22,11 @@ typealias SongListDictionary = [SongListName : SongNameArray]
 class SongsManager: NSObject {
     
     /**
+     是否需要将数据更新到本地，只有在数据发生改变的时候才要更新
+     */
+    private(set) var shouldUpdateLocal: Bool = false
+    
+    /**
      歌曲文件的存储目录
      */
     private(set) lazy var baseFolder: String? = { self.base_folder() }()
@@ -45,7 +50,12 @@ class SongsManager: NSObject {
     /**
      返回的是一个单例，这个类进行歌曲的管理
      */
-    static let shared = SongsManager()
+    static let shared = SongsManager.init_self()
+    
+    /**
+     更新本地存储，会把该单例类持有的3个表更新到本地
+     */
+    func save() { self.save_to_local() }
     
     /**
      创建一个歌曲列表
@@ -85,6 +95,12 @@ class SongsManager: NSObject {
 
 fileprivate extension SongsManager {
     
+    static func init_self()->SongsManager {
+        let manager = SongsManager()
+        manager.addNotifications()
+        return manager
+    }
+    
     func base_folder()->String? {
         let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
         guard let wrappedDoc = unwrappedDoc else { return nil }
@@ -111,7 +127,11 @@ fileprivate extension SongsManager {
     
     func fetch_song_name_list()->SongListNameArray? {
         let unwrappedListNames =  UserDefaults.standard.array(forKey: k_song_list_name_array_local_storage_key)
-        guard let wrappedListNames = unwrappedListNames else { return nil }
+        guard let wrappedListNames = unwrappedListNames else {
+            self.shouldUpdateLocal = true
+            let def = [k_total_song_list_name]
+            return def
+        }
         return wrappedListNames as? SongListNameArray
     }
     
@@ -122,15 +142,60 @@ fileprivate extension SongsManager {
     }
     
     func creat_song_list(_ name: SongListName)->Bool {
-        true
+        self.shouldUpdateLocal = true
+        guard nil != self.songListNames else {
+            self.shouldUpdateLocal = false
+            return false
+        }
+        self.songListNames!.append(name)
+        guard nil != self.listMap else {
+            self.shouldUpdateLocal = false
+            self.songListNames!.removeLast()
+            return false
+        }
+        
+        return true
     }
     
     func add_song(_ songName: SongName, _ listName: SongListName)->Bool {
-        false
+        self.shouldUpdateLocal = true
+        
+        return false
     }
     
     func delete_song(_ songName:SongName, _ listName: SongListName)->Bool {
-        false
+        self.shouldUpdateLocal = true
+        
+        return false
     }
     
+    func save_to_local() {
+        guard self.shouldUpdateLocal else { return }
+        self.shouldUpdateLocal = false
+        UserDefaults.standard.setValue(self.songNames, forKey: k_total_song_name_array_local_storage_key)
+        UserDefaults.standard.setValue(self.songListNames, forKey: k_song_list_name_array_local_storage_key)
+        UserDefaults.standard.setValue(self.listMap, forKey: k_song_list_dictionary_local_storage_key)
+    }
+}
+
+fileprivate extension SongsManager {
+    
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(appDidEnterBackground(_:)),
+                                               name: UIApplication.didEnterBackgroundNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(appDidEnterBackground(_:)),
+                                               name: UIApplication.willTerminateNotification,
+                                               object: nil)
+    }
+    
+    @objc func appDidEnterBackground(_ noti: NSNotification) {
+        self.save_to_local()
+    }
+    
+    @objc func appWillTerminate(_ noti: NSNotification) {
+        self.save_to_local()
+    }
 }
