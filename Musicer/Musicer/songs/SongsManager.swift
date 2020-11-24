@@ -7,11 +7,13 @@
 
 import UIKit
 
-fileprivate let k_total_song_list_name = "全部歌曲"
+fileprivate let k_song_list_limit_count = 10
 fileprivate let k_total_song_name_array_local_storage_key = "k_total_song_name_array_local_storage_key"
 fileprivate let k_song_list_name_array_local_storage_key = "k_song_list_name_array_local_storage_key"
 fileprivate let k_song_list_dictionary_local_storage_key = "k_song_list_dictionary_local_storage_key"
 
+let k_total_song_list_name = "全部歌曲"
+let k_liked_song_list_name = "我喜欢的"
 
 typealias SongName = String
 typealias SongNameArray = [SongName]
@@ -21,10 +23,16 @@ typealias SongListDictionary = [SongListName : SongNameArray]
 
 class SongsManager: NSObject {
     
+    //MARK: -- public
+    enum Error {
+        case none(info: String)
+        case some(desc: String)
+    }
+    
     /**
      是否需要将数据更新到本地，只有在数据发生改变的时候才要更新
      */
-    private(set) var shouldUpdateLocal: Bool = false
+    private var shouldUpdateLocal: Bool = false
     
     /**
      歌曲文件的存储目录
@@ -34,7 +42,7 @@ class SongsManager: NSObject {
     /**
      所有歌曲文件的名称列表
      */
-    private(set) lazy var songNames: SongNameArray? = { self.fetch_song_names() }()
+    private(set) lazy var totalSongNames: SongNameArray? = { self.fetch_song_names() }()
     
     /**
      歌曲列表名称的列表，列表中的每一个值都对应着一个用户创建的列表实体
@@ -63,15 +71,7 @@ class SongsManager: NSObject {
      @param name  歌曲列表名称
      @return  布尔值代表创建列表是否成功
      */
-    func creatList(withName name: SongListName)->Bool { self.creat_song_list(name) }
-    
-    /**
-     上传完一首歌曲需要把歌曲名加到全部歌曲的列表
-     
-     @param   songName  歌曲名
-     @return    布尔值代表添加是否成功
-     */
-    func addSong(withName songName: SongName)->Bool { self.add_song(songName, k_total_song_list_name) }
+    func creatList(withName name: SongListName)->Error { self.creat_song_list(name) }
     
     /**
      往一个歌曲列表中添加歌曲
@@ -80,7 +80,7 @@ class SongsManager: NSObject {
      @param  listName  要添加到的歌曲列表的名称
      @return  布尔值代表添加是否成功
      */
-    func addSong(withName songName: SongName, toList listName: SongListName)->Bool { self.add_song(songName, listName) }
+    func add(song aSong: Song, toList listName: SongListName)->Error { self.add_song(aSong, listName) }
     
     /**
      从一个歌曲列表中删除某一首歌曲
@@ -89,7 +89,7 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
-    func deleteSong(withName songName: SongName, fromList listName: SongListName)->Bool { false }
+    func delete(song aSong: Song, fromList listName: SongListName)->Error { self.delete_song(aSong, listName) }
 }
 
 
@@ -129,50 +129,89 @@ fileprivate extension SongsManager {
         let unwrappedListNames =  UserDefaults.standard.array(forKey: k_song_list_name_array_local_storage_key)
         guard let wrappedListNames = unwrappedListNames else {
             self.shouldUpdateLocal = true
-            let def = [k_total_song_list_name]
-            return def
+            return [k_total_song_list_name, k_liked_song_list_name]
         }
         return wrappedListNames as? SongListNameArray
     }
     
     func fetch_song_list_map()->SongListDictionary? {
-        let unwrappedListMap = UserDefaults.standard.dictionary(forKey: k_song_list_dictionary_local_storage_key)
-        guard let wrappedListMap = unwrappedListMap else { return nil }
+        let unwrappedListMap = UserDefaults.standard.object(forKey: k_song_list_dictionary_local_storage_key)
+        guard let wrappedListMap = unwrappedListMap else {
+            self.shouldUpdateLocal = true
+            return [k_total_song_list_name : [SongName](), k_liked_song_list_name : [SongName]()]
+        }
         return wrappedListMap as? SongListDictionary
     }
     
-    func creat_song_list(_ name: SongListName)->Bool {
-        self.shouldUpdateLocal = true
-        guard nil != self.songListNames else {
-            self.shouldUpdateLocal = false
-            return false
+    func creat_song_list(_ name: SongListName)->Error {
+        if nil == self.songListNames {
+            self.songListNames = [k_total_song_list_name, k_liked_song_list_name]
+        }else {
+            if self.songListNames!.count > 10 { return Error.some(desc: "最多创建10个列表") }
         }
+        var has = false
+        for existName in self.songListNames! {
+            if existName != name { continue }
+            has = true
+            break
+        }
+        if has { return Error.some(desc: "列表已存在") }
         self.songListNames!.append(name)
-        guard nil != self.listMap else {
-            self.shouldUpdateLocal = false
-            self.songListNames!.removeLast()
-            return false
+        
+        if nil == self.listMap {
+            self.listMap = [k_total_song_list_name : [SongName](), k_liked_song_list_name : [SongName]()]
         }
+        self.listMap![name] = [SongName]()
         
-        return true
+        self.shouldUpdateLocal = true
+        return Error.none(info: "歌曲列表创建成功")
     }
     
-    func add_song(_ songName: SongName, _ listName: SongListName)->Bool {
-        self.shouldUpdateLocal = true
+    func add_song(_ song: Song, _ listName: SongListName)->Error {
+        if nil == self.songListNames || nil == self.listMap { return Error.some(desc: "歌曲列表不存在") }
+        var has = false
+        for name in self.songListNames! {
+            if name != listName { continue }
+            has = true
+        }
+        if !has { return Error.some(desc: "歌曲列表不存在") }
         
-        return false
+        guard var wrappedSongNames = self.listMap![listName] else {
+            self.listMap![listName] = [song.name]
+            return Error.none(info: "歌曲添加列表成功")
+        }
+        wrappedSongNames.append(song.name)
+        self.listMap![listName] = wrappedSongNames
+        
+        self.shouldUpdateLocal = true
+        return Error.none(info: "歌曲添加列表成功")
     }
     
-    func delete_song(_ songName:SongName, _ listName: SongListName)->Bool {
+    func delete_song(_ song: Song, _ listName: SongListName)->Error {
+        let alert = UIAlertController(title: "WARNING", message: "是否将本地歌曲文件一并删除！", preferredStyle: .alert)
+        let delFile = UIAlertAction(title: "同时删除文件", style: .destructive) { (action) in
+            
+        }
+        let delReference = UIAlertAction(title: "仅从列表删除", style: .destructive) { (action) in
+            let songNames = self.listMap![listName]
+            let newSongNames = songNames!.filter { $0 != song.name }
+            self.listMap![listName] = newSongNames
+        }
+        alert.addAction(delFile)
+        alert.addAction(delReference)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         self.shouldUpdateLocal = true
+        return Error.none(info: "歌曲删除成功")
+    }
+    
+    func delete_song(_ song: Song,  _ delFile: Bool, _ listName: SongListName)->Error {
         
-        return false
     }
     
     func save_to_local() {
         guard self.shouldUpdateLocal else { return }
         self.shouldUpdateLocal = false
-        UserDefaults.standard.setValue(self.songNames, forKey: k_total_song_name_array_local_storage_key)
+        UserDefaults.standard.setValue(self.totalSongNames, forKey: k_total_song_name_array_local_storage_key)
         UserDefaults.standard.setValue(self.songListNames, forKey: k_song_list_name_array_local_storage_key)
         UserDefaults.standard.setValue(self.listMap, forKey: k_song_list_dictionary_local_storage_key)
     }

@@ -8,7 +8,8 @@
 import UIKit
 
 struct Song {
-    var name: String?
+    var name: String
+    var format: String
     var author: String?
     var authorPortrait: (local: UIImage, remote: String?)
     var album: (local: UIImage, remote: String?)

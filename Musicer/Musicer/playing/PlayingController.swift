@@ -68,7 +68,7 @@ fileprivate extension PlayingController {
         var songs = [Song]()
         for i in 0..<20 {
             let title = "这是第 -- \(i+1) -- 首歌曲"
-            let song = Song(name: title, author: "汪峰", authorPortrait: (R.image.mu_image_portrait_placeholder()!, nil), album: (R.image.mu_image_portrait_placeholder()!, nil))
+            let song = Song(name: title, format: "mp3", author: "汪峰", authorPortrait: (R.image.mu_image_portrait_placeholder()!, nil), album: (R.image.mu_image_portrait_placeholder()!, nil))
             songs.append(song)
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
