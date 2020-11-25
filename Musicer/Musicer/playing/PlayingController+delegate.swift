@@ -40,7 +40,8 @@ extension PlayingController:
     }
     
     func playControllingCardUploadSongs(_ card: PlayControllingCard) {
-        
+        let uploader = UploadController()
+        self.present(uploader, animated: true, completion: nil)
     }
     
     func playControllingCardShowAllList(_ card: PlayControllingCard) {
@@ -82,6 +83,6 @@ extension PlayingController:
     
     //MARK: -- SongsTableDelegate
     func songsTable(_ table: SongsTable, didSelectSong song: Song) {
-        self.card.play()
+        
     }
 }

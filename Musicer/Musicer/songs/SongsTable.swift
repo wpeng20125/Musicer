@@ -32,8 +32,7 @@ class SongsTable: UIView {
      */
     func reload(_ songs: [Song]) {
         self.songs = songs
-        let set = IndexSet(0..<songs.count)
-        self.tableView.insertSections(set, with: .fade)
+        self.tableView.reloadData()
     }
     
     

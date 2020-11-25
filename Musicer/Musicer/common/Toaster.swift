@@ -27,7 +27,7 @@ class Toaster: NSObject {
         self.show(comlete: { DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) { self.hide() } })
     }
     
-    static func showLoading(withBackgroundColor color: UIColor? = R.color.mu_color_gray_dark()) {
+    static func showLoading(withBackgroundColor color: UIColor? = R.color.mu_color_clear()) {
         self.make(withBackgroundColor: color)
         self.makeLoading()
         self.show(comlete: { self.startAnimation() })

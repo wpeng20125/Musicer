@@ -11,7 +11,7 @@ class UploadController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Toaster.showLoading()
+        Toaster.showLoading(withBackgroundColor: R.color.mu_color_gray_dark())
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { self.connect() }
     }
     
