@@ -76,9 +76,9 @@ fileprivate class Server: GCDWebUploader {
         let server: Server? = Server(uploadDirectory: path)
         server?.allowedFileExtensions = ["mp3"]
         server?.title = "Hello Musicer"
-        server?.prologue = "<p>FBI WARNING：创建文件夹、移动及删除歌曲 已经被禁止使用，请知悉！</p>"
-        server?.epilogue = "<p>Some epilogue</p>"
-        server?.footer = "Thank you for your support！"
+        server?.prologue = "<p>⚠️ 创建文件夹、移动及删除歌曲 已经被禁止使用，请知悉！<br>⚠️ 仅支持 mp3 格式的音乐文件</p>"
+        server?.epilogue = "<p>Thanks for your support！</p>"
+        server?.footer = "*************** 🇨🇳🌏🇨🇳 ***************"
         return server
     }
     

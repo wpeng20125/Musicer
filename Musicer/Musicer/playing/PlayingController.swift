@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class PlayingController: UIViewController {
 
@@ -76,5 +77,10 @@ fileprivate extension PlayingController {
             self.table.reload(songs)
             ffprint("本地歌曲文件加载完毕")
         }
+        
+        let path = Bundle.main.path(forResource: "那英 - 雾里看花", ofType: ".mp3")
+        let asset = AVAsset(url: URL(fileURLWithPath: path!))
+        
+        
     }
 }
