@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum MUError {
+    case none(info: String)
+    case some(desc: String)
+}
+
 let ScreenWidth = UIScreen.main.bounds.size.width
 let ScreenHeight = UIScreen.main.bounds.size.height
 
@@ -24,9 +29,6 @@ let SafeAreaInsetBottom = HasSafeArea.has ? HasSafeArea.inset.bottom : 0
 let SafeAreaInsetTop = HasSafeArea.has ? HasSafeArea.inset.top : 0
 let TitleBarHeight = HasSafeArea.has ? (HasSafeArea.inset.top + 44.0) : 64.0
 let TabBarHeight = HasSafeArea.has ? (HasSafeArea.inset.bottom + 49.0) : 49.0
-
-
-
 
 
 

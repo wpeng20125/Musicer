@@ -10,13 +10,7 @@ import GCDWebServer
 
 class Uploader: NSObject {
     
-    //MARK: -- public
-    enum Error {
-        case none(info: String)
-        case some(desc: String)
-    }
-    
-    func connect()->Error { return self.f_connect() }
+    func connect()->MUError { return self.f_connect() }
     
     func disconnect() { self.f_disconnect() }
     
@@ -26,24 +20,24 @@ class Uploader: NSObject {
 
 fileprivate extension Uploader {
     
-    func f_connect()->Error {
+    func f_connect()->MUError {
         guard let wrappedPath = SongsManager.shared.baseFolder else {
-            return Error.some(desc: "文件目录创建失败，请退出重试")
+            return MUError.some(desc: "文件目录创建失败，请退出重试")
         }
         self.server = Server.server(withPath: wrappedPath)
         guard let wrappedServer = self.server else {
-            return Error.some(desc: "服务器初始化失败，请退出重试")
+            return MUError.some(desc: "服务器初始化失败，请退出重试")
         }
         wrappedServer.delegate = self
         let port = UInt.random(in: 8000...8999)
         if !wrappedServer.start(withPort: port, bonjourName: "") {
-            return Error.some(desc: "服务器启动失败，请退出重试")
+            return MUError.some(desc: "服务器启动失败，请退出重试")
         }
         guard let address = wrappedServer.serverURL?.absoluteString else {
-            return Error.some(desc: "服务器地址获取失败，请退出重试")
+            return MUError.some(desc: "服务器地址获取失败，请退出重试")
         }
         ffprint(address)
-        return Error.none(info: address)
+        return MUError.none(info: address)
     }
     
     func f_disconnect() {

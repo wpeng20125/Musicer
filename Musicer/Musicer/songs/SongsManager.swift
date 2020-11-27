@@ -24,13 +24,7 @@ typealias SongListDictionary = [SongListName : SongNameArray]
 
 class SongsManager: NSObject {
     
-    //MARK: -- public
-    enum FFError {
-        case none(info: String)
-        case some(desc: String)
-    }
-    
-    typealias ComplateHandler = (FFError)->Void
+    typealias ComplateHandler = (MUError)->Void
     
     /**
      是否需要将数据更新到本地，只有在数据发生改变的时候才要更新
@@ -75,7 +69,7 @@ class SongsManager: NSObject {
      @param name  歌曲列表名称
      @return  布尔值代表创建列表是否成功
      */
-    func creat(songList name: SongListName)->FFError { self.creat_song_list(name) }
+    func creat(songList name: SongListName)->MUError { self.creat_song_list(name) }
     
     /**
      往一个歌曲列表中添加歌曲
@@ -84,7 +78,7 @@ class SongsManager: NSObject {
      @param  listName  要添加到的歌曲列表的名称
      @return  布尔值代表添加是否成功
      */
-    func add(song name: SongName, toList list: SongListName)->FFError { self.add_song(name, list) }
+    func add(song name: SongName, toList list: SongListName)->MUError { self.add_song(name, list) }
     
     /**
      从一个歌曲列表中删除某一首歌曲
@@ -93,7 +87,7 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
-    func delete(song name: SongName, fromList list: SongListName)->FFError { self.delete_song(name, false, list) }
+    func delete(song name: SongName, fromList list: SongListName)->MUError { self.delete_song(name, false, list) }
     
     /**
      从一个歌曲列表中删除某一首歌曲
@@ -103,7 +97,7 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
-    func delete(song name: SongName, withFile delFile: Bool, fromList list: SongListName)->FFError {
+    func delete(song name: SongName, withFile delFile: Bool, fromList list: SongListName)->MUError {
         self.delete_song(name, delFile, list)
     }
 }
@@ -158,11 +152,11 @@ fileprivate extension SongsManager {
         return wrappedListMap
     }
     
-    func creat_song_list(_ name: SongListName)->FFError {
+    func creat_song_list(_ name: SongListName)->MUError {
         if nil == self.songListNames {
             self.songListNames = [k_total_song_list_name, k_liked_song_list_name]
         }else {
-            if self.songListNames!.count >= 10 { return FFError.some(desc: "最多创建10个列表") }
+            if self.songListNames!.count >= 10 { return MUError.some(desc: "最多创建10个列表") }
         }
         var has = false
         for existName in self.songListNames! {
@@ -170,7 +164,7 @@ fileprivate extension SongsManager {
             has = true
             break
         }
-        if has { return FFError.some(desc: "列表已存在") }
+        if has { return MUError.some(desc: "列表已存在") }
         self.songListNames!.append(name)
         
         if nil == self.listMap {
@@ -179,33 +173,33 @@ fileprivate extension SongsManager {
         self.listMap![name] = [SongName]()
         
         self.shouldUpdateLocal = true
-        return FFError.none(info: "歌曲列表创建成功")
+        return MUError.none(info: "歌曲列表创建成功")
     }
     
-    func add_song(_ song: SongName, _ listName: SongListName)->FFError {
-        if nil == self.songListNames || nil == self.listMap { return FFError.some(desc: "歌曲列表不存在") }
+    func add_song(_ song: SongName, _ listName: SongListName)->MUError {
+        if nil == self.songListNames || nil == self.listMap { return MUError.some(desc: "歌曲列表不存在") }
         var has = false
         for name in self.songListNames! {
             if name != listName { continue }
             has = true
             break
         }
-        if !has { return FFError.some(desc: "歌曲列表不存在") }
+        if !has { return MUError.some(desc: "歌曲列表不存在") }
         
         guard var wrappedSongNames = self.listMap![listName] else {
             self.listMap![listName] = [song]
-            return FFError.none(info: "歌曲添加列表成功")
+            return MUError.none(info: "歌曲添加列表成功")
         }
         wrappedSongNames.append(song)
         self.listMap![listName] = wrappedSongNames
         
         self.shouldUpdateLocal = true
-        return FFError.none(info: "歌曲添加列表成功")
+        return MUError.none(info: "歌曲添加列表成功")
     }
     
-    func delete_song(_ song: SongName, _ delFile: Bool, _ listName: SongListName)->FFError {
+    func delete_song(_ song: SongName, _ delFile: Bool, _ listName: SongListName)->MUError {
         if delFile {
-            guard let folder = self.baseFolder else { return FFError.some(desc: "文件目录损坏") }
+            guard let folder = self.baseFolder else { return MUError.some(desc: "文件目录损坏") }
             let path = folder + "/" + "\(song)" + "." + "mp3"
             do {
                 try FileManager.default.removeItem(atPath: path)
@@ -215,7 +209,7 @@ fileprivate extension SongsManager {
                     self.listMap![listName] = newSongNames
                 }
             } catch _ {
-                return FFError.some(desc: "歌曲文件删除失败")
+                return MUError.some(desc: "歌曲文件删除失败")
             }
         }else {
             let songNames = self.listMap![listName]
@@ -223,7 +217,7 @@ fileprivate extension SongsManager {
             self.listMap![listName] = newSongNames
         }
         self.shouldUpdateLocal = true
-        return FFError.none(info: "歌曲删除成功")
+        return MUError.none(info: "歌曲删除成功")
     }
     
     func save_to_local() {

@@ -104,7 +104,7 @@ fileprivate extension UploadController {
     }
     
     func connect() {
-        let error: Uploader.Error = self.uploader.connect()
+        let error: MUError = self.uploader.connect()
         switch error {
         case let .none(info): self.addressLbl.text = info
         case let .some(desc): Toaster.flash(withText: desc)
