@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 fileprivate let k_song_list_limit_count = 10
 fileprivate let k_total_song_name_array_local_storage_key = "k_total_song_name_array_local_storage_key"
@@ -66,7 +67,7 @@ class SongsManager: NSObject {
     /**
      更新本地存储，会把该单例类持有的3个表更新到本地
      */
-    func save() { self.save_to_local() }
+    func updateToLocal() { self.save_to_local() }
     
     /**
      创建一个歌曲列表
@@ -74,7 +75,7 @@ class SongsManager: NSObject {
      @param name  歌曲列表名称
      @return  布尔值代表创建列表是否成功
      */
-    func creatList(withName name: SongListName)->FFError { self.creat_song_list(name) }
+    func creat(songList name: SongListName)->FFError { self.creat_song_list(name) }
     
     /**
      往一个歌曲列表中添加歌曲
@@ -83,7 +84,7 @@ class SongsManager: NSObject {
      @param  listName  要添加到的歌曲列表的名称
      @return  布尔值代表添加是否成功
      */
-    func add(song aSong: Song, toList listName: SongListName)->FFError { self.add_song(aSong, listName) }
+    func add(song name: SongName, toList list: SongListName)->FFError { self.add_song(name, list) }
     
     /**
      从一个歌曲列表中删除某一首歌曲
@@ -92,7 +93,7 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
-    func delete(song aSong: Song, fromList listName: SongListName)->FFError { self.delete_song(aSong, false, listName) }
+    func delete(song name: SongName, fromList list: SongListName)->FFError { self.delete_song(name, false, list) }
     
     /**
      从一个歌曲列表中删除某一首歌曲
@@ -102,11 +103,10 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
-    func delete(song aSong: Song, withFile delFile: Bool, fromList listName: SongListName)->FFError {
-        self.delete_song(aSong, delFile, listName)
+    func delete(song name: SongName, withFile delFile: Bool, fromList list: SongListName)->FFError {
+        self.delete_song(name, delFile, list)
     }
 }
-
 
 fileprivate extension SongsManager {
     
@@ -136,26 +136,26 @@ fileprivate extension SongsManager {
     
     func fetch_song_names()->SongNameArray? {
         let unwrappedSongNames = UserDefaults.standard.array(forKey: k_total_song_name_array_local_storage_key)
-        guard let wrappedSongNames = unwrappedSongNames else { return nil }
-        return wrappedSongNames as? SongNameArray
+        guard let wrappedSongNames = (unwrappedSongNames as? SongNameArray) else { return nil }
+        return wrappedSongNames
     }
     
     func fetch_song_name_list()->SongListNameArray? {
         let unwrappedListNames =  UserDefaults.standard.array(forKey: k_song_list_name_array_local_storage_key)
-        guard let wrappedListNames = unwrappedListNames else {
+        guard let wrappedListNames = (unwrappedListNames as? SongListNameArray) else {
             self.shouldUpdateLocal = true
             return [k_total_song_list_name, k_liked_song_list_name]
         }
-        return wrappedListNames as? SongListNameArray
+        return wrappedListNames
     }
     
     func fetch_song_list_map()->SongListDictionary? {
         let unwrappedListMap = UserDefaults.standard.object(forKey: k_song_list_dictionary_local_storage_key)
-        guard let wrappedListMap = unwrappedListMap else {
+        guard let wrappedListMap = (unwrappedListMap as? SongListDictionary) else {
             self.shouldUpdateLocal = true
             return [k_total_song_list_name : [SongName](), k_liked_song_list_name : [SongName]()]
         }
-        return wrappedListMap as? SongListDictionary
+        return wrappedListMap
     }
     
     func creat_song_list(_ name: SongListName)->FFError {
@@ -182,35 +182,36 @@ fileprivate extension SongsManager {
         return FFError.none(info: "歌曲列表创建成功")
     }
     
-    func add_song(_ song: Song, _ listName: SongListName)->FFError {
+    func add_song(_ song: SongName, _ listName: SongListName)->FFError {
         if nil == self.songListNames || nil == self.listMap { return FFError.some(desc: "歌曲列表不存在") }
         var has = false
         for name in self.songListNames! {
             if name != listName { continue }
             has = true
+            break
         }
         if !has { return FFError.some(desc: "歌曲列表不存在") }
         
         guard var wrappedSongNames = self.listMap![listName] else {
-            self.listMap![listName] = [song.name]
+            self.listMap![listName] = [song]
             return FFError.none(info: "歌曲添加列表成功")
         }
-        wrappedSongNames.append(song.name)
+        wrappedSongNames.append(song)
         self.listMap![listName] = wrappedSongNames
         
         self.shouldUpdateLocal = true
         return FFError.none(info: "歌曲添加列表成功")
     }
     
-    func delete_song(_ song: Song, _ delFile: Bool, _ listName: SongListName)->FFError {
+    func delete_song(_ song: SongName, _ delFile: Bool, _ listName: SongListName)->FFError {
         if delFile {
             guard let folder = self.baseFolder else { return FFError.some(desc: "文件目录损坏") }
-            let path = folder + "/" + "\(song.name)" + "." + "\(song.format)"
+            let path = folder + "/" + "\(song)" + "." + "mp3"
             do {
                 try FileManager.default.removeItem(atPath: path)
                 for name in self.songListNames! {
                     let songNames = self.listMap![name]
-                    let newSongNames = songNames!.filter { $0 != song.name }
+                    let newSongNames = songNames!.filter { $0 != song }
                     self.listMap![listName] = newSongNames
                 }
             } catch _ {
@@ -218,7 +219,7 @@ fileprivate extension SongsManager {
             }
         }else {
             let songNames = self.listMap![listName]
-            let newSongNames = songNames!.filter { $0 != song.name }
+            let newSongNames = songNames!.filter { $0 != song }
             self.listMap![listName] = newSongNames
         }
         self.shouldUpdateLocal = true
@@ -253,5 +254,26 @@ fileprivate extension SongsManager {
     
     @objc func appWillTerminate(_ noti: NSNotification) {
         self.save_to_local()
+    }
+}
+
+
+extension SongsManager {
+    
+    func map(_ songNames: [SongName])->[Song]? {
+        var songs: [Song] = [Song]()
+        
+        return nil
+    }
+    
+    func assets(_ songNames: [SongName])->[AVAsset]? {
+        guard let wrappedBaseFolder = self.baseFolder else { return nil }
+        var assets: [AVAsset] = [AVAsset]()
+        for songName in songNames {
+            let path = wrappedBaseFolder + "/" + songName + ".mp3"
+            let asset = AVAsset(url: URL(fileURLWithPath: path))
+            assets.append(asset)
+        }
+        return assets
     }
 }

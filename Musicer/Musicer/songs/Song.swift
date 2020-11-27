@@ -11,6 +11,7 @@ struct Song {
     var name: String
     var format: String
     var author: String?
+    var duration: Float
     var authorPortrait: (local: UIImage, remote: String?)
     var album: (local: UIImage, remote: String?)
 }
