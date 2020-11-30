@@ -69,7 +69,7 @@ fileprivate extension PlayingController {
         var songs = [Song]()
         for i in 0..<20 {
             let title = "这是第 -- \(i+1) -- 首歌曲"
-            let song = Song(name: title, format: "mp3", author: "汪峰", duration: 10, authorPortrait: (R.image.mu_image_portrait_placeholder()!, nil), album: (R.image.mu_image_portrait_placeholder()!, nil))
+            let song = Song(name: title, fileName: "", author: "汪峰", duration: 10, album: ("", R.image.mu_image_portrait_placeholder()!))
             songs.append(song)
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
@@ -78,64 +78,12 @@ fileprivate extension PlayingController {
             ffprint("本地歌曲文件加载完毕")
         }
         
-        let path = Bundle.main.path(forResource: "那英 - 雾里看花", ofType: ".mp3")
-        let asset = AVAsset(url: URL(fileURLWithPath: path!))
-        let avi = asset.availableMetadataFormats
-        ffprint(avi)
-        let items = asset.metadata(forFormat: avi.first!)
-        for item in items {
-            print(item.identifier)
+        
+        let names = ["那英 - 雾里看花","那英 - 默","汪峰 - 旅途","汪峰 - 沧浪之歌","汪峰 - 像个孩子"]
+        SongsManager.shared.map(names) { (songs) in
+            print(songs)
         }
-        let keys = ["commonMetadata","duration","playable"]
-        asset.loadValuesAsynchronously(forKeys: keys) {
-            var error: NSError? = nil
-            let status = asset.statusOfValue(forKey: "commonMetadata", error: &error)
-            switch status {
-            case .unknown:
-                print("commonMetadata unknown")
-            case .loading:
-                print("commonMetadata loading")
-            case .loaded:
-                print("commonMetadata loaded")
-            case .failed:
-                print("commonMetadata failed")
-            case.cancelled:
-                print("commonMetadata cancelled")
-            default:
-                print("commonMetadata cancelled")
-            }
-            
-            let playableStatus = asset.statusOfValue(forKey: "playable", error: &error)
-            switch playableStatus {
-            case .unknown:
-                print("playable unknown")
-            case .loading:
-                print("playable loading")
-            case .loaded:
-                print("playable loaded")
-            case .failed:
-                print("playable failed")
-            case.cancelled:
-                print("playable cancelled")
-            default:
-                print("playable cancelled")
-            }
-            
-            let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
-            switch durationStatus {
-            case .unknown:
-                print("duration unknown")
-            case .loading:
-                print("duration loading")
-            case .loaded:
-                print("duration loaded")
-            case .failed:
-                print("duration failed")
-            case.cancelled:
-                print("duration cancelled")
-            default:
-                print("duration cancelled")
-            }
-        }
+        
+        
     }
 }

@@ -254,20 +254,70 @@ fileprivate extension SongsManager {
 
 extension SongsManager {
     
-    func map(_ songNames: [SongName])->[Song]? {
-        var songs: [Song] = [Song]()
-        
-        return nil
+    func map(_ songNames: [SongName], _ complete: @escaping ([Song]?)->Void) {
+        var songMap: [SongName : Song] = Dictionary()
+        guard let wrappedAssets = self.getAssetTuples(songNames) else { return }
+        let group = DispatchGroup()
+        let keys = ["duration", "commonMetadata"]
+        for tuple in wrappedAssets {
+            group.enter()
+            tuple.asset.loadValuesAsynchronously(forKeys: keys) {
+                if let song = self.getSong(withAsset: tuple.asset, tuple.songName) { songMap[tuple.songName] = song }
+                group.leave()
+            }
+        }
+        group.notify(qos: .default, flags: [], queue: .main) {
+            var songs: [Song] = [Song]()
+            for songName in songNames {
+                if let song = songMap[songName] { songs.append(song) }
+            }
+            complete(songs)
+        }
     }
     
-    func assets(_ songNames: [SongName])->[AVAsset]? {
+    func getAssetTuples(_ songNames: [SongName])->[(songName: SongName,asset: AVAsset)]? {
         guard let wrappedBaseFolder = self.baseFolder else { return nil }
-        var assets: [AVAsset] = [AVAsset]()
+        var assets = Array<(SongName,AVAsset)>()
         for songName in songNames {
-            let path = wrappedBaseFolder + "/" + songName + ".mp3"
+            var path = wrappedBaseFolder + "/" + songName + ".mp3"
+            #if DEBUG
+            path = Bundle.main.path(forResource: songName, ofType: ".mp3")!
+            #endif
             let asset = AVAsset(url: URL(fileURLWithPath: path))
-            assets.append(asset)
+            assets.append((songName,asset))
         }
         return assets
     }
+    
+    func getSong(withAsset asset: AVAsset, _ fileName: String)->Song? {
+        var error: NSError?
+        var t: Float = 0
+        let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
+        switch durationStatus {
+        case .loaded: t = Float(asset.duration.value) / Float(asset.duration.timescale)
+        default: return nil
+        }
+        
+        var items = [AVMetadataItem]()
+        let metaDataStatus = asset.statusOfValue(forKey: "commonMetadata", error: &error)
+        switch metaDataStatus {
+        case .loaded: items = asset.commonMetadata
+        default: return nil
+        }
+        
+        var song = Song(fileName: fileName)
+        song.duration = t
+        for item in items {
+            if item.commonKey?.rawValue == "title" { song.name = item.stringValue }
+            if item.commonKey?.rawValue == "artist" { song.author = item.stringValue }
+            if item.commonKey?.rawValue == "albumName" { song.album.name = item.stringValue }
+            if item.commonKey?.rawValue == "artwork" {
+                var img: UIImage? = nil
+                if let data = item.dataValue { img = UIImage(data: data) }
+                song.album.local = img
+            }
+        }
+        return song
+    }
+    
 }
