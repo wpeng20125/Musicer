@@ -43,7 +43,7 @@ class SongInfoCell: UITableViewCell {
 
 fileprivate extension SongInfoCell {
     
-    static var identifier: String { "k_cell_reuseable_identifier" }
+    static var identifier: String { "k_song_info_cell_reuseable_identifier" }
     
     static func cell(_ table: UITableView)->SongInfoCell {
         guard let wrappedCell = table.dequeueReusableCell(withIdentifier: identifier) else {

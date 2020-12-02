@@ -7,12 +7,14 @@
 
 import UIKit
 
-class UploadController: UIViewController {
+class UploadController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Toaster.showLoading(withBackgroundColor: R.color.mu_color_gray_dark())
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) { self.connect() }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            self.connect()
+        }
     }
     
     override func viewDidLoad() {
@@ -125,17 +127,18 @@ fileprivate extension UploadController {
 extension UploadController: TitleBarDelegate, TitleBarDataSource {
     
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
-        if case .left = p { return nil }
         let property = ItemProperty()
-        if case ItemPosition.middle = p {
+        switch p {
+        case .left: return nil
+        case .middle:
             property.title = "WiFi传歌"
             property.titleColor = R.color.mu_color_white()
             property.fontSize = 15.0
-        }
-        if case ItemPosition.right = p {
+            return property
+        case .right:
             property.image = R.image.mu_image_upload_close()
+            return property
         }
-        return property
     }
     
     func itemDidClick(atPosition p: ItemPosition) {

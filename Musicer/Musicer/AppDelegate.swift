@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = PlayingController()
+        self.window?.rootViewController = BaseNavigationController(rootViewController: PlayingController())
         self.window?.makeKeyAndVisible()
         
         return true

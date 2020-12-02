@@ -267,12 +267,24 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 51 images.
+  /// This `R.image` struct is generated, and contains static references to 67 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
+    /// Image `mu_image_add`.
+    static let mu_image_add = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_add")
+    /// Image `mu_image_arrow_down`.
+    static let mu_image_arrow_down = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_down")
+    /// Image `mu_image_arrow_left`.
+    static let mu_image_arrow_left = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_left")
+    /// Image `mu_image_arrow_right`.
+    static let mu_image_arrow_right = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_right")
+    /// Image `mu_image_arrow_up`.
+    static let mu_image_arrow_up = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_up")
     /// Image `mu_image_control_pull`.
     static let mu_image_control_pull = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_control_pull")
+    /// Image `mu_image_nav_back`.
+    static let mu_image_nav_back = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_back")
     /// Image `mu_image_play_last`.
     static let mu_image_play_last = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_last")
     /// Image `mu_image_play_mode_headset`.
@@ -303,6 +315,26 @@ struct R: Rswift.Validatable {
     static let mu_image_songs_folder_current = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_current")
     /// Image `mu_image_songs_folder_favourite`.
     static let mu_image_songs_folder_favourite = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_favourite")
+    /// Image `mu_image_songs_folder_icon_all`.
+    static let mu_image_songs_folder_icon_all = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_all")
+    /// Image `mu_image_songs_folder_icon_custom_1`.
+    static let mu_image_songs_folder_icon_custom_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_1")
+    /// Image `mu_image_songs_folder_icon_custom_2`.
+    static let mu_image_songs_folder_icon_custom_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_2")
+    /// Image `mu_image_songs_folder_icon_custom_3`.
+    static let mu_image_songs_folder_icon_custom_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_3")
+    /// Image `mu_image_songs_folder_icon_custom_4`.
+    static let mu_image_songs_folder_icon_custom_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_4")
+    /// Image `mu_image_songs_folder_icon_custom_5`.
+    static let mu_image_songs_folder_icon_custom_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_5")
+    /// Image `mu_image_songs_folder_icon_custom_6`.
+    static let mu_image_songs_folder_icon_custom_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_6")
+    /// Image `mu_image_songs_folder_icon_custom_7`.
+    static let mu_image_songs_folder_icon_custom_7 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_7")
+    /// Image `mu_image_songs_folder_icon_custom_8`.
+    static let mu_image_songs_folder_icon_custom_8 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_custom_8")
+    /// Image `mu_image_songs_folder_icon_like`.
+    static let mu_image_songs_folder_icon_like = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_like")
     /// Image `mu_image_toast_loading_1`.
     static let mu_image_toast_loading_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_toast_loading_1")
     /// Image `mu_image_toast_loading_2`.
@@ -380,9 +412,51 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_add", bundle: ..., traitCollection: ...)`
+    static func mu_image_add(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_add, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_arrow_down", bundle: ..., traitCollection: ...)`
+    static func mu_image_arrow_down(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_arrow_down, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_arrow_left", bundle: ..., traitCollection: ...)`
+    static func mu_image_arrow_left(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_arrow_left, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_arrow_right", bundle: ..., traitCollection: ...)`
+    static func mu_image_arrow_right(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_arrow_right, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_arrow_up", bundle: ..., traitCollection: ...)`
+    static func mu_image_arrow_up(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_arrow_up, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_control_pull", bundle: ..., traitCollection: ...)`
     static func mu_image_control_pull(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_control_pull, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_nav_back", bundle: ..., traitCollection: ...)`
+    static func mu_image_nav_back(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_nav_back, compatibleWith: traitCollection)
     }
     #endif
 
@@ -488,6 +562,76 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_songs_folder_favourite", bundle: ..., traitCollection: ...)`
     static func mu_image_songs_folder_favourite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_songs_folder_favourite, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_all", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_all(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_all, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_1", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_2", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_3", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_4", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_5", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_6", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_7", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_7(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_7, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_custom_8", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_custom_8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_custom_8, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_folder_icon_like", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_folder_icon_like(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_like, compatibleWith: traitCollection)
     }
     #endif
 

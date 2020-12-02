@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 
-fileprivate let k_song_list_limit_count = 10
+fileprivate let k_song_list_limit_count = 8
 fileprivate let k_total_song_name_array_local_storage_key = "k_total_song_name_array_local_storage_key"
 fileprivate let k_song_list_name_array_local_storage_key = "k_song_list_name_array_local_storage_key"
 fileprivate let k_song_list_dictionary_local_storage_key = "k_song_list_dictionary_local_storage_key"
@@ -30,6 +30,7 @@ class SongsManager: NSObject {
      是否需要将数据更新到本地，只有在数据发生改变的时候才要更新
      */
     private var shouldUpdateLocal: Bool = false
+    private let cache = SimpleCache<SongName, Song>()
     
     /**
      歌曲文件的存储目录
@@ -156,7 +157,9 @@ fileprivate extension SongsManager {
         if nil == self.songListNames {
             self.songListNames = [k_total_song_list_name, k_liked_song_list_name]
         }else {
-            if self.songListNames!.count >= 10 { return MUError.some(desc: "最多创建10个列表") }
+            if self.songListNames!.count >= k_song_list_limit_count + 2 {
+                return MUError.some(desc: "最多创建\(k_song_list_limit_count)个列表")
+            }
         }
         var has = false
         for existName in self.songListNames! {
@@ -255,23 +258,26 @@ fileprivate extension SongsManager {
 extension SongsManager {
     
     func map(_ songNames: [SongName], _ complete: @escaping ([Song]?)->Void) {
-        var songMap: [SongName : Song] = Dictionary()
         guard let wrappedAssets = self.getAssetTuples(songNames) else { return }
         let group = DispatchGroup()
         let keys = ["duration", "commonMetadata"]
         for tuple in wrappedAssets {
             group.enter()
             tuple.asset.loadValuesAsynchronously(forKeys: keys) {
-                if let song = self.getSong(withAsset: tuple.asset, tuple.songName) { songMap[tuple.songName] = song }
+                let unwrappedSong = self.getSong(withAsset: tuple.asset, tuple.songName)
+                if let song = unwrappedSong { self.cache[tuple.songName] = song }
                 group.leave()
             }
         }
         group.notify(qos: .default, flags: [], queue: .main) {
             var songs: [Song] = [Song]()
             for songName in songNames {
-                if let song = songMap[songName] { songs.append(song) }
+                if let song = self.cache[songName] { songs.append(song) }
             }
-            complete(songs)
+            DispatchQueue.main.async {
+                complete(songs)
+                self.cache.clear()
+            }
         }
     }
     
