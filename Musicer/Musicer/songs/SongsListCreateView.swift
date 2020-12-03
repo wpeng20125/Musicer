@@ -7,19 +7,22 @@
 
 import UIKit
 
-private let limit = 10
+private let limit_w = 220.0
+private let limit_h = 120.0
+private let limit = 5
 
 class SongsListCreateView: UIView {
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = R.color.mu_color_orange_dark()
+        self.backgroundColor = R.color.mu_color_orange_light()
         self.layer.cornerRadius = 10.0
         self.layer.masksToBounds = true
         self.setupSubViews()
     }
     
+    //MARK: -- private
     var cancel: (()->Void)?
     var confirm: ((String)->Void)?
     
@@ -27,14 +30,39 @@ class SongsListCreateView: UIView {
         let input = UITextField()
         input.delegate = self
         input.borderStyle = .roundedRect
-        input.backgroundColor = R.color.mu_color_orange_dark()
+        input.backgroundColor = R.color.mu_color_orange_light()
         input.font = UIFont.systemFont(ofSize: 15.0)
         input.returnKeyType = .done
         let att = NSMutableAttributedString(string: "输入名称")
-        att.addAttributes([.font : UIFont.systemFont(ofSize: 12.0), .foregroundColor : UIColor(white: 0, alpha: 0.5)], range: NSRange(location: 0, length: 4))
+        att.addAttributes([.font : UIFont.systemFont(ofSize: 12.0), .foregroundColor : UIColor(white: 0, alpha: 0.5)], range: NSRange(location: 0, length: att.length))
         input.attributedPlaceholder = att
         return input
     }()
+}
+
+extension SongsListCreateView {
+    
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set {
+            var f = newValue
+            f.size = CGSize(width: limit_w, height: limit_h)
+            super.frame = f
+        }
+    }
+    
+    override var bounds: CGRect {
+        get {
+            return super.bounds
+        }
+        set {
+            var b = newValue
+            b.size = CGSize(width: limit_w, height: limit_h)
+            super.bounds = b
+        }
+    }
 }
 
 fileprivate extension SongsListCreateView {
@@ -47,6 +75,16 @@ fileprivate extension SongsListCreateView {
             make.left.equalTo(self).offset(20.0)
             make.right.equalTo(self).offset(-20.0)
             make.height.equalTo(30.0)
+        }
+        
+        let tipLbl = UILabel()
+        tipLbl.text = "仅支持汉字、数字、英文"
+        tipLbl.font = UIFont.systemFont(ofSize: 10.0)
+        tipLbl.textColor = UIColor(white: 0, alpha: 0.5)
+        self.addSubview(tipLbl)
+        tipLbl.snp.makeConstraints { (make) in
+            make.top.equalTo(self.textField.snp.bottom).offset(5.0)
+            make.left.equalTo(self.textField).offset(7.0)
         }
         
         let cancelBtn = UIButton(type: .custom)
@@ -76,7 +114,7 @@ fileprivate extension SongsListCreateView {
         }
         
         let hLine = UIView()
-        hLine.backgroundColor = R.color.mu_color_orange_light()
+        hLine.backgroundColor = R.color.mu_color_orange_dark()
         self.addSubview(hLine)
         hLine.snp.makeConstraints { (make) in
             make.left.right.equalTo(self)
@@ -85,7 +123,7 @@ fileprivate extension SongsListCreateView {
         }
         
         let vLine = UIView()
-        vLine.backgroundColor = R.color.mu_color_orange_light()
+        vLine.backgroundColor = R.color.mu_color_orange_dark()
         self.addSubview(vLine)
         vLine.snp.makeConstraints { (make) in
             make.centerX.equalTo(self)
@@ -93,19 +131,6 @@ fileprivate extension SongsListCreateView {
             make.height.equalTo(40.0)
             make.width.equalTo(0.5)
         }
-    }
-}
-
-extension SongsListCreateView: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField.isFirstResponder { textField.resignFirstResponder() }
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        return true
     }
     
     @objc func cancel(_ sender: UIButton) {
@@ -126,7 +151,12 @@ extension SongsListCreateView: UITextFieldDelegate {
         }
         wrappedConfirm(text)
     }
+}
+
+extension SongsListCreateView: UITextFieldDelegate {
     
-    
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.isFirstResponder { textField.resignFirstResponder() }
+        return true
+    }
 }

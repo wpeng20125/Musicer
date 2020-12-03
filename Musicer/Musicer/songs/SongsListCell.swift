@@ -73,8 +73,9 @@ fileprivate extension SongsListCell {
         self.contentView.addSubview(self.titleLbl)
         self.titleLbl.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(20.0)
-            make.top.bottom.equalTo(self.contentView)
             make.right.equalTo(arrow.snp.left).offset(-20.0)
+            make.centerY.equalTo(self.contentView)
+            make.height.equalTo(25.0)
         }
     }
     

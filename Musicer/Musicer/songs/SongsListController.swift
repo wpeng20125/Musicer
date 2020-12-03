@@ -16,18 +16,7 @@ class SongsListController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.setupSubViews()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        Toaster.showLoading()
-        if let listNames = SongsManager.shared.songListNames {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-                Toaster.hideLoading()
-                self.table?.refersh(withNames: listNames)
-            }
-        }
+        self.refresh()
     }
 }
 
@@ -51,9 +40,26 @@ extension SongsListController {
             make.top.equalTo(titleBar.snp.bottom)
             make.left.bottom.right.equalTo(self.view)
         }
-        
-        let createView = SongsListCreateView(frame: CGRect(x: 10, y: 100, width: 200, height: 100))
-        self.view.addSubview(createView)
+    }
+    
+    func refresh() {
+        Toaster.showLoading()
+        if let listNames = SongsManager.shared.songListNames {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+                Toaster.hideLoading()
+                self.table?.refersh(withNames: listNames)
+            }
+        }
+    }
+    
+    func creatList(_ name: String) {
+        let error = SongsManager.shared.creat(songList: name)
+        switch error {
+        case let .some(desc):
+            Toaster.flash(withText: desc, backgroundColor: R.color.mu_color_orange_dark())
+        case .none(_):
+            self.refresh()
+        }
     }
 }
 
@@ -61,7 +67,7 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource {
     func itemDidClick(atPosition p: ItemPosition) {
         switch p {
         case .left: self.navigationController?.popViewController(animated: true)
-        case .right: ffprint("")
+        case .right: self.showCreateView()
         default: return
         }
     }
@@ -83,4 +89,73 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource {
             return property
         }
     }
+}
+
+extension SongsListController: CAAnimationDelegate {
+    
+    func showCreateView() {
+        
+        let createView = SongsListCreateView()
+        createView.tag = 1989
+        createView.kw_x = (Double(ScreenWidth) - createView.kw_w) / 2
+        createView.kw_y = Double(TitleBarHeight) + 50.0
+        createView.cancel = {
+            self.hideCreateView()
+        }
+        createView.confirm = { (text) in
+            self.hideCreateView()
+            self.creatList(text)
+        }
+        self.view.addSubview(createView)
+        
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.fromValue = 0
+        opacityAnimation.toValue = 1.0
+        opacityAnimation.duration = 0.5
+        
+        let zoomSpring = CASpringAnimation(keyPath: "transform.scale")
+        zoomSpring.mass = 1.0
+        zoomSpring.stiffness = 100
+        zoomSpring.damping = 10
+        zoomSpring.initialVelocity = 10
+        zoomSpring.fromValue = 0
+        zoomSpring.toValue = 1.0
+        zoomSpring.duration = zoomSpring.settlingDuration
+        
+        let group = CAAnimationGroup()
+        group.duration = 0.5
+        group.animations = [opacityAnimation, zoomSpring]
+        
+        createView.layer.add(group, forKey: "kCreateViewShowAnimationKey")
+    }
+    
+    func hideCreateView() {
+        
+        guard let createView = self.view.viewWithTag(1989) else { return }
+        
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.fromValue = 1.0
+        opacityAnimation.toValue = 0
+        opacityAnimation.duration = 0.2
+        
+        let zoomAnimation = CABasicAnimation(keyPath: "transform.scale")
+        zoomAnimation.fromValue = 1.0
+        zoomAnimation.toValue = 0
+        zoomAnimation.duration = 0.2
+        
+        let group = CAAnimationGroup()
+        group.delegate = self
+        group.duration = 0.2
+        group.animations = [opacityAnimation, zoomAnimation]
+        group.isRemovedOnCompletion = false
+        group.fillMode = .forwards
+        
+        createView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
+    }
+    
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        guard let createView = self.view.viewWithTag(1989) else { return }
+        createView.removeFromSuperview()
+    }
+    
 }

@@ -16,13 +16,13 @@ class PlayingController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { self.assist.show() }
-        self.loadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.configure()
+        self.loadData()
     }
     
     //MARK: -- lazy
@@ -31,7 +31,6 @@ class PlayingController: BaseViewController {
     private(set) lazy var card: PlayControllingCard = { PlayControllingCard.standardCard() }()
     // data
     private lazy var currentList: [Song] = { [] }()
-    
 }
 
 //MARK: -- setup subviews
@@ -166,7 +165,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControlli
     func playControllingCard(_ card: PlayControllingCard, willDisplay byShowing: Bool) {
         UIView.animate(withDuration: 0.2) {
             self.table.snp.updateConstraints { (make) in
-                make.bottom.equalTo(self.view).offset(byShowing ? -card.h : 0)
+                make.bottom.equalTo(self.view).offset(byShowing ? -card.kw_h : 0)
             }
             self.view.layoutIfNeeded()
         }

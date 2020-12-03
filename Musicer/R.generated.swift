@@ -105,12 +105,20 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.color` struct is generated, and contains static references to 10 colors.
+  /// This `R.color` struct is generated, and contains static references to 14 colors.
   struct color {
     /// Color `AccentColor`.
     static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
-    /// Color `mu_color_black_with_alpha`.
-    static let mu_color_black_with_alpha = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha")
+    /// Color `mu_color_black_with_alpha_2`.
+    static let mu_color_black_with_alpha_2 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_2")
+    /// Color `mu_color_black_with_alpha_3`.
+    static let mu_color_black_with_alpha_3 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_3")
+    /// Color `mu_color_black_with_alpha_5`.
+    static let mu_color_black_with_alpha_5 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_5")
+    /// Color `mu_color_black_with_alpha_6`.
+    static let mu_color_black_with_alpha_6 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_6")
+    /// Color `mu_color_black_with_alpha_8`.
+    static let mu_color_black_with_alpha_8 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_8")
     /// Color `mu_color_black`.
     static let mu_color_black = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black")
     /// Color `mu_color_clear`.
@@ -147,11 +155,47 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_with_alpha_2", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha, compatibleWith: traitCollection)
+    static func mu_color_black_with_alpha_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_black_with_alpha_3", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_black_with_alpha_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_black_with_alpha_5", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_black_with_alpha_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_black_with_alpha_6", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_black_with_alpha_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_black_with_alpha_8", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_black_with_alpha_8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_8, compatibleWith: traitCollection)
     }
     #endif
 

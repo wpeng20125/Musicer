@@ -9,7 +9,7 @@ import UIKit
 
 extension UIView {
     
-    var x: Double {
+    var kw_x: Double {
         set {
             var f = self.frame
             f.origin.x = CGFloat(newValue)
@@ -20,7 +20,7 @@ extension UIView {
         }
     }
     
-    var y: Double {
+    var kw_y: Double {
         set {
             var f = self.frame
             f.origin.y = CGFloat(newValue)
@@ -31,7 +31,7 @@ extension UIView {
         }
     }
     
-    var w: Double {
+    var kw_w: Double {
         set {
             var f = self.frame
             f.size.width = CGFloat(newValue)
@@ -42,7 +42,7 @@ extension UIView {
         }
     }
     
-    var h: Double {
+    var kw_h: Double {
         set {
             var f = self.frame
             f.size.height = CGFloat(newValue)
@@ -53,7 +53,7 @@ extension UIView {
         }
     }
     
-    var size: CGSize {
+    var kw_size: CGSize {
         set {
             var f = self.frame
             f.size = newValue

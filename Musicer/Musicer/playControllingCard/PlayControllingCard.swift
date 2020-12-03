@@ -363,7 +363,7 @@ fileprivate extension PlayControllingCard {
         self.isShowing = show
         self.delegate?.playControllingCard(self, willDisplay: self.isShowing)
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.y = show ? Double(ScreenHeight - CardHeight) : Double(ScreenHeight)
+            self.kw_y = show ? Double(ScreenHeight - CardHeight) : Double(ScreenHeight)
         } completion: { (complete) in
             self.delegate?.playControllingCard(self, displayCompleted: self.isShowing)
         }

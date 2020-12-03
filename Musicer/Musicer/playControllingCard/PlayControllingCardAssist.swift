@@ -63,7 +63,7 @@ fileprivate extension PlayControllingCardAssist {
         self.isShowing = show
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
             self.alpha = show ? 1.0 : 0
-            self.y = show ? Double(ScreenHeight - AssistHeight) : Double(ScreenHeight)
+            self.kw_y = show ? Double(ScreenHeight - AssistHeight) : Double(ScreenHeight)
         } completion: { (complete) in
             if show {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) { self.startShaking() }
@@ -86,8 +86,8 @@ fileprivate extension PlayControllingCardAssist {
         
         let pathAnimation = CABasicAnimation(keyPath: "position.y")
         pathAnimation.duration = 0.5
-        pathAnimation.fromValue = self.puller.y + self.puller.h / 2
-        pathAnimation.toValue = self.puller.h / 2
+        pathAnimation.fromValue = self.puller.kw_y + self.puller.kw_h / 2
+        pathAnimation.toValue = self.puller.kw_h / 2
         pathAnimation.autoreverses = true
         pathAnimation.repeatCount = MAXFLOAT
         

@@ -7,10 +7,10 @@
 
 import UIKit
 
-fileprivate let kBackgroundViewTag: Int = 1000
-fileprivate let kCustomBackgroundViewTag: Int = 1010
-fileprivate let kLoadingImageViewTagOne: Int = 1020
-fileprivate let kLoadingImageViewTagTwo: Int = 1030
+fileprivate let kBackgroundViewTag: Int = 9766
+fileprivate let kCustomBackgroundViewTag: Int = 9777
+fileprivate let kLoadingImageViewTagOne: Int = 9788
+fileprivate let kLoadingImageViewTagTwo: Int = 9799
 
 fileprivate let kCustomBackgroundViewW: CGFloat = 100.0
 fileprivate let kCustomBackgroundViewH: CGFloat = 100.0
@@ -116,10 +116,10 @@ fileprivate extension Toaster {
         guard let customBackgroundView = UIApplication.shared.keyWindow?.viewWithTag(kCustomBackgroundViewTag) else { return }
         customBackgroundView.addSubview(lbl)
 
-        customBackgroundView.x = Double(x)
-        customBackgroundView.y = Double(y)
-        customBackgroundView.w = Double(w)
-        customBackgroundView.h = Double(h)
+        customBackgroundView.kw_x = Double(x)
+        customBackgroundView.kw_y = Double(y)
+        customBackgroundView.kw_w = Double(w)
+        customBackgroundView.kw_h = Double(h)
     }
 }
 
@@ -132,17 +132,17 @@ fileprivate extension Toaster {
         
         let imgView_one = UIImageView()
         imgView_one.image = R.image.mu_image_toast_loading_2()
-        imgView_one.x = (customBgView.w - 50.0) / 2
-        imgView_one.y = (customBgView.h - 50.0) / 2
-        imgView_one.size = CGSize(width: 50.0, height: 50.0)
+        imgView_one.kw_x = (customBgView.kw_w - 50.0) / 2
+        imgView_one.kw_y = (customBgView.kw_h - 50.0) / 2
+        imgView_one.kw_size = CGSize(width: 50.0, height: 50.0)
         imgView_one.tag = kLoadingImageViewTagOne
         customBgView.addSubview(imgView_one)
         
         let imgView_two = UIImageView()
         imgView_two.image = R.image.mu_image_toast_loading_1()
-        imgView_two.x = (customBgView.w - 70.0) / 2
-        imgView_two.y = (customBgView.h - 70.0) / 2
-        imgView_two.size = CGSize(width: 70.0, height: 70.0)
+        imgView_two.kw_x = (customBgView.kw_w - 70.0) / 2
+        imgView_two.kw_y = (customBgView.kw_h - 70.0) / 2
+        imgView_two.kw_size = CGSize(width: 70.0, height: 70.0)
         imgView_two.tag = kLoadingImageViewTagTwo
         customBgView.addSubview(imgView_two)
     }
