@@ -70,6 +70,7 @@ class SongsManager: NSObject {
      @param name  歌曲列表名称
      @return  布尔值代表创建列表是否成功
      */
+    @discardableResult
     func creat(songList name: SongListName)->MUError { self.creat_song_list(name) }
     
     /**
@@ -79,6 +80,7 @@ class SongsManager: NSObject {
      @param  listName  要添加到的歌曲列表的名称
      @return  布尔值代表添加是否成功
      */
+    @discardableResult
     func add(song name: SongName, toList list: SongListName)->MUError { self.add_song(name, list) }
     
     /**
@@ -88,6 +90,7 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
+    @discardableResult
     func delete(song name: SongName, fromList list: SongListName)->MUError { self.delete_song(name, false, list) }
     
     /**
@@ -98,9 +101,92 @@ class SongsManager: NSObject {
      @param  listName  要删除的歌曲所属列表的名称
      @return  布尔值代表删除是否成功
      */
+    @discardableResult
     func delete(song name: SongName, withFile delFile: Bool, fromList list: SongListName)->MUError {
         self.delete_song(name, delFile, list)
     }
+}
+
+private let k_total_list_local_saving_key = "k_total_list_local_saving_key"
+private let k_total_files_name_local_saving_key = "k_total_files_name_local_saving_key"
+
+private let k_list_name_toatl = "k_list_name_toatl"
+private let k_list_name_found = "k_list_name_found"
+
+class SongManager {
+    
+    static let manager = SongManager()
+    
+    /**
+     歌曲文件的目录
+     */
+    private(set) lazy var baseFolder: String? = { self.creat_base_folder() }()
+    
+    /**
+     所有歌曲的文件名的数组
+     */
+    private(set) lazy var fileNames: [String]? = { nil }()
+
+    /**
+     所有的歌曲列表清单
+     */
+    private(set) lazy var totalLists: [String]? = { self.fetch_total_lists() }()
+    
+    
+    func songs(forList name: String)->[Song]? { self.fetch_songs_for_list(name) }
+}
+
+fileprivate extension SongManager {
+    
+    func creat_base_folder()->String? {
+        let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+        guard let wrappedDoc = unwrappedDoc else { return nil }
+        let path = wrappedDoc + "/songs"
+        let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+        let exist = FileManager.default.fileExists(atPath: path, isDirectory: isDir)
+        if !exist || !isDir.pointee.boolValue {
+            do {
+                try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                return path
+            } catch _ {
+                return nil
+            }
+        }
+        ffprint(path)
+        return path
+    }
+    
+    func fetch_total_files()->[String]? {
+        let unwrappedFiles = UserDefaults.standard.array(forKey: k_total_files_name_local_saving_key) as? [String]
+        guard let wrappedFiles = unwrappedFiles else {
+            guard let folder = self.baseFolder else { return nil }
+            guard let files = try? FileManager.default.contentsOfDirectory(atPath: folder) else { return nil }
+            var __files = [String]()
+            for file in files {
+                let nsFile = NSString(string: file)
+                let cleanFile = nsFile.deletingPathExtension
+                
+            }
+            return nil
+        }
+        return wrappedFiles
+    }
+    
+    func fetch_total_lists()->[String]? {
+        let unwrappedLists = UserDefaults.standard.array(forKey: k_total_list_local_saving_key) as? [String]
+        guard let wrappedLists = unwrappedLists else {
+            let list = [k_list_name_toatl, k_list_name_found]
+            UserDefaults.standard.setValue(list, forKey: k_total_list_local_saving_key)
+            return list
+        }
+        return wrappedLists
+    }
+    
+    func fetch_songs_for_list(_ name: String)->[Song]? {
+        
+        return nil
+    }
+    
 }
 
 fileprivate extension SongsManager {
@@ -131,7 +217,24 @@ fileprivate extension SongsManager {
     
     func fetch_song_names()->SongNameArray? {
         let unwrappedSongNames = UserDefaults.standard.array(forKey: k_total_song_name_array_local_storage_key)
-        guard let wrappedSongNames = (unwrappedSongNames as? SongNameArray) else { return nil }
+        guard let wrappedSongNames = (unwrappedSongNames as? SongNameArray) else {
+            guard let path = self.baseFolder else { return nil }
+            guard let files = try? FileManager.default.contentsOfDirectory(atPath: path) else { return nil }
+            var names = files.map { (name) -> SongName in
+                var _name = name
+                if let typeRange = name.range(of: ".mp3") {
+                    _name.removeSubrange(typeRange)
+                    return _name
+                }
+                return ""
+            }
+            names = names.filter{ 0 != $0.count }
+            for name in names {
+                self.add_song(name, k_total_song_list_name)
+            }
+            self.shouldUpdateLocal = true
+            return names
+        }
         return wrappedSongNames
     }
     
@@ -153,6 +256,7 @@ fileprivate extension SongsManager {
         return wrappedListMap
     }
     
+    @discardableResult
     func creat_song_list(_ name: SongListName)->MUError {
         if nil == self.songListNames {
             self.songListNames = [k_total_song_list_name, k_liked_song_list_name]
@@ -179,6 +283,7 @@ fileprivate extension SongsManager {
         return MUError.none(info: "歌曲列表创建成功")
     }
     
+    @discardableResult
     func add_song(_ song: SongName, _ listName: SongListName)->MUError {
         if nil == self.songListNames || nil == self.listMap { return MUError.some(desc: "歌曲列表不存在") }
         var has = false
@@ -200,6 +305,7 @@ fileprivate extension SongsManager {
         return MUError.none(info: "歌曲添加列表成功")
     }
     
+    @discardableResult
     func delete_song(_ song: SongName, _ delFile: Bool, _ listName: SongListName)->MUError {
         if delFile {
             guard let folder = self.baseFolder else { return MUError.some(desc: "文件目录损坏") }
@@ -223,7 +329,7 @@ fileprivate extension SongsManager {
         return MUError.none(info: "歌曲删除成功")
     }
     
-    func save_to_local() {
+    @objc func save_to_local() {
         guard self.shouldUpdateLocal else { return }
         self.shouldUpdateLocal = false
         UserDefaults.standard.setValue(self.totalSongNames, forKey: k_total_song_name_array_local_storage_key)
@@ -236,21 +342,13 @@ fileprivate extension SongsManager {
     
     func addNotifications() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(appDidEnterBackground(_:)),
+                                               selector: #selector(save_to_local),
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(appDidEnterBackground(_:)),
+                                               selector: #selector(save_to_local),
                                                name: UIApplication.willTerminateNotification,
                                                object: nil)
-    }
-    
-    @objc func appDidEnterBackground(_ noti: NSNotification) {
-        self.save_to_local()
-    }
-    
-    @objc func appWillTerminate(_ noti: NSNotification) {
-        self.save_to_local()
     }
 }
 
@@ -285,10 +383,7 @@ extension SongsManager {
         guard let wrappedBaseFolder = self.baseFolder else { return nil }
         var assets = Array<(SongName,AVAsset)>()
         for songName in songNames {
-            var path = wrappedBaseFolder + "/" + songName + ".mp3"
-            #if DEBUG
-            path = Bundle.main.path(forResource: songName, ofType: ".mp3")!
-            #endif
+            let path = wrappedBaseFolder + "/" + songName + ".mp3"
             let asset = AVAsset(url: URL(fileURLWithPath: path))
             assets.append((songName,asset))
         }

@@ -69,9 +69,9 @@ fileprivate extension PlayingController {
     func loadData() {
         ffprint("正在加载本地歌曲文件")
         Toaster.showLoading()
-        let names = ["那英 - 雾里看花","那英 - 默","汪峰 - 旅途","汪峰 - 沧浪之歌","汪峰 - 像个孩子"]
+        guard let names = SongsManager.shared.totalSongNames else { return }
         SongsManager.shared.map(names) { (songs) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                 Toaster.hideLoading()
                 guard let wrappedSongs = songs else {
                     Toaster.flash(withText: "暂无歌曲数据")

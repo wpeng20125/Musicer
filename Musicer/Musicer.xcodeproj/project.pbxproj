@@ -8,11 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AA2EDDF125397C6200D18524 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2EDDF025397C6200D18524 /* Toaster.swift */; };
-		AA474BDF255E647500359F73 /* 那英 - 雾里看花.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA474BDA255E647500359F73 /* 那英 - 雾里看花.mp3 */; };
-		AA474BE0255E647500359F73 /* 那英 - 默.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA474BDB255E647500359F73 /* 那英 - 默.mp3 */; };
-		AA474BE1255E647500359F73 /* 汪峰 - 旅途.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA474BDC255E647500359F73 /* 汪峰 - 旅途.mp3 */; };
-		AA474BE2255E647500359F73 /* 汪峰 - 沧浪之歌.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA474BDD255E647500359F73 /* 汪峰 - 沧浪之歌.mp3 */; };
-		AA474BE3255E647500359F73 /* 汪峰 - 像个孩子.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AA474BDE255E647500359F73 /* 汪峰 - 像个孩子.mp3 */; };
 		AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE4255E64B800359F73 /* MusicPlayer.swift */; };
 		AA474BE7255E674C00359F73 /* SongsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE6255E674C00359F73 /* SongsTable.swift */; };
 		AA474BE9255E679500359F73 /* SongInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE8255E679500359F73 /* SongInfoCell.swift */; };
@@ -28,6 +23,7 @@
 		AA56E2782535AF3900EA50C3 /* UploadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2772535AF3900EA50C3 /* UploadController.swift */; };
 		AA56E2B32536E30400EA50C3 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2B22536E30400EA50C3 /* Common.swift */; };
 		AA56E2B62536F10700EA50C3 /* TitleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2B52536F10700EA50C3 /* TitleBar.swift */; };
+		AA6249A72579DD3300188B04 /* SongInfoEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6249A62579DD3300188B04 /* SongInfoEditCell.swift */; };
 		AA72A5E9254180D000B1A731 /* FrameHandy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA72A5E8254180D000B1A731 /* FrameHandy.swift */; };
 		AABE93AD2566671200B27370 /* SongsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AC2566671200B27370 /* SongsListController.swift */; };
 		AABE93AF256667CA00B27370 /* SongsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AE256667CA00B27370 /* SongsController.swift */; };
@@ -48,11 +44,6 @@
 		0115F530A1B8B11897DB095A /* Pods-Musicer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Musicer.release.xcconfig"; path = "Target Support Files/Pods-Musicer/Pods-Musicer.release.xcconfig"; sourceTree = "<group>"; };
 		65A56B6967E3363E13A9BC6D /* Pods_Musicer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Musicer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA2EDDF025397C6200D18524 /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
-		AA474BDA255E647500359F73 /* 那英 - 雾里看花.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "那英 - 雾里看花.mp3"; sourceTree = "<group>"; };
-		AA474BDB255E647500359F73 /* 那英 - 默.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "那英 - 默.mp3"; sourceTree = "<group>"; };
-		AA474BDC255E647500359F73 /* 汪峰 - 旅途.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "汪峰 - 旅途.mp3"; sourceTree = "<group>"; };
-		AA474BDD255E647500359F73 /* 汪峰 - 沧浪之歌.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "汪峰 - 沧浪之歌.mp3"; sourceTree = "<group>"; };
-		AA474BDE255E647500359F73 /* 汪峰 - 像个孩子.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "汪峰 - 像个孩子.mp3"; sourceTree = "<group>"; };
 		AA474BE4255E64B800359F73 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		AA474BE6255E674C00359F73 /* SongsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsTable.swift; sourceTree = "<group>"; };
 		AA474BE8255E679500359F73 /* SongInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfoCell.swift; sourceTree = "<group>"; };
@@ -70,6 +61,7 @@
 		AA56E2772535AF3900EA50C3 /* UploadController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadController.swift; sourceTree = "<group>"; };
 		AA56E2B22536E30400EA50C3 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		AA56E2B52536F10700EA50C3 /* TitleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBar.swift; sourceTree = "<group>"; };
+		AA6249A62579DD3300188B04 /* SongInfoEditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfoEditCell.swift; sourceTree = "<group>"; };
 		AA72A5E8254180D000B1A731 /* FrameHandy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameHandy.swift; sourceTree = "<group>"; };
 		AABE93AC2566671200B27370 /* SongsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsListController.swift; sourceTree = "<group>"; };
 		AABE93AE256667CA00B27370 /* SongsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsController.swift; sourceTree = "<group>"; };
@@ -106,30 +98,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AA474BD9255E647500359F73 /* music */ = {
-			isa = PBXGroup;
-			children = (
-				AA474BDA255E647500359F73 /* 那英 - 雾里看花.mp3 */,
-				AA474BDB255E647500359F73 /* 那英 - 默.mp3 */,
-				AA474BDC255E647500359F73 /* 汪峰 - 旅途.mp3 */,
-				AA474BDD255E647500359F73 /* 汪峰 - 沧浪之歌.mp3 */,
-				AA474BDE255E647500359F73 /* 汪峰 - 像个孩子.mp3 */,
-			);
-			path = music;
-			sourceTree = "<group>";
-		};
 		AA474BEC255E974E00359F73 /* songs */ = {
 			isa = PBXGroup;
 			children = (
-				AABE93AE256667CA00B27370 /* SongsController.swift */,
-				AABE93AC2566671200B27370 /* SongsListController.swift */,
 				AA4F68DF255BDE8D005E6495 /* SongsManager.swift */,
+				AAFC3BEE2579D591007B446D /* create song list */,
+				AABE93AE256667CA00B27370 /* SongsController.swift */,
 				AAEB3F372574D30F00912198 /* Song.swift */,
 				AA474BE6255E674C00359F73 /* SongsTable.swift */,
-				AAEB3F4F257741DC00912198 /* SongsListCreateView.swift */,
-				AAEB3F4B25763B6600912198 /* SongsListTable.swift */,
-				AAEB3F4D25763D1000912198 /* SongsListCell.swift */,
 				AA474BE8255E679500359F73 /* SongInfoCell.swift */,
+				AA6249A62579DD3300188B04 /* SongInfoEditCell.swift */,
 			);
 			path = songs;
 			sourceTree = "<group>";
@@ -217,9 +195,19 @@
 			isa = PBXGroup;
 			children = (
 				AA56E22A2534480400EA50C3 /* R.generated.swift */,
-				AA474BD9255E647500359F73 /* music */,
 			);
 			path = SupportFile;
+			sourceTree = "<group>";
+		};
+		AAFC3BEE2579D591007B446D /* create song list */ = {
+			isa = PBXGroup;
+			children = (
+				AABE93AC2566671200B27370 /* SongsListController.swift */,
+				AAEB3F4F257741DC00912198 /* SongsListCreateView.swift */,
+				AAEB3F4B25763B6600912198 /* SongsListTable.swift */,
+				AAEB3F4D25763D1000912198 /* SongsListCell.swift */,
+			);
+			path = "create song list";
 			sourceTree = "<group>";
 		};
 		D51C59852008CB88813B8776 /* Pods */ = {
@@ -292,11 +280,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA474BDF255E647500359F73 /* 那英 - 雾里看花.mp3 in Resources */,
-				AA474BE1255E647500359F73 /* 汪峰 - 旅途.mp3 in Resources */,
-				AA474BE3255E647500359F73 /* 汪峰 - 像个孩子.mp3 in Resources */,
-				AA474BE2255E647500359F73 /* 汪峰 - 沧浪之歌.mp3 in Resources */,
-				AA474BE0255E647500359F73 /* 那英 - 默.mp3 in Resources */,
 				AA56E20D2534363F00EA50C3 /* LaunchScreen.storyboard in Resources */,
 				AA56E20A2534363F00EA50C3 /* Assets.xcassets in Resources */,
 			);
@@ -377,6 +360,7 @@
 				AAEB3F4825762BB900912198 /* BaseViewController.swift in Sources */,
 				AAEB3F50257741DC00912198 /* SongsListCreateView.swift in Sources */,
 				AA4F68E0255BDE8D005E6495 /* SongsManager.swift in Sources */,
+				AA6249A72579DD3300188B04 /* SongInfoEditCell.swift in Sources */,
 				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
 				AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */,
 				AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */,
