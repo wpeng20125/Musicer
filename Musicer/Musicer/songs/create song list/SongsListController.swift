@@ -44,16 +44,14 @@ extension SongsListController {
     
     func refresh() {
         Toaster.showLoading()
-        if let listNames = SongsManager.shared.songListNames {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-                Toaster.hideLoading()
-                self.table?.refersh(withNames: listNames)
-            }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            Toaster.hideLoading()
+            self.table?.refersh(withNames: SongManager.default.totalLists())
         }
     }
     
     func creatList(_ name: String) {
-        let error = SongsManager.shared.creat(songList: name)
+        let error = SongManager.default.creatFolder(withName: name)
         switch error {
         case let .some(desc):
             Toaster.flash(withText: desc, backgroundColor: R.color.mu_color_orange_dark())

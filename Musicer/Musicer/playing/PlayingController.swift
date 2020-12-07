@@ -22,7 +22,7 @@ class PlayingController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.configure()
-        self.loadData()
+        self.refresh()
     }
     
     //MARK: -- lazy
@@ -66,15 +66,14 @@ fileprivate extension PlayingController {
 //MARK: -- load data
 fileprivate extension PlayingController {
     
-    func loadData() {
+    func refresh() {
         ffprint("正在加载本地歌曲文件")
         Toaster.showLoading()
-        guard let names = SongsManager.shared.totalSongNames else { return }
-        SongsManager.shared.map(names) { (songs) in
+        SongManager.default.songs(forList: k_list_name_toatl) { (songs) in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                 Toaster.hideLoading()
                 guard let wrappedSongs = songs else {
-                    Toaster.flash(withText: "暂无歌曲数据")
+                    Toaster.flash(withText: "暂无歌曲数据", backgroundColor: R.color.mu_color_orange_dark())
                     return
                 }
                 self.table.reload(wrappedSongs)
@@ -84,7 +83,7 @@ fileprivate extension PlayingController {
     }
 }
 
-extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControllingCardAssistDelegate, PlayControllingCardDelegate, SongsTableDelegate {
+extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControllingCardAssistDelegate, PlayControllingCardDelegate, SongsTableDelegate, LoadingProtocol {
     
     //MARK: -- TitleBarDataSource
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
@@ -121,6 +120,11 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControlli
         }
     }
     
+    //MARK: -- LoadingProtocol
+    func reload() {
+        self.refresh()
+    }
+    
     //MARK: -- PlayControllingCardAssistDelegate
     func assistGestureTriggered(_ assist: PlayControllingCardAssist) {
         self.card.show()
@@ -138,6 +142,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControlli
     
     func playControllingCardUploadSongs(_ card: PlayControllingCard) {
         let uploader = UploadController()
+        uploader.delegate = self
         self.present(uploader, animated: true, completion: nil)
     }
     

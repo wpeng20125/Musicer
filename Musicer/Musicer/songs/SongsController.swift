@@ -9,7 +9,7 @@ import UIKit
 
 class SongsController: BaseViewController {
     
-    var listName: SongListName?
+    var listName: String?
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

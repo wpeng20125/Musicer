@@ -10,18 +10,24 @@ import GCDWebServer
 
 class Uploader: NSObject {
     
-    func connect()->MUError { return self.f_connect() }
+    fileprivate var server: Server?
+    
+    private(set) var files: [String] = {
+        guard let f = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
+            return [String]()
+        }
+        return f
+    }()
+    
+    func connect()->MUError { self.f_connect() }
     
     func disconnect() { self.f_disconnect() }
-    
-    //MARK: -- private
-    fileprivate var server: Server?
 }
 
 fileprivate extension Uploader {
     
     func f_connect()->MUError {
-        guard let wrappedPath = SongsManager.shared.baseFolder else {
+        guard let wrappedPath = SongManager.default.baseFolder else {
             return MUError.some(desc: "文件目录创建失败，请退出重试")
         }
         self.server = Server.server(withPath: wrappedPath)
@@ -50,18 +56,9 @@ fileprivate extension Uploader {
 extension Uploader: GCDWebUploaderDelegate {
     
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
-        ffprint(path)
+        let file = NSString(string: path).lastPathComponent
+        self.files.append(file)
     }
-    
-    func webUploader(_ uploader: GCDWebUploader, didDeleteItemAtPath path: String) {
-        
-    }
-    
-    /*TODO：
-     1、文件上传格式的限制
-     2、文件名的获取
-     3、文件的本地存储目录和app中自定义歌曲目录的映射设计
-     */
 }
 
 fileprivate class Server: GCDWebUploader {
@@ -76,8 +73,15 @@ fileprivate class Server: GCDWebUploader {
         return server
     }
     
-    override func shouldUploadFile(atPath path: String, withTemporaryFile tempPath: String) -> Bool {  false }
+    override func shouldUploadFile(atPath path: String, withTemporaryFile tempPath: String) -> Bool {
+        let format = NSString(string: path).pathExtension
+        guard format == "mp3" else {
+            return false
+        }
+        return true
+    }
     override func shouldDeleteItem(atPath path: String) -> Bool { false }
     override func shouldCreateDirectory(atPath path: String) -> Bool { false }
     override func shouldMoveItem(fromPath: String, toPath: String) -> Bool { false }
 }
+

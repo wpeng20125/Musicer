@@ -16,14 +16,14 @@ class SongsListTable: UIView {
         self.setupSubViews()
     }
     
-    func refersh(withNames names: [SongListName]) {
+    func refersh(withNames names: [String]) {
         self.titles = names
         self.table.reloadData()
     }
     
     //MARK: -- private
     private var table: UITableView = { UITableView(frame: .zero, style: .grouped) }()
-    private lazy var titles: [SongListName] = { [] }()
+    private lazy var titles: [String] = { [] }()
 }
 
 fileprivate extension SongsListTable {

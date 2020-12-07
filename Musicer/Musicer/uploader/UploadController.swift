@@ -124,7 +124,7 @@ fileprivate extension UploadController {
     }
 }
 
-extension UploadController: TitleBarDelegate, TitleBarDataSource {
+extension UploadController: TitleBarDelegate, TitleBarDataSource, LoadingProtocol {
     
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let property = ItemProperty()
@@ -149,6 +149,10 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let confiem = UIAlertAction(title: "确定", style: .default) { (action) in
                 self.uploader.disconnect()
+                if self.uploader.files.count > 0 {
+                    UserDefaults.standard.setValue(self.uploader.files, forKey: k_list_name_toatl)
+                    self.delegate?.reload()
+                }
                 self.dismiss(animated: true, completion: nil)
             }
             alert.addAction(cancel)

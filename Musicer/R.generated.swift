@@ -265,52 +265,6 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 5 files.
-  struct file {
-    /// Resource file `汪峰 - 像个孩子.mp3`.
-    static let 汪峰像个孩子Mp3 = Rswift.FileResource(bundle: R.hostingBundle, name: "汪峰 - 像个孩子", pathExtension: "mp3")
-    /// Resource file `汪峰 - 旅途.mp3`.
-    static let 汪峰旅途Mp3 = Rswift.FileResource(bundle: R.hostingBundle, name: "汪峰 - 旅途", pathExtension: "mp3")
-    /// Resource file `汪峰 - 沧浪之歌.mp3`.
-    static let 汪峰沧浪之歌Mp3 = Rswift.FileResource(bundle: R.hostingBundle, name: "汪峰 - 沧浪之歌", pathExtension: "mp3")
-    /// Resource file `那英 - 雾里看花.mp3`.
-    static let 那英雾里看花Mp3 = Rswift.FileResource(bundle: R.hostingBundle, name: "那英 - 雾里看花", pathExtension: "mp3")
-    /// Resource file `那英 - 默.mp3`.
-    static let 那英默Mp3 = Rswift.FileResource(bundle: R.hostingBundle, name: "那英 - 默", pathExtension: "mp3")
-
-    /// `bundle.url(forResource: "汪峰 - 像个孩子", withExtension: "mp3")`
-    static func 汪峰像个孩子Mp3(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.汪峰像个孩子Mp3
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "汪峰 - 旅途", withExtension: "mp3")`
-    static func 汪峰旅途Mp3(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.汪峰旅途Mp3
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "汪峰 - 沧浪之歌", withExtension: "mp3")`
-    static func 汪峰沧浪之歌Mp3(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.汪峰沧浪之歌Mp3
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "那英 - 雾里看花", withExtension: "mp3")`
-    static func 那英雾里看花Mp3(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.那英雾里看花Mp3
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "那英 - 默", withExtension: "mp3")`
-    static func 那英默Mp3(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.那英默Mp3
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    fileprivate init() {}
-  }
-
   /// This `R.image` struct is generated, and contains static references to 67 images.
   struct image {
     /// Image `LaunchScreen`.

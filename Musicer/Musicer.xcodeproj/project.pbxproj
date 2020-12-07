@@ -14,7 +14,7 @@
 		AA474BEB255E84C700359F73 /* UIView+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BEA255E84C700359F73 /* UIView+Helper.swift */; };
 		AA4F68D2255A9B36005E6495 /* PlayingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68D1255A9B36005E6495 /* PlayingController.swift */; };
 		AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68D3255AAB63005E6495 /* PlayControllingCardAssist.swift */; };
-		AA4F68E0255BDE8D005E6495 /* SongsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68DF255BDE8D005E6495 /* SongsManager.swift */; };
+		AA4F68E0255BDE8D005E6495 /* SongManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68DF255BDE8D005E6495 /* SongManager.swift */; };
 		AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */; };
 		AA56E2012534363D00EA50C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA56E2002534363D00EA50C3 /* AppDelegate.swift */; };
 		AA56E20A2534363F00EA50C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA56E2092534363F00EA50C3 /* Assets.xcassets */; };
@@ -50,7 +50,7 @@
 		AA474BEA255E84C700359F73 /* UIView+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helper.swift"; sourceTree = "<group>"; };
 		AA4F68D1255A9B36005E6495 /* PlayingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingController.swift; sourceTree = "<group>"; };
 		AA4F68D3255AAB63005E6495 /* PlayControllingCardAssist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayControllingCardAssist.swift; sourceTree = "<group>"; };
-		AA4F68DF255BDE8D005E6495 /* SongsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsManager.swift; sourceTree = "<group>"; };
+		AA4F68DF255BDE8D005E6495 /* SongManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongManager.swift; sourceTree = "<group>"; };
 		AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRespondingExpander.swift; sourceTree = "<group>"; };
 		AA56E1FD2534363D00EA50C3 /* Musicer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Musicer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA56E2002534363D00EA50C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 		AA474BEC255E974E00359F73 /* songs */ = {
 			isa = PBXGroup;
 			children = (
-				AA4F68DF255BDE8D005E6495 /* SongsManager.swift */,
+				AA4F68DF255BDE8D005E6495 /* SongManager.swift */,
 				AAFC3BEE2579D591007B446D /* create song list */,
 				AABE93AE256667CA00B27370 /* SongsController.swift */,
 				AAEB3F372574D30F00912198 /* Song.swift */,
@@ -359,7 +359,7 @@
 				AA474BE9255E679500359F73 /* SongInfoCell.swift in Sources */,
 				AAEB3F4825762BB900912198 /* BaseViewController.swift in Sources */,
 				AAEB3F50257741DC00912198 /* SongsListCreateView.swift in Sources */,
-				AA4F68E0255BDE8D005E6495 /* SongsManager.swift in Sources */,
+				AA4F68E0255BDE8D005E6495 /* SongManager.swift in Sources */,
 				AA6249A72579DD3300188B04 /* SongInfoEditCell.swift in Sources */,
 				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
 				AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */,
@@ -522,16 +522,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CU582FDWSA;
+				DEVELOPMENT_TEAM = NYHN8JPMPT;
 				INFOPLIST_FILE = Musicer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer.Musicer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -545,16 +547,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CU582FDWSA;
+				DEVELOPMENT_TEAM = NYHN8JPMPT;
 				INFOPLIST_FILE = Musicer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer.Musicer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

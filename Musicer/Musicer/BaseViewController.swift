@@ -7,10 +7,21 @@
 
 import UIKit
 
+protocol LoadingProtocol: NSObjectProtocol {
+    func reload()
+}
+
+extension LoadingProtocol {
+    func reload() { }
+}
+
 class BaseViewController: UIViewController {
+    
+    weak var delegate: LoadingProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.isModalInPresentation = true
         self.view.backgroundColor = R.color.mu_color_white()
         
     }
