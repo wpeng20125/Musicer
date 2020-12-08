@@ -10,6 +10,7 @@ import UIKit
 class SongsController: BaseViewController {
     
     var listName: String?
+    var editable: Bool = false
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -48,7 +49,7 @@ extension SongsController {
     }
 }
 
-extension SongsController: TitleBarDataSource, TitleBarDelegate {
+extension SongsController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate {
     
     func itemDidClick(atPosition p: ItemPosition) {
         switch p {
@@ -72,5 +73,13 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate {
         case .right:
             return nil
         }
+    }
+    
+    func songsTable(_ table: SongsTable, didSelectSong song: Song) {
+        
+    }
+    
+    func songsTableCellEditable() -> Bool {
+        return self.editable
     }
 }

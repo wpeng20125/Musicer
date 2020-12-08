@@ -9,10 +9,12 @@ import UIKit
 
 protocol SongsTableDelegate: NSObjectProtocol {
     func songsTable(_ table: SongsTable, didSelectSong song: Song)
+    func songsTableCellEditable()->Bool
 }
 
 extension SongsTableDelegate {
     func songsTable(_ table: SongsTable, didSelectSong song: Song) { }
+    func songsTableCellEditable()->Bool { false }
 }
 
 class SongsTable: UIView {
@@ -55,6 +57,9 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
         self.tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
+        
+        guard let editable = self.delegate?.songsTableCellEditable() else { return }
+        self.tableView.setEditing(editable, animated: true)
     }
     
     //MARK: -- delegate / dataSource
