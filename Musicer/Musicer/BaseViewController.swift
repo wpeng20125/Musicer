@@ -23,7 +23,7 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         self.isModalInPresentation = true
         self.view.backgroundColor = R.color.mu_color_white()
-        
+        UIGestureRecognizer();
     }
 
     override func viewWillAppear(_ animated: Bool) {
