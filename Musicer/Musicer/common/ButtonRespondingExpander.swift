@@ -28,10 +28,7 @@ extension UIButton {
         let expanded_h = self.frame.size.height + wrappedInset.top + wrappedInset.bottom
         let expanded_rect = CGRect(x: expanded_x, y: expanded_y, width: expanded_w, height: expanded_h)
         let convertPoint = self.convert(point, to: self.superview)
-        return expanded_rect.contains(convertPoint)
-        guard !expanded_rect.contains(convertPoint) else {
-            return true
-        }
+        if expanded_rect.contains(convertPoint) { return true }
         return super.point(inside: point, with: event)
     }
 }

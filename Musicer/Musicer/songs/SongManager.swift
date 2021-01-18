@@ -62,7 +62,7 @@ extension SongManager {
      @return    删除歌曲是否成功
      */
     func delete(song aSong: Song, from list: String, withFile with: Bool = false)->MUError { self.del(aSong, list, with) }
-
+    
 }
 
 fileprivate extension SongManager {
@@ -208,13 +208,13 @@ fileprivate extension SongManager {
         var song = Song(fileName: fileName)
         song.duration = t
         for item in items {
-            if item.commonKey?.rawValue == "title" { song.name = item.stringValue }
-            if item.commonKey?.rawValue == "artist" { song.author = item.stringValue }
-            if item.commonKey?.rawValue == "albumName" { song.album.name = item.stringValue }
-            if item.commonKey?.rawValue == "artwork" {
+            if "title" == item.commonKey?.rawValue { song.name = item.stringValue }
+            if "artist" == item.commonKey?.rawValue { song.author = item.stringValue }
+            if "albumName" == item.commonKey?.rawValue { song.album.name = item.stringValue }
+            if "artwork" == item.commonKey?.rawValue {
                 var img: UIImage? = nil
                 if let data = item.dataValue { img = UIImage(data: data) }
-                song.album.local = img
+                song.album.image = img
             }
         }
         return song

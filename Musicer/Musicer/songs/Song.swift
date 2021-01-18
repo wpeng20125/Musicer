@@ -17,5 +17,5 @@ struct Song {
     var author: String? = "Unknown"
     var duration: Float = 0
     var format: FFormat?
-    var album: (name: String?, local: UIImage?)
+    var album: (name: String?, image: UIImage?)
 }
