@@ -8,18 +8,18 @@
 import UIKit
 import AVFoundation
 
-class MusicPlayer {
+class MusicPlayer: NSObject {
     
     weak var dataSource: MusicPlayerDataSource?
     weak var delegate: MusicPlayerDelegate?
     
-    //MARK: -- private
-    private var player: AVAudioPlayer? 
+    // private
+    private var player: AVAudioPlayer?
     private var timer: DispatchSourceTimer?
     private var music: Music?
-    private var timerSuspended: Bool = false
 }
 
+//MARK: -- 播放控制
 extension MusicPlayer {
     
     /**
@@ -64,47 +64,62 @@ fileprivate extension MusicPlayer {
     }
     
     func play_music() {
-        self.player?.play()
-        
+        guard let player = self.player else { return }
+        player.play()
+        self.startTimer()
     }
     
     func pause_music() {
-        self.player?.pause()
-        
+        guard let player = self.player else { return }
+        player.pause()
+        self.cancelTimer()
     }
     
     func stop_music() {
-        self.player?.stop()
+        guard let player = self.player else { return }
+        player.stop()
         self.player = nil
-        
+        self.music = nil
+        self.cancelTimer()
     }
 }
 
+//MARK: -- 计时器
 fileprivate extension MusicPlayer {
     
-    func configTimer() {
+    func startTimer() {
         self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.global())
         self.timer?.schedule(deadline: .now(), repeating: .seconds(1), leeway: .microseconds(10))
         self.timer?.setEventHandler(handler: { [weak self] in
             self?.updateProgress()
         })
-    }
-    
-    func startTimer() {
         self.timer?.resume()
     }
     
     func cancelTimer() {
+        if nil == self.timer { return }
         self.timer?.cancel()
         self.timer = nil
     }
     
     func updateProgress() {
         guard let player = self.player else { return }
-        guard let music = self.music else { return }
         var progress: Float = 0
-        if(music.duration > 0) { progress = Float(player.currentTime) / Float(music.duration) }
+        if(player.duration > 0) { progress = Float(player.currentTime / player.duration) }
+        if(progress < 0) { progress = 0 }
         if(progress > 1.0) { progress = 1.0 }
         self.delegate?.audioPlayer(self, playingByProgress: progress)
+    }
+}
+
+//MARK: -- AVAudioPlayerDelegate
+extension MusicPlayer: AVAudioPlayerDelegate {
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        
     }
 }
