@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA206C2B25B7C88300281EE3 /* AudioSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA206C2A25B7C88300281EE3 /* AudioSessionProtocol.swift */; };
+		AA206CED25B964BD00281EE3 /* AudioRemoteControlManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA206CEC25B964BD00281EE3 /* AudioRemoteControlManager.swift */; };
+		AA206CEF25B9692700281EE3 /* AudioRemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */; };
 		AA2EDDF125397C6200D18524 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2EDDF025397C6200D18524 /* Toaster.swift */; };
 		AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE4255E64B800359F73 /* MusicPlayer.swift */; };
 		AA474BE7255E674C00359F73 /* SongsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE6255E674C00359F73 /* SongsTable.swift */; };
@@ -45,6 +48,9 @@
 /* Begin PBXFileReference section */
 		0115F530A1B8B11897DB095A /* Pods-Musicer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Musicer.release.xcconfig"; path = "Target Support Files/Pods-Musicer/Pods-Musicer.release.xcconfig"; sourceTree = "<group>"; };
 		65A56B6967E3363E13A9BC6D /* Pods_Musicer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Musicer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA206C2A25B7C88300281EE3 /* AudioSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionProtocol.swift; sourceTree = "<group>"; };
+		AA206CEC25B964BD00281EE3 /* AudioRemoteControlManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRemoteControlManager.swift; sourceTree = "<group>"; };
+		AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRemoteControlProtocol.swift; sourceTree = "<group>"; };
 		AA2EDDF025397C6200D18524 /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
 		AA474BE4255E64B800359F73 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		AA474BE6255E674C00359F73 /* SongsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsTable.swift; sourceTree = "<group>"; };
@@ -206,9 +212,12 @@
 		AA5C498425B6C1C600BC554A /* player */ = {
 			isa = PBXGroup;
 			children = (
-				AA474BE4255E64B800359F73 /* MusicPlayer.swift */,
-				AA5C498525B6C6AD00BC554A /* AudioSessionManager.swift */,
 				AA5C497E25B5354500BC554A /* MusicPlayerProtocol.swift */,
+				AA474BE4255E64B800359F73 /* MusicPlayer.swift */,
+				AA206C2A25B7C88300281EE3 /* AudioSessionProtocol.swift */,
+				AA5C498525B6C6AD00BC554A /* AudioSessionManager.swift */,
+				AA206CEC25B964BD00281EE3 /* AudioRemoteControlManager.swift */,
+				AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */,
 			);
 			path = player;
 			sourceTree = "<group>";
@@ -379,6 +388,7 @@
 				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
 				AA4F68D4255AAB63005E6495 /* PlayControllingCardAssist.swift in Sources */,
 				AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */,
+				AA206C2B25B7C88300281EE3 /* AudioSessionProtocol.swift in Sources */,
 				AAEB3F4A25762BEA00912198 /* BaseNavigationController.swift in Sources */,
 				AA56E2B32536E30400EA50C3 /* Common.swift in Sources */,
 				AA56E22B2534480400EA50C3 /* R.generated.swift in Sources */,
@@ -387,6 +397,8 @@
 				AA5C497F25B5354500BC554A /* MusicPlayerProtocol.swift in Sources */,
 				AAEB3F382574D30F00912198 /* Song.swift in Sources */,
 				AABE93AD2566671200B27370 /* SongsListController.swift in Sources */,
+				AA206CED25B964BD00281EE3 /* AudioRemoteControlManager.swift in Sources */,
+				AA206CEF25B9692700281EE3 /* AudioRemoteControlProtocol.swift in Sources */,
 				AAC3272F253E78AB00DF4030 /* Uploader.swift in Sources */,
 				AAEB3F4E25763D1000912198 /* SongsListCell.swift in Sources */,
 				AA4F68D2255A9B36005E6495 /* PlayingController.swift in Sources */,

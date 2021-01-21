@@ -7,46 +7,25 @@
 
 import AVFoundation
 
-protocol AudioSessionProtocol: NSObjectProtocol {
+class AudioSessionManager: NSObject {
     
+    weak var delegate: AudioSessionDelegate?
     
 }
 
-class AudioSessionManager: NSObject {
+extension AudioSessionManager {
     
+    /**
+     激活 session
+     */
     func active() {
         
     }
     
+    /**
+     释放 session
+     */
     func deActive() {
-        
-    }
-}
-
-//MARK: -- 远程控制
-fileprivate extension AudioSessionManager {
-    
-    func addRemoteControlHandler() {
-        
-    }
-    
-    func play() {
-        
-    }
-    
-    func pause() {
-        
-    }
-    
-    func next() {
-        
-    }
-    
-    func last() {
-        
-    }
-    
-    func seek() {
         
     }
 }
@@ -63,6 +42,15 @@ fileprivate extension AudioSessionManager {
                                                selector: #selector(interruptionHandle(noti:)),
                                                name: AVAudioSession.silenceSecondaryAudioHintNotification,
                                                object: nil)
+    }
+    
+    func removeInterruptionHandler() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: AVAudioSession.interruptionNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: AVAudioSession.silenceSecondaryAudioHintNotification,
+                                                  object: nil)
     }
     
     @objc func interruptionHandle(noti: Notification) {
@@ -87,11 +75,11 @@ fileprivate extension AudioSessionManager {
     }
     
     func interruptionBegin() {
-        
+        self.delegate?.sessionManager(self, didInterruptionStateChange: .begin)
     }
     
     func interruptionFinish() {
-        
+        self.delegate?.sessionManager(self, didInterruptionStateChange: .end)
     }
 }
 
