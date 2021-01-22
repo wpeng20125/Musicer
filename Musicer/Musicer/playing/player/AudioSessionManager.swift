@@ -15,16 +15,12 @@ class AudioSessionManager: NSObject {
 
 extension AudioSessionManager {
     
-    /**
-     激活 session
-     */
+    /// 激活 session
     func active() {
         
     }
     
-    /**
-     释放 session
-     */
+    /// 释放 session
     func deActive() {
         
     }

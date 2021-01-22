@@ -32,18 +32,14 @@ extension SimpleCache {
 
 extension SimpleCache {
     
-    /**
-     清空缓存
-     */
+    /// 清空缓存
     func clear() {
         self.lock.wait()
         if(!self.map.isEmpty) { self.map.removeAll() }
         self.lock.signal()
     }
     
-    /**
-     缓存中的所有的值
-     */
+    /// 缓存中的所有的值
     var values: [Value]? {
         self.lock.wait()
         var _values = self.map.isEmpty ? nil : [Value]()
@@ -56,9 +52,7 @@ extension SimpleCache {
         return _values
     }
     
-    /**
-     缓存中的所有的键
-     */
+    /// 缓存中的所有的键
     var keys: [Key]? {
         self.lock.wait()
         var _keys = self.map.isEmpty ? nil : [Key]()

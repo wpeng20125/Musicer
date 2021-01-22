@@ -23,26 +23,19 @@ class MusicPlayer: NSObject {
 //MARK: -- 播放控制
 extension MusicPlayer {
     
-    /**
-     该函数返回的是一个单例
-     */
+    /// 该函数返回的是一个单例
     static let `default` = MusicPlayer()
     
+    /// 刷新数据源，在进行上一曲/下一曲播放时，通过 MusicPlayerDataSource 提供数据，然后调用该方法刷新播放器数据
     func reloadData() { self.reload_data() }
     
-    /**
-     播放
-     */
+    /// 播放
     func play() { self.play_music() }
     
-    /**
-     暂停
-     */
+    /// 暂停
     func pause() { self.pause_music() }
     
-    /**
-     停止，停止播放会释放 player
-     */
+    /// 停止，停止播放会释放 player
     func stop() { self.stop_music() }
 }
 

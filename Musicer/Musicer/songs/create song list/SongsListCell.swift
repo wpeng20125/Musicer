@@ -8,18 +8,15 @@
 import UIKit
 
 class SongsListCell: UITableViewCell {
-
-    /**
-     返回一个 cell 实例
-     */
+    
+    /// 返回一个 cell 实例
     static func cell(withTableView tableView: UITableView)->SongsListCell {  self.cell(tableView) }
 
-    /**
-     刷新数据
-     
-     @param   title  列表名称
-     @param   image  列表对应的 icon
-     */
+    /// 刷新数据
+    ///
+    /// - Parameters:
+    ///   - title: 列表名称
+    ///   - image: 列表对应的 icon
     func refresh(withTitle title: String, image icon: UIImage?) { self.set(title, icon) }
     
     

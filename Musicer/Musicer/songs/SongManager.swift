@@ -23,45 +23,40 @@ class SongManager {
 
 extension SongManager {
     
-    /**
-     所有的歌单名称数组，最少也会包含 "全部歌曲" 和 "我喜欢的" 两个列表
-     */
+    /// 所有的歌单名称数组，最少也会包含 "全部歌曲" 和 "我喜欢的" 两个列表
     func totalLists()->[String] { self.fetch_total_lists() }
     
-    /**
-     该函数的作用是获取某个列表下的歌曲
-     
-     @param   name   列表名称
-     @param   comp   回调，通过闭包返回包含 Song 实体的数组
-     */
+    /// 该函数的作用是获取某个列表下的歌曲
+    ///
+    /// - Parameters:
+    ///   - name: 列表名称
+    ///   - comp: 回调，通过闭包返回包含 Song 实体的数组
     func songs(forList name: String, complete comp: @escaping ([Song]?)->Void) { self.fetch_songs_for_list(name, comp) }
     
-    /**
-     创建一个歌单
-     
-     @param   name  要创建的列表名称
-     @return    创建是否成功
-     */
+    /// 创建一个歌单列表
+    ///
+    /// - Parameters:
+    ///   - name: 要创建的列表名称
+    ///   - comp: 回调，通过闭包返回包含 Song 实体的数组
+    /// - Returns: 歌单创建是否成功
     func creatFolder(withName name: String)->MUError { self.create_folder(name) }
     
-    /**
-     将歌曲添加到一个歌单
-     
-     @param   aSong  歌曲实体
-     @param   list  歌单名称
-     @return    添加歌曲是否成功
-     */
+    /// 将歌曲添加到一个歌单
+    ///
+    /// - Parameters:
+    ///   - aSong: 歌曲实体
+    ///   - list:  歌单名称
+    /// - Returns: 添加歌曲是否成功
     func addSong(song aSong: Song, toList list: String)->MUError { self.add_song(aSong, list) }
     
-    /**
-     将歌曲从歌单中删除
-     
-     @param   aSong  歌曲实体
-     @param   list  歌单名称
-     @param   with 是否同时删除本地文件
-     @return    删除歌曲是否成功
-     */
-    func delete(song aSong: Song, from list: String, withFile with: Bool = false)->MUError { self.del(aSong, list, with) }
+    /// 将歌曲从歌单中删除
+    ///
+    /// - Parameters:
+    ///   - aSong  歌曲实体
+    ///   - list  歌单名称
+    ///   - flag  是否同时删除本地文件
+    /// - Returns: 删除歌曲是否成功
+    func delete(song aSong: Song, from list: String, withFile flag: Bool = false)->MUError { self.del(aSong, list, flag) }
     
 }
 

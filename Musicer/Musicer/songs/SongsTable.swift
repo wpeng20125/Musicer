@@ -29,9 +29,7 @@ class SongsTable: UIView {
     
     weak var delegate: SongsTableDelegate?
     
-    /**
-     刷新列表数据
-     */
+    /// 刷新列表数据
     func reload(_ songs: [Song]) {
         self.songs = songs
         self.tableView.reloadData()

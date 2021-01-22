@@ -24,9 +24,7 @@ class ItemProperty {
     var boarderWidth: Float?
     var cornerRadius: Float?
     var itemSize: CGSize?
-    /**
-     只对左右两侧的 item 有用。对于左侧的 item，该值代表的是 item 距离左边缘的距离；对于右侧的 item，该值代表的是该 item 距离右边缘的距离
-     */
+    // 只对左右两侧的 item 有用。对于左侧的 item，该值代表的是 item 距离左边缘的距离；对于右侧的 item，该值代表的是该 item 距离右边缘的距离
     var itemEdgeInset: Float?
 }
 

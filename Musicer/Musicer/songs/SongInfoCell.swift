@@ -9,14 +9,10 @@ import UIKit
 
 class SongInfoCell: UITableViewCell {
     
-    /**
-     返回一个 cell 实例
-     */
+    /// 返回一个 cell 实例
     class func cell(withTableView tableView: UITableView)->SongInfoCell { SongInfoCell.cell(tableView) }
     
-    /**
-     设置 cell 的数据
-     */
+    /// 设置 cell 的数据
     func refresh(withSong song: Song) { self.setData(song) }
     
     
