@@ -10,10 +10,10 @@ import UIKit
 
 struct NowPlayingInfo {
     var songName: String
-    var duration: Float
-    var albumName: String
-    var albumImage: UIImage
-    var singer: String
+    var duration: UInt
+    var singer: String?
+    var albumName: String?
+    var albumImage: UIImage?
 }
 
 enum NowPlayingAction {
@@ -31,7 +31,7 @@ protocol AudioRemoteControlDataSource: NSObjectProtocol {
     /// 需要注意的是这个数据源方法只需在播放一首歌开始的时候设置即可
     ///
     /// - Returns: NowPlayingInfo
-    func remoteControlNowPlayingInfo()->NowPlayingInfo
+    func remoteControlNowPlayingInfo()->NowPlayingInfo?
     
     /// 播放过程中的实时进度
     ///

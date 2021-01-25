@@ -5,17 +5,20 @@
 //  Created by 王朋 on 2021/1/18.
 //
 
-import Foundation
+import UIKit
 
 enum PlayerState {
     case play
     case pause
-    case stop
 }
 
 struct Music: Equatable {
     var fileURL: URL
-    var duration: Int
+    var duration: UInt
+    var songName: String
+    var albumName: String?
+    var albumImage: UIImage?
+    var singer: String?
     
     static func == (lmc: Music, rmc: Music) -> Bool {
         return lmc.fileURL == rmc.fileURL
@@ -34,14 +37,23 @@ protocol MusicPlayerDataSource: NSObjectProtocol {
 
 protocol MusicPlayerDelegate: NSObjectProtocol {
     
-    /// 发生错误时的回调函数，所有的错误均回调该函数
+    
+    /// 播放音乐时发生错误的回调
+    /// - Note:
+    ///   需要注意的是，当发生错误的时候，内部只是把错误回调到外界了，使用者自己去处理相关的业务逻辑。
+    ///   包括暂停播放、弹窗提示等
+    /// - Parameters:
+    ///   - player: MusicPlayer 实例
+    ///   - error: 具体的错误
     func audioPlayer(_ player: MusicPlayer, didErrorOccur error: MUError)
     
     /// 播放器状态发生改变时的回调函数
-    ///
+    /// - Note:
+    ///   不要在这个回调方法中根据状态再次调用播放或暂停，内部已经处理。如果调用的话会造成递归死循环！
+    ///   该回调只是用来根据状态更新 UI 的
     /// - Parameters:
     ///   - player: MusicPlayer 实例
-    ///   - state: 播放器状态
+    ///   - state: 播放器状态改变后的状态值
     func audioPlayer(_ player: MusicPlayer, stateChanged state: PlayerState)
     
     /// 播放过程中，播放进度的回调函数

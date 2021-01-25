@@ -18,6 +18,19 @@ class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var timer: DispatchSourceTimer?
     private var music: Music?
+    
+    private lazy var sessionManager: AudioSessionManager = {
+        let manager = AudioSessionManager()
+        manager.delegate = self
+        return manager
+    }()
+    
+    private lazy var remoteControlManager: AudioRemoteControlManager = {
+        let manager = AudioRemoteControlManager()
+        manager.dataSource = self
+        manager.delegate = self
+        return manager
+    }()
 }
 
 //MARK: -- 播放控制
@@ -61,12 +74,22 @@ fileprivate extension MusicPlayer {
         guard let player = self.player else { return }
         player.play()
         self.startTimer()
+        
+        // 配置信息
+        self.sessionManager.configSession()
+        self.remoteControlManager.configRemoteControl()
+        // 设置锁屏信息
+        self.remoteControlManager.configNowPlayingInfo()
+        // 回调播放器的状态
+        self.delegate?.audioPlayer(self, stateChanged: .play)
     }
     
     func pause_music() {
         guard let player = self.player else { return }
         player.pause()
         self.cancelTimer()
+        // 回调播放器的状态
+        self.delegate?.audioPlayer(self, stateChanged: .pause)
     }
     
     func stop_music() {
@@ -75,6 +98,10 @@ fileprivate extension MusicPlayer {
         self.player = nil
         self.music = nil
         self.cancelTimer()
+        // 释放 session
+        self.sessionManager.releaseSession()
+        // 清除 nowPlayingInfo
+        self.remoteControlManager.clearNowPlayingInfo()
     }
 }
 
@@ -110,10 +137,64 @@ fileprivate extension MusicPlayer {
 extension MusicPlayer: AVAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        
+        guard let wrappedMusic = self.music else { return }
+        self.delegate?.audioPlayer(self, willPlayNextMusic: wrappedMusic)
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        
+        self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "音频解码失败"))
     }
 }
+
+//MARK: -- AudioSessionDelegate
+extension MusicPlayer: AudioSessionDelegate {
+    
+    func sessionManager(_ manager: AudioSessionManager, didInterruptionStateChange state: AudioInterruptionState) {
+        switch state {
+        case .begin: self.pause()
+        default: ()
+        }
+    }
+    
+    func sessionManager(_ manager: AudioSessionManager, shouldContinuePlayingWithRouteChanged continuePlay: Bool) {
+        if continuePlay { return }
+        self.pause()
+    }
+    
+    func sessionManager(_ manager: AudioSessionManager, didErrorOccur error: MUError) {
+        self.delegate?.audioPlayer(self, didErrorOccur: error)
+    }
+}
+
+//MARK: -- AudioRemoteControlDataSource / AudioRemoteControlDelegate
+extension MusicPlayer: AudioRemoteControlDataSource, AudioRemoteControlDelegate {
+    
+    func remoteControlNowPlayingProgress() -> UInt {
+        1
+    }
+    
+    func remoteControlNowPlayingInfo() -> NowPlayingInfo? {
+        guard let music = self.music else { return nil }
+        let nowPlayingInfo = NowPlayingInfo(songName: music.songName,
+                                            duration: music.duration,
+                                            singer: music.singer,
+                                            albumName: music.albumName,
+                                            albumImage: music.albumImage)
+        return nowPlayingInfo
+    }
+    
+    func remoteControl(didTriggerAction action: NowPlayingAction, withParam param: Any?) {
+        guard let wrappedMusic = self.music else { return }
+        switch action {
+        case .play: self.play()
+        case .pause: self.pause()
+        case .next: self.delegate?.audioPlayer(self, willPlayNextMusic: wrappedMusic)
+        case .last: self.delegate?.audioPlayer(self, willPlayLastMusic: wrappedMusic)
+        case .seek:
+            guard let warppedProgress = param as? Float else { return }
+            self.delegate?.audioPlayer(self, playingByProgress: warppedProgress)
+        }
+    }
+}
+
+

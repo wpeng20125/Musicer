@@ -21,6 +21,7 @@ class AudioRemoteControlManager: NSObject {
     private var seekCommand: Any?
     
     private var nowPlayingInfo: NowPlayingInfo?
+    private var isRemoteControlActive: Bool = false
 }
 
 extension AudioRemoteControlManager {
@@ -41,6 +42,8 @@ extension AudioRemoteControlManager {
 fileprivate extension AudioRemoteControlManager {
     
     func addRemoteControlHandler() {
+        if self.isRemoteControlActive { return }
+        self.isRemoteControlActive = true
         // 播放
         self.playCommand = MPRemoteCommandCenter.shared().playCommand.addTarget(handler: {[weak self] (event) -> MPRemoteCommandHandlerStatus in
             self?.remote_play()
@@ -67,13 +70,14 @@ fileprivate extension AudioRemoteControlManager {
                   let playingInfo = self.nowPlayingInfo else {
                 return .commandFailed
             }
-            let progres = Float(seekEvent.positionTime) / playingInfo.duration
+            let progres = Float(seekEvent.positionTime) / Float(playingInfo.duration)
             self.remote_seek(progres)
             return .success
         })
     }
     
     func removeRemoteControlHandler() {
+        self.isRemoteControlActive = false
         // remove command
         MPRemoteCommandCenter.shared().playCommand.removeTarget(self.playCommand)
         MPRemoteCommandCenter.shared().pauseCommand.removeTarget(self.pauseCommand)
@@ -90,16 +94,21 @@ fileprivate extension AudioRemoteControlManager {
         var nowPlayingInfo = [String : Any]()
         // 歌曲名称
         nowPlayingInfo[MPMediaItemPropertyTitle] = info.songName
+        // 歌曲时长
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = info.duration
         // 专辑名称
-        nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = info.albumName
+        if let albumName = info.albumName { nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = albumName }
         // 歌手
-        nowPlayingInfo[MPMediaItemPropertyArtist] = info.singer
+        if let singer = info.singer { nowPlayingInfo[MPMediaItemPropertyArtist] = singer }
         // 专辑封面
-        let artwork = MPMediaItemArtwork(boundsSize: info.albumImage.size) { (size) -> UIImage in
-            guard let image = info.albumImage.resize(size) else { return info.albumImage }
-            return image
+        if let albumImage = info.albumImage {
+            let artwork = MPMediaItemArtwork(boundsSize: albumImage.size) { (size) -> UIImage in
+                guard let image = albumImage.resize(size) else { return albumImage }
+                return image
+            }
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
         }
-        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+        // set info
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
@@ -111,19 +120,19 @@ fileprivate extension AudioRemoteControlManager {
 fileprivate extension AudioRemoteControlManager {
     
     func remote_play() {
-        
+        self.delegate?.remoteControl(didTriggerAction: .play, withParam: nil)
     }
     
     func remote_pause() {
-        
+        self.delegate?.remoteControl(didTriggerAction: .pause, withParam: nil)
     }
     
     func remote_next() {
-        
+        self.delegate?.remoteControl(didTriggerAction: .next, withParam: nil)
     }
     
     func remote_last() {
-        
+        self.delegate?.remoteControl(didTriggerAction: .last, withParam: nil)
     }
     
     func remote_seek(_ progress: Float) {

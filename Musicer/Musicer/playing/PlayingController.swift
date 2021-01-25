@@ -9,15 +9,9 @@ import FLEX.FLEXManager
 #endif
 
 import UIKit
-import AVFoundation
 
 class PlayingController: BaseViewController {
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) { self.assist.show() }
-    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
@@ -26,11 +20,7 @@ class PlayingController: BaseViewController {
     }
     
     //MARK: -- lazy
-    private(set) lazy var table: SongsTable = { SongsTable() }()
-    private(set) lazy var assist: PlayControllingCardAssist = { PlayControllingCardAssist.standardAssist() }()
-    private(set) lazy var card: PlayControllingCard = { PlayControllingCard.standardCard() }()
-    // data
-    private lazy var currentList: [Song] = { [] }()
+    private lazy var table: SongsTable = { SongsTable() }()
 }
 
 //MARK: -- setup subviews
@@ -49,17 +39,12 @@ fileprivate extension PlayingController {
         }
         titleBar.configure()
         
+        self.table.delegate = self
         self.view.addSubview(self.table)
         self.table.snp.makeConstraints { (make) in
             make.top.equalTo(titleBar.snp.bottom)
             make.left.bottom.right.equalTo(self.view)
         }
-        
-        self.assist.delegate = self
-        self.view.addSubview(self.assist)
-        
-        self.card.delegate = self
-        self.view.addSubview(self.card)
     }
 }
 
@@ -83,7 +68,7 @@ fileprivate extension PlayingController {
     }
 }
 
-extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControllingCardAssistDelegate, PlayControllingCardDelegate, SongsTableDelegate, LoadingProtocol {
+extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate, LoadingProtocol {
     
     //MARK: -- TitleBarDataSource
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
@@ -124,66 +109,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, PlayControlli
     func reload() {
         self.refresh()
     }
-    
-    //MARK: -- PlayControllingCardAssistDelegate
-    func assistGestureTriggered(_ assist: PlayControllingCardAssist) {
-        self.card.show()
-        assist.hide()
-    }
-    
-    //MARK: -- PlayControllingCardDelegate
-    func playControllingCardPlayNextSong(_ card: PlayControllingCard) {
         
-    }
-    
-    func playControllingCardPlayLastSong(_ card: PlayControllingCard) {
-        
-    }
-    
-    func playControllingCardUploadSongs(_ card: PlayControllingCard) {
-        let uploader = UploadController()
-        uploader.delegate = self
-        self.present(uploader, animated: true, completion: nil)
-    }
-    
-    func playControllingCardShowAllList(_ card: PlayControllingCard) {
-        let listVc = SongsListController()
-        self.navigationController?.pushViewController(listVc, animated: true)
-    }
-    
-    func playControllingCardShowCurrentList(_ card: PlayControllingCard) {
-        
-    }
-    
-    func playControllingCardFavouriteThisSong(_ card: PlayControllingCard) {
-        
-    }
-    
-    func playControllingCard(_ card: PlayControllingCard, playingModeChanged mode: PlayingMode) {
-        
-    }
-    
-    func playControllingCard(_ card: PlayControllingCard, playingStateChanged state: PlayingState) {
-        
-    }
-    
-    func playControllingCard(_ card: PlayControllingCard, willDisplay byShowing: Bool) {
-        UIView.animate(withDuration: 0.2) {
-            self.table.snp.updateConstraints { (make) in
-                make.bottom.equalTo(self.view).offset(byShowing ? -card.kw_h : 0)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func playControllingCard(_ card: PlayControllingCard, displayCompleted byShowing: Bool) {
-        guard byShowing else {
-            self.assist.show()
-            return
-        }
-        self.assist.hide()
-    }
-    
     //MARK: -- SongsTableDelegate
     func songsTable(_ table: SongsTable, didSelectSong song: Song) {
         

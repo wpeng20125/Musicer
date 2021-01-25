@@ -11,18 +11,24 @@ class AudioSessionManager: NSObject {
     
     weak var delegate: AudioSessionDelegate?
     
+    /// 当前应用程序的 audiosession 是否是激活状态
+    private var isAudioSessionActive: Bool = false
 }
 
 extension AudioSessionManager {
     
-    /// 激活 session
-    func active() {
-        
+    /// 配置 session
+    func configSession() {
+        if self.isAudioSessionActive { return }
+        self.addInterruptionHandler()
+        self.addRouteChangeHandler()
     }
     
     /// 释放 session
-    func deActive() {
-        
+    func releaseSession() {
+        self.isAudioSessionActive = false
+        self.removeInterruptionHandler()
+        self.removeRouteChangeHandler()
     }
 }
 
@@ -30,6 +36,17 @@ extension AudioSessionManager {
 fileprivate extension AudioSessionManager {
     
     func addInterruptionHandler() {
+        // do active
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback,
+                                                            mode: .default,
+                                                            options: [.allowBluetoothA2DP, .defaultToSpeaker])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch _ {
+            self.didErrorOccur(MUError.some(desc: "AudioSession 激活失败"))
+            return
+        }
+        // add observer
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(interruptionHandle(noti:)),
                                                name: AVAudioSession.interruptionNotification,
@@ -38,15 +55,24 @@ fileprivate extension AudioSessionManager {
                                                selector: #selector(interruptionHandle(noti:)),
                                                name: AVAudioSession.silenceSecondaryAudioHintNotification,
                                                object: nil)
+        self.isAudioSessionActive = true
     }
     
     func removeInterruptionHandler() {
+        // deactive
+        do {
+            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        } catch _ {
+            self.didErrorOccur(MUError.some(desc: "AudioSession 失活失败"))
+            return
+        }
         NotificationCenter.default.removeObserver(self,
                                                   name: AVAudioSession.interruptionNotification,
                                                   object: nil)
         NotificationCenter.default.removeObserver(self,
                                                   name: AVAudioSession.silenceSecondaryAudioHintNotification,
                                                   object: nil)
+        self.isAudioSessionActive = false
     }
     
     @objc func interruptionHandle(noti: Notification) {
@@ -71,15 +97,46 @@ fileprivate extension AudioSessionManager {
     }
     
     func interruptionBegin() {
+        self.isAudioSessionActive = false
         self.delegate?.sessionManager(self, didInterruptionStateChange: .begin)
     }
     
     func interruptionFinish() {
         self.delegate?.sessionManager(self, didInterruptionStateChange: .end)
     }
+    
+    func didErrorOccur(_ error: MUError) {
+        self.delegate?.sessionManager(self, didErrorOccur: error)
+    }
 }
 
-//MARK: -- 播放路径改变
+//MARK: -- 外设改变
 fileprivate extension AudioSessionManager {
     
+    func addRouteChangeHandler() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(routeChange(noti:)),
+                                               name: AVAudioSession.routeChangeNotification,
+                                               object: nil)
+    }
+    
+    func removeRouteChangeHandler() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: AVAudioSession.routeChangeNotification,
+                                                  object: nil)
+    }
+    
+    @objc func routeChange(noti: Notification) {
+        guard let userInfo = noti.userInfo,
+              let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else { return }
+        
+        var playing = true
+        if reason == .oldDeviceUnavailable {
+            if let priviousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
+                playing = priviousRoute.outputs.filter({$0.portType == .headphones}).isEmpty
+            }
+        }
+        self.delegate?.sessionManager(self, shouldContinuePlayingWithRouteChanged: playing)
+    }
 }
