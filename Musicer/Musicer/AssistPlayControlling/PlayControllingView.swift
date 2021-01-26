@@ -154,6 +154,7 @@ extension PlayControllingView {
         layer.add(zoom, forKey: "k_zoom_aniamtion_key")
     }
     
+    // btn rotation
     func rotation(layer: CALayer) {
         let rotation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotation.duration = 0.25
