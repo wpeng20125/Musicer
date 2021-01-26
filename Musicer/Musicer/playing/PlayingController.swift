@@ -45,6 +45,10 @@ fileprivate extension PlayingController {
             make.top.equalTo(titleBar.snp.bottom)
             make.left.bottom.right.equalTo(self.view)
         }
+        
+        let assist = PlayControllingAssist.sharedAssist
+        assist.layer.zPosition = 10000
+        UIApplication.shared.windows.first?.addSubview(assist)
     }
 }
 
@@ -85,7 +89,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
             return nil
             #endif
         case .middle:
-            item.title = "当前播放列表"
+            item.title = "全部歌曲"
             item.titleColor = R.color.mu_color_white()
             item.fontSize = 16.0
             return item

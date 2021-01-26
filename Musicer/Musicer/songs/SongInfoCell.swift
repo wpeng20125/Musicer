@@ -35,6 +35,14 @@ class SongInfoCell: UITableViewCell {
         lbl.textColor = R.color.mu_color_white()
         return lbl
     }()
+    
+    private lazy var timeLbl: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont(name: "DIN Alternate", size: 14.0)
+        lbl.textColor = R.color.mu_color_white()
+        lbl.textAlignment = .right
+        return lbl
+    }()
 }
 
 fileprivate extension SongInfoCell {
@@ -60,7 +68,7 @@ fileprivate extension SongInfoCell {
         self.iconView.snp.makeConstraints { (make) in
             make.left.equalTo(self.contentView).offset(20.0)
             make.centerY.equalTo(self.contentView)
-            make.size.equalTo(CGSize(width: 40.0, height: 40.0))
+            make.size.equalTo(CGSize(width: 50.0, height: 50.0))
         }
         
         self.contentView.addSubview(self.titleLbl)
@@ -76,15 +84,27 @@ fileprivate extension SongInfoCell {
             make.top.equalTo(self.contentView.snp.centerY).offset(5.0)
             make.right.equalTo(self.contentView).offset(-20.0)
         }
+        
+        self.contentView.addSubview(self.timeLbl)
+        self.timeLbl.snp.makeConstraints { (make) in
+            make.right.equalTo(self.contentView).offset(-20.0)
+            make.centerY.equalTo(self.contentView)
+        }
     }
     
     func setData(_ song: Song) {
-        
         self.iconView.image = song.album.image
-        
         self.titleLbl.text = song.name
-        
         self.authorLbl.text = song.author
-        
+        self.timeLbl.text = self.formatTime(time: song.duration)
+    }
+    
+    func formatTime(time: Float)->String {
+        let total = Int(ceilf(time))
+        let sec = total % 60
+        let min = (total - sec) / 60
+        let minStr = min >= 10 ? "\(min)" : "0\(min)"
+        let secStr = sec >= 10 ? "\(sec)" : "0\(sec)"
+        return "\(minStr):\(secStr)"
     }
 }

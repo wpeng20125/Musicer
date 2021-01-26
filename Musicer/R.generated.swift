@@ -105,20 +105,18 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.color` struct is generated, and contains static references to 14 colors.
+  /// This `R.color` struct is generated, and contains static references to 17 colors.
   struct color {
-    /// Color `AccentColor`.
-    static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
-    /// Color `mu_color_black_with_alpha_2`.
-    static let mu_color_black_with_alpha_2 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_2")
-    /// Color `mu_color_black_with_alpha_3`.
-    static let mu_color_black_with_alpha_3 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_3")
-    /// Color `mu_color_black_with_alpha_5`.
-    static let mu_color_black_with_alpha_5 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_5")
-    /// Color `mu_color_black_with_alpha_6`.
-    static let mu_color_black_with_alpha_6 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_6")
-    /// Color `mu_color_black_with_alpha_8`.
-    static let mu_color_black_with_alpha_8 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_with_alpha_8")
+    /// Color `mu_color_black_alpha_2`.
+    static let mu_color_black_alpha_2 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_2")
+    /// Color `mu_color_black_alpha_3`.
+    static let mu_color_black_alpha_3 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_3")
+    /// Color `mu_color_black_alpha_5`.
+    static let mu_color_black_alpha_5 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_5")
+    /// Color `mu_color_black_alpha_6`.
+    static let mu_color_black_alpha_6 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_6")
+    /// Color `mu_color_black_alpha_8`.
+    static let mu_color_black_alpha_8 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_8")
     /// Color `mu_color_black`.
     static let mu_color_black = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black")
     /// Color `mu_color_clear`.
@@ -127,6 +125,14 @@ struct R: Rswift.Validatable {
     static let mu_color_gray_dark = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_gray_dark")
     /// Color `mu_color_gray_light`.
     static let mu_color_gray_light = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_gray_light")
+    /// Color `mu_color_lavender_alpha_5`.
+    static let mu_color_lavender_alpha_5 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_lavender_alpha_5")
+    /// Color `mu_color_lavender_alpha_6`.
+    static let mu_color_lavender_alpha_6 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_lavender_alpha_6")
+    /// Color `mu_color_lavender_alpha_8`.
+    static let mu_color_lavender_alpha_8 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_lavender_alpha_8")
+    /// Color `mu_color_lavender`.
+    static let mu_color_lavender = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_lavender")
     /// Color `mu_color_orange_dark`.
     static let mu_color_orange_dark = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_orange_dark")
     /// Color `mu_color_orange_light`.
@@ -135,15 +141,6 @@ struct R: Rswift.Validatable {
     static let mu_color_progress_bg = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_progress_bg")
     /// Color `mu_color_white`.
     static let mu_color_white = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_white")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(tvOS 11.0, *)
-    @available(iOS 11.0, *)
-    static func accentColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.accentColor, compatibleWith: traitCollection)
-    }
-    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIColor(named: "mu_color_black", bundle: ..., traitCollection: ...)`
@@ -155,47 +152,47 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha_2", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_alpha_2", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_2, compatibleWith: traitCollection)
+    static func mu_color_black_alpha_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_alpha_2, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha_3", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_alpha_3", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_3, compatibleWith: traitCollection)
+    static func mu_color_black_alpha_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_alpha_3, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha_5", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_alpha_5", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_5, compatibleWith: traitCollection)
+    static func mu_color_black_alpha_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_alpha_5, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha_6", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_alpha_6", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_6, compatibleWith: traitCollection)
+    static func mu_color_black_alpha_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_alpha_6, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "mu_color_black_with_alpha_8", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "mu_color_black_alpha_8", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func mu_color_black_with_alpha_8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.mu_color_black_with_alpha_8, compatibleWith: traitCollection)
+    static func mu_color_black_alpha_8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_black_alpha_8, compatibleWith: traitCollection)
     }
     #endif
 
@@ -223,6 +220,42 @@ struct R: Rswift.Validatable {
     @available(iOS 11.0, *)
     static func mu_color_gray_light(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
       return UIKit.UIColor(resource: R.color.mu_color_gray_light, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_lavender", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_lavender(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_lavender, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_5", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_lavender_alpha_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_lavender_alpha_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_6", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_lavender_alpha_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_lavender_alpha_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_8", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_lavender_alpha_8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_lavender_alpha_8, compatibleWith: traitCollection)
     }
     #endif
 
@@ -265,7 +298,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 67 images.
+  /// This `R.image` struct is generated, and contains static references to 59 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
@@ -279,40 +312,24 @@ struct R: Rswift.Validatable {
     static let mu_image_arrow_right = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_right")
     /// Image `mu_image_arrow_up`.
     static let mu_image_arrow_up = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_up")
-    /// Image `mu_image_control_pull`.
-    static let mu_image_control_pull = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_control_pull")
+    /// Image `mu_image_assist_close`.
+    static let mu_image_assist_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_close")
+    /// Image `mu_image_assist_last_disabled`.
+    static let mu_image_assist_last_disabled = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_last_disabled")
+    /// Image `mu_image_assist_last_enabled`.
+    static let mu_image_assist_last_enabled = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_last_enabled")
+    /// Image `mu_image_assist_next_disabled`.
+    static let mu_image_assist_next_disabled = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_next_disabled")
+    /// Image `mu_image_assist_next_enabled`.
+    static let mu_image_assist_next_enabled = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_next_enabled")
+    /// Image `mu_image_assist_pause`.
+    static let mu_image_assist_pause = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_pause")
+    /// Image `mu_image_assist_play`.
+    static let mu_image_assist_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_play")
     /// Image `mu_image_nav_back`.
     static let mu_image_nav_back = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_back")
-    /// Image `mu_image_play_last`.
-    static let mu_image_play_last = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_last")
-    /// Image `mu_image_play_mode_headset`.
-    static let mu_image_play_mode_headset = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_mode_headset")
-    /// Image `mu_image_play_mode_speaker`.
-    static let mu_image_play_mode_speaker = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_mode_speaker")
-    /// Image `mu_image_play_next`.
-    static let mu_image_play_next = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_next")
-    /// Image `mu_image_play_random`.
-    static let mu_image_play_random = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_random")
-    /// Image `mu_image_play_single_loop`.
-    static let mu_image_play_single_loop = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_single_loop")
-    /// Image `mu_image_play_squence_loop`.
-    static let mu_image_play_squence_loop = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_squence_loop")
-    /// Image `mu_image_play_squence`.
-    static let mu_image_play_squence = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play_squence")
-    /// Image `mu_image_play`.
-    static let mu_image_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_play")
     /// Image `mu_image_portrait_placeholder`.
     static let mu_image_portrait_placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_portrait_placeholder")
-    /// Image `mu_image_song_share`.
-    static let mu_image_song_share = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_share")
-    /// Image `mu_image_songs_add`.
-    static let mu_image_songs_add = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_add")
-    /// Image `mu_image_songs_folder_all`.
-    static let mu_image_songs_folder_all = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_all")
-    /// Image `mu_image_songs_folder_current`.
-    static let mu_image_songs_folder_current = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_current")
-    /// Image `mu_image_songs_folder_favourite`.
-    static let mu_image_songs_folder_favourite = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_favourite")
     /// Image `mu_image_songs_folder_icon_all`.
     static let mu_image_songs_folder_icon_all = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_all")
     /// Image `mu_image_songs_folder_icon_custom_1`.
@@ -445,9 +462,51 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_control_pull", bundle: ..., traitCollection: ...)`
-    static func mu_image_control_pull(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_control_pull, compatibleWith: traitCollection)
+    /// `UIImage(named: "mu_image_assist_close", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_close, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_last_disabled", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_last_disabled(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_last_disabled, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_last_enabled", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_last_enabled(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_last_enabled, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_next_disabled", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_next_disabled(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_next_disabled, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_next_enabled", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_next_enabled(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_next_enabled, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_pause", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_pause(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_pause, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_assist_play", bundle: ..., traitCollection: ...)`
+    static func mu_image_assist_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_assist_play, compatibleWith: traitCollection)
     }
     #endif
 
@@ -459,107 +518,9 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play", bundle: ..., traitCollection: ...)`
-    static func mu_image_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_last", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_last(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_last, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_mode_headset", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_mode_headset(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_mode_headset, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_mode_speaker", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_mode_speaker(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_mode_speaker, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_next", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_next(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_next, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_random", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_random(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_random, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_single_loop", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_single_loop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_single_loop, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_squence", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_squence(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_squence, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_play_squence_loop", bundle: ..., traitCollection: ...)`
-    static func mu_image_play_squence_loop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_play_squence_loop, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_portrait_placeholder", bundle: ..., traitCollection: ...)`
     static func mu_image_portrait_placeholder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_portrait_placeholder, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_song_share", bundle: ..., traitCollection: ...)`
-    static func mu_image_song_share(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_song_share, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_songs_add", bundle: ..., traitCollection: ...)`
-    static func mu_image_songs_add(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_songs_add, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_songs_folder_all", bundle: ..., traitCollection: ...)`
-    static func mu_image_songs_folder_all(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_all, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_songs_folder_current", bundle: ..., traitCollection: ...)`
-    static func mu_image_songs_folder_current(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_current, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mu_image_songs_folder_favourite", bundle: ..., traitCollection: ...)`
-    static func mu_image_songs_folder_favourite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mu_image_songs_folder_favourite, compatibleWith: traitCollection)
     }
     #endif
 
