@@ -75,7 +75,7 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate, SongsTableDeleg
         }
     }
     
-    func songsTable(_ table: SongsTable, didSelectSong song: Song) {
+    func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
         
     }
     

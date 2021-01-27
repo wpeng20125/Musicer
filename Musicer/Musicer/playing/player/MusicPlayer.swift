@@ -11,6 +11,13 @@ import MediaPlayer
 
 class MusicPlayer: NSObject {
     
+    override init() {
+        super.init()
+        // 配置信息
+        self.sessionManager.configSession()
+        self.remoteControlManager.configRemoteControl()
+    }
+    
     weak var dataSource: MusicPlayerDataSource?
     weak var delegate: MusicPlayerDelegate?
     
@@ -35,9 +42,6 @@ class MusicPlayer: NSObject {
 
 //MARK: -- 播放控制
 extension MusicPlayer {
-    
-    /// 该函数返回的是一个单例
-    static let `default` = MusicPlayer()
     
     /// 刷新数据源，在进行上一曲/下一曲播放时，通过 MusicPlayerDataSource 提供数据，然后调用该方法刷新播放器数据
     func reloadData() { self.reload_data() }
@@ -64,6 +68,7 @@ fileprivate extension MusicPlayer {
             self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "播放器初始化失败"))
             return
         }
+        player.delegate = self
         self.player = player
         if !self.player!.prepareToPlay() {
             self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "播放器准备失败"))
@@ -75,9 +80,6 @@ fileprivate extension MusicPlayer {
         player.play()
         self.startTimer()
         
-        // 配置信息
-        self.sessionManager.configSession()
-        self.remoteControlManager.configRemoteControl()
         // 设置锁屏信息
         self.remoteControlManager.configNowPlayingInfo()
         // 回调播放器的状态
@@ -109,7 +111,7 @@ fileprivate extension MusicPlayer {
 fileprivate extension MusicPlayer {
     
     func startTimer() {
-        self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.global())
+        self.timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
         self.timer?.schedule(deadline: .now(), repeating: .seconds(1), leeway: .microseconds(10))
         self.timer?.setEventHandler(handler: { [weak self] in
             self?.updateProgress()
@@ -169,10 +171,6 @@ extension MusicPlayer: AudioSessionDelegate {
 //MARK: -- AudioRemoteControlDataSource / AudioRemoteControlDelegate
 extension MusicPlayer: AudioRemoteControlDataSource, AudioRemoteControlDelegate {
     
-    func remoteControlNowPlayingProgress() -> UInt {
-        1
-    }
-    
     func remoteControlNowPlayingInfo() -> NowPlayingInfo? {
         guard let music = self.music else { return nil }
         let nowPlayingInfo = NowPlayingInfo(songName: music.songName,
@@ -191,8 +189,10 @@ extension MusicPlayer: AudioRemoteControlDataSource, AudioRemoteControlDelegate 
         case .next: self.delegate?.audioPlayer(self, willPlayNextMusic: wrappedMusic)
         case .last: self.delegate?.audioPlayer(self, willPlayLastMusic: wrappedMusic)
         case .seek:
-            guard let warppedProgress = param as? Float else { return }
-            self.delegate?.audioPlayer(self, playingByProgress: warppedProgress)
+            guard let wrappedProgress = param as? Float else { return }
+            guard let music = self.music else { return }
+            let sec = ceill(Double(music.duration) * Double(wrappedProgress))
+            self.player?.currentTime = sec
         }
     }
 }

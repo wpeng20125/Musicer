@@ -32,9 +32,6 @@ extension AudioRemoteControlManager {
     /// 设置锁屏显示的信息，该方法只需播放歌曲的时候设置一次即可，需要更新的话使用 updateNowPlayingInfo 方法
     func configNowPlayingInfo() { self.setNowPlayingInfo() }
     
-    /// 更新锁屏显示的信息
-    func updateNowPlayingInfo() { self.refreshNowPlayingInfo() }
-    
     /// 清除锁屏显示信息
     func clearNowPlayingInfo() { self.removeRemoteControlHandler() }
 }
@@ -110,10 +107,6 @@ fileprivate extension AudioRemoteControlManager {
         }
         // set info
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-    }
-    
-    func refreshNowPlayingInfo() {
-        
     }
 }
 

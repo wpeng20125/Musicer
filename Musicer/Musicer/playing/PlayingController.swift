@@ -21,6 +21,7 @@ class PlayingController: BaseViewController {
     
     //MARK: -- lazy
     private lazy var table: SongsTable = { SongsTable() }()
+    private lazy var songs: Array<Song> = { Array<Song>() }()
 }
 
 //MARK: -- setup subviews
@@ -45,10 +46,6 @@ fileprivate extension PlayingController {
             make.top.equalTo(titleBar.snp.bottom)
             make.left.bottom.right.equalTo(self.view)
         }
-        
-        let assist = PlayControllingAssist.sharedAssist
-        assist.layer.zPosition = 10000
-        UIApplication.shared.windows.first?.addSubview(assist)
     }
 }
 
@@ -65,7 +62,8 @@ fileprivate extension PlayingController {
                     Toaster.flash(withText: "暂无歌曲数据", backgroundColor: R.color.mu_color_orange_dark())
                     return
                 }
-                self.table.reload(wrappedSongs)
+                self.songs = wrappedSongs
+                self.table.reload(self.songs)
                 ffprint("本地歌曲文件加载完毕")
             }
         }
@@ -115,7 +113,8 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
     }
         
     //MARK: -- SongsTableDelegate
-    func songsTable(_ table: SongsTable, didSelectSong song: Song) {
-        
+    func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
+        PlayingAssistManager.default.showAssist()
+        PlayingAssistManager.default.reload(data: self.songs, withPlayingSong: index)
     }
 }

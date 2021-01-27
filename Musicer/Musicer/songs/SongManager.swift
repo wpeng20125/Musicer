@@ -161,7 +161,7 @@ fileprivate extension SongManager {
         for tuple in wrappedAssets {
             group.enter()
             tuple.asset.loadValuesAsynchronously(forKeys: keys) {
-                let unwrappedSong = self.getSong(withAsset: tuple.asset, tuple.songName)
+                let unwrappedSong = self.getSong(withAsset: tuple.asset, tuple.songName, tuple.file)
                 if let song = unwrappedSong { self.cache![tuple.songName] = song }
                 group.leave()
             }
@@ -178,13 +178,15 @@ fileprivate extension SongManager {
         }
     }
     
-    func getAssetTuples(_ files: [String])->[(songName: String,asset: AVAsset)]? {
+    func getAssetTuples(_ files: [String])->[(songName: String, file: URL, asset: AVAsset)]? {
         guard let folder = self.baseFolder else { return nil }
-        let tumples = files.map { ($0, AVAsset(url: URL(fileURLWithPath: (folder + "/" + $0)))) }
+        let tumples = files.map { ($0,
+                                   URL(fileURLWithPath: (folder + "/" + $0)),
+                                   AVAsset(url: URL(fileURLWithPath: (folder + "/" + $0)))) }
         return tumples
     }
     
-    func getSong(withAsset asset: AVAsset, _ fileName: String)->Song? {
+    func getSong(withAsset asset: AVAsset, _ fileName: String, _ fileURL: URL)->Song? {
         var error: NSError?
         var t: Float = 0
         let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
@@ -200,10 +202,10 @@ fileprivate extension SongManager {
         default: return nil
         }
         
-        var song = Song(fileName: fileName)
+        var song = Song(fileName: fileName, fileURL: fileURL)
         song.duration = t
         for item in items {
-            if "title" == item.commonKey?.rawValue { song.name = item.stringValue }
+            if "title" == item.commonKey?.rawValue { song.name = item.stringValue ?? fileName }
             if "artist" == item.commonKey?.rawValue { song.author = item.stringValue }
             if "albumName" == item.commonKey?.rawValue { song.album.name = item.stringValue }
             if "artwork" == item.commonKey?.rawValue {

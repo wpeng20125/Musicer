@@ -8,12 +8,12 @@
 import UIKit
 
 protocol SongsTableDelegate: NSObjectProtocol {
-    func songsTable(_ table: SongsTable, didSelectSong song: Song)
+    func songsTable(_ table: SongsTable, didSelectAtIndex index: Int)
     func songsTableCellEditable()->Bool
 }
 
 extension SongsTableDelegate {
-    func songsTable(_ table: SongsTable, didSelectSong song: Song) { }
+    func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) { }
     func songsTableCellEditable()->Bool { false }
 }
 
@@ -80,7 +80,7 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.delegate?.songsTable(self, didSelectSong: self.songs[indexPath.section])
+        self.delegate?.songsTable(self, didSelectAtIndex: indexPath.section)
     }
     
     // header / footer

@@ -32,7 +32,7 @@ protocol MusicPlayerDataSource: NSObjectProtocol {
     /// - Parameters:
     ///   - player:  MusicPlayer 实例
     /// - Returns: 返回播放器要播放的音乐
-    func musicToPlay(forPlayer player: MusicPlayer)->Music
+    func musicToPlay(forPlayer player: MusicPlayer)->Music?
 }
 
 protocol MusicPlayerDelegate: NSObjectProtocol {

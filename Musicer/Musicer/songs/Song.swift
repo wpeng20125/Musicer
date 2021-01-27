@@ -12,8 +12,9 @@ enum FFormat {
 }
 
 struct Song {
-    var name: String?
+    var name: String = "Unknown"
     var fileName: String
+    var fileURL: URL
     var author: String? = "Unknown"
     var duration: Float = 0
     var format: FFormat?

@@ -32,14 +32,6 @@ protocol AudioRemoteControlDataSource: NSObjectProtocol {
     ///
     /// - Returns: NowPlayingInfo
     func remoteControlNowPlayingInfo()->NowPlayingInfo?
-    
-    /// 播放过程中的实时进度
-    ///
-    /// 进入后台播放时，在锁屏页上也会实时的显示进度，这个进度的更新是在播放的时候随着播放器的进度不断地通过 AudioRemoteControlManager
-    /// 的  updateNowPlayingInfo() 函数进行触发并设置的
-    ///
-    /// - Returns: 返回的实时的播放进度，以 秒 为单位
-    func remoteControlNowPlayingProgress()->UInt
 }
 
 protocol AudioRemoteControlDelegate: NSObjectProtocol {

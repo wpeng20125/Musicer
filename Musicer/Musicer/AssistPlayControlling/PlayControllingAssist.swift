@@ -12,27 +12,79 @@ fileprivate let SelfH: CGFloat = 60.0
 
 class PlayControllingAssist: UIView {
     
-    static let sharedAssist = PlayControllingAssist()
+    weak var dataSource: PlayControllingAssistDataSource?
+    weak var delegate: PlayControllingAssistDelegate?
     
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
-        let f = CGRect(x: ScreenWidth - SelfW, y: ScreenHeight - SelfH - SafeAreaInsetBottom, width: SelfW, height: SelfH)
+        let f = CGRect(x: ScreenWidth, y: (ScreenHeight - SelfH) / 2, width: SelfW, height: SelfH)
         super.init(frame: f)
-        self.defaultConfiguration()
-    }
-}
-
-fileprivate extension PlayControllingAssist {
-    
-    func defaultConfiguration() {
         self.backgroundColor = R.color.mu_color_lavender_alpha_8()
         self.layer.cornerRadius = SelfH / 2.0
         self.layer.masksToBounds = true
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(pan:))))
-        
-        self.addSubview(PlayControllingView(frame: self.bounds))
+        self.addSubview(self.assistView)
+    }
+    
+    //MARK: -- lazy
+    private lazy var assistView: PlayControllingView = {
+        let assist = PlayControllingView(frame: self.bounds)
+        assist.delegate = self
+        return assist
+    }()
+}
+
+extension PlayControllingAssist {
+    
+    func reload() {
+        if let img = self.dataSource?.imageToDisplayForPlayControllingAssist(self) {
+            self.assistView.setImage(img: img)
+        }
+        if let disable = self.dataSource?.disableNextButtonForPlayControllingAssist(self) {
+            self.assistView.disableNext(disable)
+        }
+        if let disable = self.dataSource?.disableLastButtonForPlayControllingAssist(self) {
+            self.assistView.disableLast(disable)
+        }
+    }
+    
+    func play() {
+        self.assistView.play()
+    }
+    
+    func pause() {
+        self.assistView.pause()
+    }
+    
+    func updateProgress(progress: Float) {
+        self.assistView.updateProgress(progress: progress)
     }
 }
+
+//MARK: -- PlayControllingViewDelegate
+extension PlayControllingAssist: PlayControllingViewDelegate {
+    
+    func playControllingView_play() {
+        self.delegate?.playControllingAssist(self, didTriggerAction: .play)
+    }
+    
+    func playControllingView_pause() {
+        self.delegate?.playControllingAssist(self, didTriggerAction: .pause)
+    }
+    
+    func playControllingView_last() {
+        self.delegate?.playControllingAssist(self, didTriggerAction: .last)
+    }
+    
+    func playControllingView_next() {
+        self.delegate?.playControllingAssist(self, didTriggerAction: .next)
+    }
+    
+    func playControllingView_close() {
+        self.delegate?.playControllingAssist(self, didTriggerAction: .stop)
+    }
+}
+
 
 //MARK: -- 手势
 fileprivate extension PlayControllingAssist {
