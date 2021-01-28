@@ -11,13 +11,6 @@ import MediaPlayer
 
 class MusicPlayer: NSObject {
     
-    override init() {
-        super.init()
-        // 配置信息
-        self.sessionManager.configSession()
-        self.remoteControlManager.configRemoteControl()
-    }
-    
     weak var dataSource: MusicPlayerDataSource?
     weak var delegate: MusicPlayerDelegate?
     
@@ -42,6 +35,9 @@ class MusicPlayer: NSObject {
 
 //MARK: -- 播放控制
 extension MusicPlayer {
+    
+    /// 设置 AVAudioSession 的 category、mode、options
+    func setCategory() { self.sessionManager.setCategory() }
     
     /// 刷新数据源，在进行上一曲/下一曲播放时，通过 MusicPlayerDataSource 提供数据，然后调用该方法刷新播放器数据
     func reloadData() { self.reload_data() }
@@ -77,11 +73,12 @@ fileprivate extension MusicPlayer {
     
     func play_music() {
         guard let player = self.player else { return }
+        // 配置信息
+        self.sessionManager.active()
+        self.remoteControlManager.configRemoteControl()
+        self.remoteControlManager.configNowPlayingInfo()
         player.play()
         self.startTimer()
-        
-        // 设置锁屏信息
-        self.remoteControlManager.configNowPlayingInfo()
         // 回调播放器的状态
         self.delegate?.audioPlayer(self, stateChanged: .play)
     }
@@ -101,7 +98,7 @@ fileprivate extension MusicPlayer {
         self.music = nil
         self.cancelTimer()
         // 释放 session
-        self.sessionManager.releaseSession()
+        self.sessionManager.deActive()
         // 清除 nowPlayingInfo
         self.remoteControlManager.clearNowPlayingInfo()
     }
@@ -140,7 +137,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         guard let wrappedMusic = self.music else { return }
-        self.delegate?.audioPlayer(self, willPlayNextMusic: wrappedMusic)
+        self.delegate?.audioPlayer(self, didFinishPlayingMusic: wrappedMusic)
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {

@@ -11,42 +11,56 @@ class AudioSessionManager: NSObject {
     
     weak var delegate: AudioSessionDelegate?
     
-    /// 当前应用程序的 audiosession 是否是激活状态
-    private var isAudioSessionActive: Bool = false
+    override init() {
+        super.init()
+        self.addObserver()
+    }
+    
+    deinit {
+        self.removeObserver()
+    }
 }
 
 extension AudioSessionManager {
     
-    /// 配置 session
-    func configSession() {
-        if self.isAudioSessionActive { return }
-        self.addInterruptionHandler()
-        self.addRouteChangeHandler()
-    }
-    
-    /// 释放 session
-    func releaseSession() {
-        self.isAudioSessionActive = false
-        self.removeInterruptionHandler()
-        self.removeRouteChangeHandler()
-    }
-}
-
-//MARK: -- 打断处理
-fileprivate extension AudioSessionManager {
-    
-    func addInterruptionHandler() {
-        // do active
+    /// 设置 AVAudioSession 的 category、mode、options
+     func setCategory() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback,
                                                             mode: .default,
                                                             options: [.allowBluetoothA2DP, .defaultToSpeaker])
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch _ {
-            self.didErrorOccur(MUError.some(desc: "AudioSession 激活失败"))
-            return
+        } catch let error {
+            ffprint("AudioSession Set Category Failed! Reason: \(error.localizedDescription)")
         }
-        // add observer
+    }
+    
+    /// 激活 AudioSession
+    /// - Note:
+    ///   与设置 session 的 category 的时机不同，session 的激活最好是在真正要播放的时候进行，这样既不影响自己 app 的播放，
+    ///   也不至于把别的 app 的播放给抢占了
+    func active() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+        } catch let error {
+            ffprint("AudioSession Active Failed! Reason: \(error.localizedDescription)")
+        }
+    }
+    
+    /// 使 AudioSession 失活
+    /// - Note:
+    ///   在干掉播放器的时候，可以手动释放激活的 AudioSession，当然这一步并不是必须的
+    func deActive() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        } catch let error {
+            ffprint("AudioSession Deactive Failed! Reason: \(error.localizedDescription)")
+        }
+    }
+}
+
+fileprivate extension AudioSessionManager {
+    
+    func addObserver() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(interruptionHandle(noti:)),
                                                name: AVAudioSession.interruptionNotification,
@@ -55,26 +69,25 @@ fileprivate extension AudioSessionManager {
                                                selector: #selector(interruptionHandle(noti:)),
                                                name: AVAudioSession.silenceSecondaryAudioHintNotification,
                                                object: nil)
-        self.isAudioSessionActive = true
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(routeChange(noti:)),
+                                               name: AVAudioSession.routeChangeNotification,
+                                               object: nil)
     }
     
-    func removeInterruptionHandler() {
-        // deactive
-        do {
-            try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-        } catch _ {
-            self.didErrorOccur(MUError.some(desc: "AudioSession 失活失败"))
-            return
-        }
+    func removeObserver() {
         NotificationCenter.default.removeObserver(self,
                                                   name: AVAudioSession.interruptionNotification,
                                                   object: nil)
         NotificationCenter.default.removeObserver(self,
                                                   name: AVAudioSession.silenceSecondaryAudioHintNotification,
                                                   object: nil)
-        self.isAudioSessionActive = false
+        NotificationCenter.default.removeObserver(self,
+                                                  name: AVAudioSession.routeChangeNotification,
+                                                  object: nil)
     }
     
+    //MARK: -- 打断处理
     @objc func interruptionHandle(noti: Notification) {
         guard let userInfo = noti.userInfo else { return }
         if AVAudioSession.interruptionNotification == noti.name {
@@ -97,7 +110,6 @@ fileprivate extension AudioSessionManager {
     }
     
     func interruptionBegin() {
-        self.isAudioSessionActive = false
         self.delegate?.sessionManager(self, didInterruptionStateChange: .begin)
     }
     
@@ -108,24 +120,8 @@ fileprivate extension AudioSessionManager {
     func didErrorOccur(_ error: MUError) {
         self.delegate?.sessionManager(self, didErrorOccur: error)
     }
-}
-
-//MARK: -- 外设改变
-fileprivate extension AudioSessionManager {
     
-    func addRouteChangeHandler() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(routeChange(noti:)),
-                                               name: AVAudioSession.routeChangeNotification,
-                                               object: nil)
-    }
-    
-    func removeRouteChangeHandler() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: AVAudioSession.routeChangeNotification,
-                                                  object: nil)
-    }
-    
+    //MARK: -- 外设改变处理
     @objc func routeChange(noti: Notification) {
         guard let userInfo = noti.userInfo,
               let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
@@ -140,3 +136,4 @@ fileprivate extension AudioSessionManager {
         self.delegate?.sessionManager(self, shouldContinuePlayingWithRouteChanged: playing)
     }
 }
+

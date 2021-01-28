@@ -38,12 +38,13 @@ protocol TitleBarDelegate: NSObjectProtocol {
 }
 
 //MARK: -- Bar itself
-class TitleBar: UIView {
+class TitleBar: UIImageView {
     
     weak var dataSource: TitleBarDataSource?
     weak var delegate: TitleBarDelegate?
     
     func configure() {
+        self.isUserInteractionEnabled = true
         self.setupSubViews()
     }
 }
@@ -108,7 +109,7 @@ fileprivate extension TitleBar {
         if let titleColor = property.titleColor { btn.setTitleColor(titleColor, for: .normal) }
         if let fontSize = property.fontSize { btn.titleLabel?.font = UIFont.systemFont(ofSize: CGFloat(fontSize)) }
         if let img = property.image { btn.setImage(img, for: .normal) }
-        if let backImg = property.backgroundImage { btn.setBackgroundImage(backImg, for: .normal) }
+        if let backImg = property.backgroundImage { self.image = backImg }
         if let backColor = property.backgroundColor { btn.backgroundColor = backColor }
         if let boarderColor = property.boarderColor { btn.layer.borderColor = boarderColor.cgColor }
         if let boarderWidth = property.boarderWidth { btn.layer.borderWidth = CGFloat(boarderWidth) }

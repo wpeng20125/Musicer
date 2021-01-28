@@ -15,6 +15,13 @@ enum AssistActionType {
     case stop
 }
 
+enum AssistPosition {
+    case top
+    case left
+    case bottom
+    case right
+}
+
 protocol PlayControllingAssistDataSource: NSObjectProtocol {
     
     /// 该函数的作用是，向外界请求在 assist 上展示的专辑封面图

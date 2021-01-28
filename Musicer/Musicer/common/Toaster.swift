@@ -41,11 +41,11 @@ fileprivate extension Toaster {
     
     static  func make(withBackgroundColor color: UIColor?) {
         let backgroundView = TBackgoundView(color)
-        UIApplication.shared.keyWindow?.addSubview(backgroundView)
+        UIApplication.shared.windows.first?.addSubview(backgroundView)
     }
     
     static func show(comlete cp: @escaping ()->Void) {
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         var unwrappedBackground: TBackgoundView? = nil
         for subview in subviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
@@ -62,7 +62,7 @@ fileprivate extension Toaster {
     }
     
     static func hide() {
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         var unwrappedBackground: TBackgoundView? = nil
         for subview in subviews {
             if !subview.isKind(of: TBackgoundView.self) { continue }
@@ -113,7 +113,7 @@ fileprivate extension Toaster {
         lbl.font = UIFont.systemFont(ofSize: 15.0)
         lbl.textColor = R.color.mu_color_white()
         
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         for subview in subviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
             guard let backgroundView = subview as? TBackgoundView else { return }
@@ -132,7 +132,7 @@ fileprivate extension Toaster {
     
     static func makeLoading() {
                 
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         for subview in subviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
             if let customBgView = (subview as? TBackgoundView)?.customBackgroundView {
@@ -159,7 +159,7 @@ fileprivate extension Toaster {
     }
     
     static func startAnimation() {
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         var unwrappedImgViewOne: UIImageView? = nil
         var unwrappedImgViewTwo: UIImageView? = nil
         for subview in subviews.reversed() {
@@ -188,7 +188,7 @@ fileprivate extension Toaster {
     }
     
     static func stopAnimation() {
-        guard let subviews = UIApplication.shared.keyWindow?.subviews else { return }
+        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
         var unwrappedImgViewOne: UIImageView? = nil
         var unwrappedImgViewTwo: UIImageView? = nil
         for subview in subviews.reversed() {

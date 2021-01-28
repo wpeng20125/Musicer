@@ -14,6 +14,8 @@ class PlayControllingAssist: UIView {
     
     weak var dataSource: PlayControllingAssistDataSource?
     weak var delegate: PlayControllingAssistDelegate?
+    /// 悬浮窗停留的位置
+    private(set) var loc: AssistPosition = .right
     
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
@@ -36,7 +38,8 @@ class PlayControllingAssist: UIView {
 
 extension PlayControllingAssist {
     
-    func reload() {
+    /// 刷新数据
+    func reloadData() {
         if let img = self.dataSource?.imageToDisplayForPlayControllingAssist(self) {
             self.assistView.setImage(img: img)
         }
@@ -48,14 +51,17 @@ extension PlayControllingAssist {
         }
     }
     
+    /// 播放
     func play() {
         self.assistView.play()
     }
     
+    /// 暂停
     func pause() {
         self.assistView.pause()
     }
     
+    /// 更新进度
     func updateProgress(progress: Float) {
         self.assistView.updateProgress(progress: progress)
     }
@@ -150,7 +156,19 @@ fileprivate extension PlayControllingAssist {
             }
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
                 self.center = point
-            }, completion: nil)
+            }) { (complete) in
+                guard complete else { return }
+                if 0 == self.kw_x {
+                    self.loc = .left
+                }else if (Double(ScreenWidth) - self.kw_w) == self.kw_x {
+                    self.loc = .right
+                }else if Double(SafeAreaInsetTop) == self.kw_y {
+                    self.loc = .top
+                }else {
+                    self.loc = .bottom
+                }
+                print(self.loc)
+            }
         default: ()
         }
     }

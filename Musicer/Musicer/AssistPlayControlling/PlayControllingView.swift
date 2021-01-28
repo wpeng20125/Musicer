@@ -85,12 +85,17 @@ class PlayControllingView: UIView {
                                 clockwise: true)
         layer.bounds = CGRect(x: 0, y: 0, width: 50.0, height: 50.0)
         layer.position = CGPoint(x: 30.0, y: 30.0)
-        layer.fillColor = UIColor.clear.cgColor
         layer.lineWidth = 2.0
-        layer.strokeColor = UIColor.red.cgColor
         layer.strokeStart = 0
         layer.strokeEnd = 0
         layer.path = path.cgPath
+        guard let fillColor = R.color.mu_color_clear(), let strokeColor = R.color.mu_color_playing_progress() else {
+            layer.fillColor = UIColor.clear.cgColor
+            layer.strokeColor = UIColor.red.cgColor
+            return layer
+        }
+        layer.fillColor = fillColor.cgColor
+        layer.strokeColor = strokeColor.cgColor
         return layer
     }()
 }

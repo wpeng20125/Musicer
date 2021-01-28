@@ -114,7 +114,6 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
         
     //MARK: -- SongsTableDelegate
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
-        PlayingAssistManager.default.showAssist()
-        PlayingAssistManager.default.reload(data: self.songs, withPlayingSong: index)
+        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index)
     }
 }

@@ -105,7 +105,7 @@ struct R: Rswift.Validatable {
   }
   #endif
 
-  /// This `R.color` struct is generated, and contains static references to 17 colors.
+  /// This `R.color` struct is generated, and contains static references to 18 colors.
   struct color {
     /// Color `mu_color_black_alpha_2`.
     static let mu_color_black_alpha_2 = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_black_alpha_2")
@@ -137,6 +137,8 @@ struct R: Rswift.Validatable {
     static let mu_color_orange_dark = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_orange_dark")
     /// Color `mu_color_orange_light`.
     static let mu_color_orange_light = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_orange_light")
+    /// Color `mu_color_playing_progress`.
+    static let mu_color_playing_progress = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_playing_progress")
     /// Color `mu_color_progress_bg`.
     static let mu_color_progress_bg = Rswift.ColorResource(bundle: R.hostingBundle, name: "mu_color_progress_bg")
     /// Color `mu_color_white`.
@@ -278,6 +280,15 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "mu_color_playing_progress", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    static func mu_color_playing_progress(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.mu_color_playing_progress, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIColor(named: "mu_color_progress_bg", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
@@ -298,7 +309,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 59 images.
+  /// This `R.image` struct is generated, and contains static references to 60 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
@@ -328,6 +339,8 @@ struct R: Rswift.Validatable {
     static let mu_image_assist_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_play")
     /// Image `mu_image_nav_back`.
     static let mu_image_nav_back = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_back")
+    /// Image `mu_image_nav_bg`.
+    static let mu_image_nav_bg = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_bg")
     /// Image `mu_image_portrait_placeholder`.
     static let mu_image_portrait_placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_portrait_placeholder")
     /// Image `mu_image_songs_folder_icon_all`.
@@ -514,6 +527,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_nav_back", bundle: ..., traitCollection: ...)`
     static func mu_image_nav_back(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_nav_back, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_nav_bg", bundle: ..., traitCollection: ...)`
+    static func mu_image_nav_bg(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_nav_bg, compatibleWith: traitCollection)
     }
     #endif
 

@@ -12,7 +12,7 @@ class Uploader: NSObject {
     
     fileprivate var server: Server?
     
-    private(set) var files: [String] = {
+    private(set) lazy var files: [String] = {
         guard let f = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
             return [String]()
         }
