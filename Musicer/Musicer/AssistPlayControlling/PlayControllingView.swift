@@ -271,7 +271,7 @@ fileprivate extension PlayControllingView {
     func startPlayingAnimation() {
         guard nil != self.iconView.layer.animation(forKey: "k_clockwise_rotation_animation_key") else {
             let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-            animation.duration = 5
+            animation.duration = 8
             animation.fromValue = 0
             animation.toValue = Double.pi * 2
             animation.repeatCount = MAXFLOAT
