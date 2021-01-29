@@ -9,18 +9,19 @@ import UIKit
 
 class SongsListController: BaseViewController {
 
-    //MARK: -- private
-    private var table: SongsListTable?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.setupSubViews()
         self.refresh()
     }
+    
+    //MARK: -- private
+    private var table: SongsListTable?
+    private var isCreateViewShowing = false
 }
 
-extension SongsListController {
+fileprivate extension SongsListController {
     
     func setupSubViews() {
         let titleBar = TitleBar()
@@ -61,37 +62,12 @@ extension SongsListController {
     }
 }
 
-extension SongsListController: TitleBarDelegate, TitleBarDataSource {
-    func itemDidClick(atPosition p: ItemPosition) {
-        switch p {
-        case .left: self.navigationController?.popViewController(animated: true)
-        case .right: self.showCreateView()
-        default: return
-        }
-    }
-    
-    func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
-        let property = ItemProperty()
-        switch p {
-        case .left:
-            property.image = R.image.mu_image_nav_back()
-            return property
-        case .middle:
-            property.title = "全部列表"
-            property.titleColor = R.color.mu_color_white()
-            property.fontSize = 16.0
-            return property
-        case .right:
-            property.image = R.image.mu_image_add()
-            property.itemEdgeInset = 22.0;
-            return property
-        }
-    }
-}
-
-extension SongsListController {
+fileprivate extension SongsListController {
     
     func showCreateView() {
+        
+        if self.isCreateViewShowing { return }
+        self.isCreateViewShowing = true
         
         let createView = SongsListCreateView()
         createView.tag = 1989
@@ -118,7 +94,7 @@ extension SongsListController {
     }
     
     func hideCreateView() {
-        
+        self.isCreateViewShowing = false
         guard let createView = self.view.viewWithTag(1989) else { return }
         
         let opacityAnimation = CABasicAnimation(keyPath: "opacity")
@@ -141,5 +117,34 @@ extension SongsListController {
         CATransaction.setCompletionBlock { createView.removeFromSuperview() }
         createView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
         CATransaction.commit()
+    }
+}
+
+//MARK: -- navigation bar
+extension SongsListController: TitleBarDelegate, TitleBarDataSource {
+    func itemDidClick(atPosition p: ItemPosition) {
+        switch p {
+        case .left: self.navigationController?.popViewController(animated: true)
+        case .right: self.showCreateView()
+        default: return
+        }
+    }
+    
+    func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
+        let property = ItemProperty()
+        switch p {
+        case .left:
+            property.image = R.image.mu_image_nav_back()
+            return property
+        case .middle:
+            property.title = "全部列表"
+            property.titleColor = R.color.mu_color_white()
+            property.fontSize = 16.0
+            return property
+        case .right:
+            property.image = R.image.mu_image_add()
+            property.itemEdgeInset = 22.0;
+            return property
+        }
     }
 }
