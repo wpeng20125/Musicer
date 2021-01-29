@@ -15,7 +15,7 @@ class SongsListCreateView: UIView {
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: CGRect(origin: frame.origin, size: CGSize(width: limit_w, height: limit_h)))
         self.backgroundColor = R.color.mu_color_orange_light()
         self.layer.cornerRadius = 10.0
         self.layer.masksToBounds = true
@@ -38,31 +38,6 @@ class SongsListCreateView: UIView {
         input.attributedPlaceholder = att
         return input
     }()
-}
-
-extension SongsListCreateView {
-    
-    override var frame: CGRect {
-        get {
-            return super.frame
-        }
-        set {
-            var f = newValue
-            f.size = CGSize(width: limit_w, height: limit_h)
-            super.frame = f
-        }
-    }
-    
-    override var bounds: CGRect {
-        get {
-            return super.bounds
-        }
-        set {
-            var b = newValue
-            b.size = CGSize(width: limit_w, height: limit_h)
-            super.bounds = b
-        }
-    }
 }
 
 fileprivate extension SongsListCreateView {

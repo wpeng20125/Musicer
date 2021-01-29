@@ -12,11 +12,6 @@ fileprivate let SelfH: CGFloat = 60.0
 
 class PlayControllingAssist: UIView {
     
-    weak var dataSource: PlayControllingAssistDataSource?
-    weak var delegate: PlayControllingAssistDelegate?
-    /// 悬浮窗停留的位置
-    private(set) var loc: AssistPosition = .right
-    
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     override init(frame: CGRect) {
         let f = CGRect(x: ScreenWidth, y: (ScreenHeight - SelfH) / 2, width: SelfW, height: SelfH)
@@ -27,6 +22,11 @@ class PlayControllingAssist: UIView {
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(pan:))))
         self.addSubview(self.assistView)
     }
+    
+    weak var dataSource: PlayControllingAssistDataSource?
+    weak var delegate: PlayControllingAssistDelegate?
+    /// 悬浮窗停留的位置
+    private(set) var loc: AssistPosition = .right
     
     //MARK: -- lazy
     private lazy var assistView: PlayControllingView = {

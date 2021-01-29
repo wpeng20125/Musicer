@@ -12,11 +12,11 @@ class Uploader: NSObject {
     
     fileprivate var server: Server?
     
-    private(set) lazy var files: [String] = {
+    private(set) lazy var files: (names: [String], modified: Bool) = {
         guard let f = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
-            return [String]()
+            return ([String](), false)
         }
-        return f
+        return (f, false)
     }()
     
     func connect()->MUError { self.f_connect() }
@@ -57,7 +57,8 @@ extension Uploader: GCDWebUploaderDelegate {
     
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
         let file = NSString(string: path).lastPathComponent
-        self.files.append(file)
+        self.files.names.append(file)
+        if !self.files.modified { self.files.modified = true }
     }
 }
 

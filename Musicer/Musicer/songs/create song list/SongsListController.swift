@@ -96,7 +96,7 @@ extension SongsListController: CAAnimationDelegate {
         let createView = SongsListCreateView()
         createView.tag = 1989
         createView.kw_x = (Double(ScreenWidth) - createView.kw_w) / 2
-        createView.kw_y = Double(TitleBarHeight) + 50.0
+        createView.kw_y = Double(TitleBarHeight) + 150.0
         createView.cancel = {
             self.hideCreateView()
         }
@@ -106,25 +106,15 @@ extension SongsListController: CAAnimationDelegate {
         }
         self.view.addSubview(createView)
         
-        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
-        opacityAnimation.fromValue = 0
-        opacityAnimation.toValue = 1.0
-        opacityAnimation.duration = 0.5
-        
         let zoomSpring = CASpringAnimation(keyPath: "transform.scale")
-        zoomSpring.mass = 1.0
+        zoomSpring.mass = 0.5
         zoomSpring.stiffness = 100
-        zoomSpring.damping = 10
-        zoomSpring.initialVelocity = 10
-        zoomSpring.fromValue = 0
+        zoomSpring.damping = 5
+        zoomSpring.initialVelocity = 0
+        zoomSpring.fromValue = 0.01
         zoomSpring.toValue = 1.0
         zoomSpring.duration = zoomSpring.settlingDuration
-        
-        let group = CAAnimationGroup()
-        group.duration = 0.5
-        group.animations = [opacityAnimation, zoomSpring]
-        
-        createView.layer.add(group, forKey: "kCreateViewShowAnimationKey")
+        createView.layer.add(zoomSpring, forKey: "kCreateViewShowAnimationKey")
     }
     
     func hideCreateView() {

@@ -9,6 +9,11 @@ import UIKit
 
 class UploadController: BaseViewController {
     
+    /// 当前 controller 将要 dismiss
+    var willDismiss: (()->Void)?
+    /// 当前 controller 已经 dismiss，并且 dismiss 动画执行完毕
+    var didDismiss: (()->Void)?
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Toaster.showLoading(withBackgroundColor: R.color.mu_color_gray_dark())
@@ -124,7 +129,7 @@ fileprivate extension UploadController {
     }
 }
 
-extension UploadController: TitleBarDelegate, TitleBarDataSource, LoadingProtocol {
+extension UploadController: TitleBarDelegate, TitleBarDataSource {
     
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let property = ItemProperty()
@@ -149,11 +154,13 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource, LoadingProtoco
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let confiem = UIAlertAction(title: "确定", style: .default) { (action) in
                 self.uploader.disconnect()
-                if self.uploader.files.count > 0 {
-                    UserDefaults.standard.setValue(self.uploader.files, forKey: k_list_name_toatl)
-                    self.delegate?.reload()
+                if self.uploader.files.modified {
+                    UserDefaults.standard.setValue(self.uploader.files.names, forKey: k_list_name_toatl)
                 }
-                self.dismiss(animated: true, completion: nil)
+                if let wrappedWillDismiss = self.willDismiss { wrappedWillDismiss() }
+                self.dismiss(animated: true) {
+                    if let wrappedDidDismiss = self.didDismiss { wrappedDidDismiss() }
+                }
             }
             alert.addAction(cancel)
             alert.addAction(confiem)

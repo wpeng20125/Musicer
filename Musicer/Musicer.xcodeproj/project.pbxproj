@@ -37,6 +37,8 @@
 		AABE93AD2566671200B27370 /* SongsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AC2566671200B27370 /* SongsListController.swift */; };
 		AABE93AF256667CA00B27370 /* SongsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AE256667CA00B27370 /* SongsController.swift */; };
 		AAC3272F253E78AB00DF4030 /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC3272E253E78AB00DF4030 /* Uploader.swift */; };
+		AACFA12325C39F290024F92B /* NoteAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACFA12225C39F290024F92B /* NoteAnimation.swift */; };
+		AACFA12525C409010024F92B /* SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACFA12425C409010024F92B /* SimpleAlert.swift */; };
 		AAEB3F382574D30F00912198 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F372574D30F00912198 /* Song.swift */; };
 		AAEB3F442575D85D00912198 /* SimpleCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F432575D85D00912198 /* SimpleCache.swift */; };
 		AAEB3F46257625A100912198 /* PubHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F45257625A100912198 /* PubHeaders.swift */; };
@@ -83,6 +85,8 @@
 		AABE93AC2566671200B27370 /* SongsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsListController.swift; sourceTree = "<group>"; };
 		AABE93AE256667CA00B27370 /* SongsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsController.swift; sourceTree = "<group>"; };
 		AAC3272E253E78AB00DF4030 /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
+		AACFA12225C39F290024F92B /* NoteAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteAnimation.swift; sourceTree = "<group>"; };
+		AACFA12425C409010024F92B /* SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlert.swift; sourceTree = "<group>"; };
 		AAEB3F372574D30F00912198 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		AAEB3F432575D85D00912198 /* SimpleCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCache.swift; sourceTree = "<group>"; };
 		AAEB3F45257625A100912198 /* PubHeaders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PubHeaders.swift; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 				AAEB3F45257625A100912198 /* PubHeaders.swift */,
 				AA56E2B22536E30400EA50C3 /* Common.swift */,
 				AAEB3F432575D85D00912198 /* SimpleCache.swift */,
+				AACFA12425C409010024F92B /* SimpleAlert.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 				AA56E2002534363D00EA50C3 /* AppDelegate.swift */,
 				AAEB3F4725762BB900912198 /* BaseViewController.swift */,
 				AAEB3F4925762BEA00912198 /* BaseNavigationController.swift */,
+				AACFA12225C39F290024F92B /* NoteAnimation.swift */,
 				AA474BEC255E974E00359F73 /* songs */,
 				AA4F68D8255B798B005E6495 /* playing */,
 				AA4F68D6255B7951005E6495 /* uploader */,
@@ -392,6 +398,7 @@
 				AAEB3F4825762BB900912198 /* BaseViewController.swift in Sources */,
 				AAEB3F50257741DC00912198 /* SongsListCreateView.swift in Sources */,
 				AA4F68E0255BDE8D005E6495 /* SongManager.swift in Sources */,
+				AACFA12525C409010024F92B /* SimpleAlert.swift in Sources */,
 				AA6249A72579DD3300188B04 /* SongInfoEditCell.swift in Sources */,
 				AA5C498625B6C6AD00BC554A /* AudioSessionManager.swift in Sources */,
 				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
@@ -411,6 +418,7 @@
 				AA206CED25B964BD00281EE3 /* AudioRemoteControlManager.swift in Sources */,
 				AA206CEF25B9692700281EE3 /* AudioRemoteControlProtocol.swift in Sources */,
 				AA687C2E25BFF74D0070D828 /* PlayControllingView.swift in Sources */,
+				AACFA12325C39F290024F92B /* NoteAnimation.swift in Sources */,
 				AAC3272F253E78AB00DF4030 /* Uploader.swift in Sources */,
 				AAEB3F4E25763D1000912198 /* SongsListCell.swift in Sources */,
 				AA687C3225C14BA00070D828 /* AudioPlayingManager.swift in Sources */,

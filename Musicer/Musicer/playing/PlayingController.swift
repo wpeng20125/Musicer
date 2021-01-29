@@ -56,7 +56,7 @@ fileprivate extension PlayingController {
         ffprint("正在加载本地歌曲文件")
         Toaster.showLoading()
         SongManager.default.songs(forList: k_list_name_toatl) { (songs) in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 Toaster.hideLoading()
                 guard let wrappedSongs = songs else {
                     Toaster.flash(withText: "暂无歌曲数据", backgroundColor: R.color.mu_color_orange_dark())
@@ -70,46 +70,42 @@ fileprivate extension PlayingController {
     }
 }
 
-extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate, LoadingProtocol {
+extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate {
     
     //MARK: -- TitleBarDataSource
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let item = ItemProperty()
         switch p {
         case .left:
-            #if DEBUG
-            item.title = "DEBUG"
-            item.titleColor = R.color.mu_color_white()
-            item.fontSize = 15.0
-            item.itemSize = CGSize(width: 60.0, height: 20.0)
+            item.image = R.image.mu_image_song_list()
             return item
-            #else
-            return nil
-            #endif
         case .middle:
             item.title = "全部歌曲"
             item.titleColor = R.color.mu_color_white()
             item.fontSize = 16.0
             return item
         case .right:
-            return nil
+            item.image = R.image.mu_image_add()
+            return item
         }
     }
     
     func itemDidClick(atPosition p: ItemPosition) {
         switch p {
         case .left:
+            let listVc = SongsListController()
+            self.navigationController?.pushViewController(listVc, animated: true)
+        case .right:
+            let uploaderVc = UploadController()
+            uploaderVc.didDismiss = {
+                self.refresh()
+            }
+            self.present(uploaderVc, animated: true, completion: nil)
+        default: ()
             #if DEBUG
             FLEXManager.shared.showExplorer()
             #endif
-        case .middle: ffprint("")
-        case .right: ffprint("")
         }
-    }
-    
-    //MARK: -- LoadingProtocol
-    func reload() {
-        self.refresh()
     }
         
     //MARK: -- SongsTableDelegate

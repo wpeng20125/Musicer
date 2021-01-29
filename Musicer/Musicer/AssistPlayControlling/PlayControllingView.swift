@@ -34,6 +34,7 @@ class PlayControllingView: UIView {
     //MARK: -- lazy
     private lazy var iconView: UIImageView = {
         let imgV = UIImageView(frame: CGRect(x: 5.0, y: 5.0, width: 50.0, height: 50.0))
+        imgV.isUserInteractionEnabled = true
         imgV.image = UIImage(named: "AppIcon")
         return imgV
     }()
