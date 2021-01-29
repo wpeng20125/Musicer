@@ -89,7 +89,7 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource {
     }
 }
 
-extension SongsListController: CAAnimationDelegate {
+extension SongsListController {
     
     func showCreateView() {
         
@@ -132,18 +132,14 @@ extension SongsListController: CAAnimationDelegate {
         zoomAnimation.duration = 0.2
         
         let group = CAAnimationGroup()
-        group.delegate = self
         group.duration = 0.2
         group.animations = [opacityAnimation, zoomAnimation]
         group.isRemovedOnCompletion = false
         group.fillMode = .forwards
         
+        CATransaction.begin()
+        CATransaction.setCompletionBlock { createView.removeFromSuperview() }
         createView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
+        CATransaction.commit()
     }
-    
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        guard let createView = self.view.viewWithTag(1989) else { return }
-        createView.removeFromSuperview()
-    }
-    
 }
