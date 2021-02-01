@@ -18,7 +18,7 @@ class SongsListController: BaseViewController {
     
     //MARK: -- private
     private var table: SongsListTable?
-    private var isCreateViewShowing = false
+    private var listNames: [String]?
 }
 
 fileprivate extension SongsListController {
@@ -42,32 +42,35 @@ fileprivate extension SongsListController {
             make.left.bottom.right.equalTo(self.view)
         }
     }
+}
+
+//MARK: -- Data
+fileprivate extension SongsListController {
     
     func refresh() {
         Toaster.showLoading()
+        self.listNames = SongManager.default.totalLists()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
             Toaster.hideLoading()
-            self.table?.refersh(withNames: SongManager.default.totalLists())
-        }
-    }
-    
-    func creatList(_ name: String) {
-        let error = SongManager.default.creatFolder(withName: name)
-        switch error {
-        case let .some(desc):
-            Toaster.flash(withText: desc, backgroundColor: R.color.mu_color_orange_dark())
-        case .none(_):
-            self.refresh()
+            guard let wrappedNames = self.listNames else {
+                Toaster.flash(withText: "暂无歌单，您可以点击 + 创建")
+                return
+            }
+            self.table?.refersh(withNames: wrappedNames)
         }
     }
 }
 
+//MARK: -- create view
 fileprivate extension SongsListController {
     
     func showCreateView() {
         
-        if self.isCreateViewShowing { return }
-        self.isCreateViewShowing = true
+        let maskView = UIView(frame: self.view.bounds)
+        maskView.tag = 1979
+        maskView.alpha = 0
+        maskView.backgroundColor = R.color.mu_color_black_alpha_3()
+        self.view.addSubview(maskView)
         
         let createView = SongsListCreateView()
         createView.tag = 1989
@@ -76,11 +79,20 @@ fileprivate extension SongsListController {
         createView.cancel = {
             self.hideCreateView()
         }
-        createView.confirm = { (text) in
-            self.hideCreateView()
-            self.creatList(text)
+        createView.confirm = { (error) in
+            switch error {
+            case let .some(desc):
+                Toaster.flash(withText: desc)
+            case let .none(info):
+                self.hideCreateView()
+                self.creatList(info)
+            }
         }
         self.view.addSubview(createView)
+
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            maskView.alpha = 1.0
+        }, completion: nil)
         
         let zoomSpring = CASpringAnimation(keyPath: "transform.scale")
         zoomSpring.mass = 0.5
@@ -90,12 +102,13 @@ fileprivate extension SongsListController {
         zoomSpring.fromValue = 0.01
         zoomSpring.toValue = 1.0
         zoomSpring.duration = zoomSpring.settlingDuration
+        
         createView.layer.add(zoomSpring, forKey: "kCreateViewShowAnimationKey")
     }
     
     func hideCreateView() {
-        self.isCreateViewShowing = false
-        guard let createView = self.view.viewWithTag(1989) else { return }
+        guard let createView = self.view.viewWithTag(1989),
+              let maskView = self.view.viewWithTag(1979) else { return }
         
         let opacityAnimation = CABasicAnimation(keyPath: "opacity")
         opacityAnimation.fromValue = 1.0
@@ -113,10 +126,24 @@ fileprivate extension SongsListController {
         group.isRemovedOnCompletion = false
         group.fillMode = .forwards
         
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            maskView.alpha = 0
+        }) { (complete) in
+            maskView.removeFromSuperview()
+        }
+        
         CATransaction.begin()
         CATransaction.setCompletionBlock { createView.removeFromSuperview() }
         createView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
         CATransaction.commit()
+    }
+    
+    func creatList(_ name: String) {
+        let error = SongManager.default.creatFolder(withName: name)
+        switch error {
+        case let .some(desc): Toaster.flash(withText: desc)
+        case .none(_): self.refresh()
+        }
     }
 }
 

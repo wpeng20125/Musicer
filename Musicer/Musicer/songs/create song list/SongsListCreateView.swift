@@ -24,7 +24,7 @@ class SongsListCreateView: UIView {
     
     //MARK: -- private
     var cancel: (()->Void)?
-    var confirm: ((String)->Void)?
+    var confirm: ((MUError)->Void)?
     
     private lazy var textField: UITextField = {
         let input = UITextField()
@@ -116,15 +116,19 @@ fileprivate extension SongsListCreateView {
     @objc func confirm(_ sender: UIButton) {
         guard let wrappedConfirm = self.confirm else { return }
         guard var text = self.textField.text else {
-            Toaster.flash(withText: "尚未输入名称")
+            wrappedConfirm(MUError.some(desc: "请输入名称"))
+            return
+        }
+        if 0 == text.count {
+            wrappedConfirm(MUError.some(desc: "请输入名称"))
             return
         }
         text = text.replacingOccurrences(of: " ", with: "")
-        guard 0 != text.count else {
-            Toaster.flash(withText: "不能只输入空格")
+        if 0 == text.count {
+            wrappedConfirm(MUError.some(desc: "不能只输入空格"))
             return
         }
-        wrappedConfirm(text)
+        wrappedConfirm(MUError.none(info: text))
     }
 }
 

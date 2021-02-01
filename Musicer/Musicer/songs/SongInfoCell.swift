@@ -91,6 +91,9 @@ fileprivate extension SongInfoCell {
             make.centerY.equalTo(self.contentView)
         }
     }
+}
+
+fileprivate extension SongInfoCell {
     
     func setData(_ song: Song) {
         self.iconView.image = song.album.image

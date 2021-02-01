@@ -7,15 +7,45 @@
 
 import UIKit
 
+protocol SongsTableDataSource: NSObjectProtocol {
+    
+    /// 该函数返回 cell 是否可以进行编辑
+    /// - Parameter table: SongsTable 实例
+    /// - Returns: 返回值，表示是否可以编辑
+    func couldCellBeEditableForSongsTbale(_ table: SongsTable)->Bool
+}
+
+extension SongsTableDataSource {
+    func couldCellBeEditableForSongsTbale(_ table: SongsTable)->Bool { false }
+}
+
 protocol SongsTableDelegate: NSObjectProtocol {
+    
+    /// 当选中某一行 cell 时的回调
+    /// - Parameters:
+    ///   - table: SongsTable 实例
+    ///   - index: 所选中的 cell 的索引
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int)
-    func songsTableCellEditable()->Bool
+    
+    /// 把一首歌添加歌单的事件回调
+    /// - Parameters:
+    ///   - table: SongsTable 实例
+    ///   - index: 所要添加的歌曲对应的 cell 的索引
+    func songsTable(_ table: SongsTable, addSongToListWithIndex index: Int)
+    
+    /// 从一个列表中删除一首歌曲的事件回调
+    /// - Parameters:
+    ///   - table: SongsTable 实例
+    ///   - index: 所要删除的歌曲对应的 cell 的索引
+    func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int)
 }
 
 extension SongsTableDelegate {
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) { }
-    func songsTableCellEditable()->Bool { false }
+    func songsTable(_ table: SongsTable, addSongToListWithIndex index: Int) { }
+    func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) { }
 }
+
 
 class SongsTable: UIView {
     
@@ -27,14 +57,14 @@ class SongsTable: UIView {
         self.setupSubViews()
     }
     
-    weak var delegate: SongsTableDelegate?
-    
     /// 刷新列表数据
     func reload(_ songs: [Song]) {
         self.songs = songs
         self.tableView.reloadData()
     }
     
+    weak var delegate: SongsTableDelegate?
+    weak var dataSource: SongsTableDataSource?
     
     //MARK: -- lazy
     private lazy var songs: [Song] = { [] }()
@@ -55,9 +85,6 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
         self.tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
-        
-        guard let editable = self.delegate?.songsTableCellEditable() else { return }
-        self.tableView.setEditing(editable, animated: true)
     }
     
     //MARK: -- delegate / dataSource
@@ -81,6 +108,24 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         self.delegate?.songsTable(self, didSelectAtIndex: indexPath.section)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let editable = self.dataSource?.couldCellBeEditableForSongsTbale(self) else { return nil }
+        guard editable else { return nil }
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, handler) in
+            self.delegate?.songsTable(self, deleteSongWithIndex: indexPath.section)
+        }
+        deleteAction.image = R.image.mu_image_song_delete()
+        deleteAction.title = "删除"
+        
+        let addingAction = UIContextualAction(style: .normal, title: nil) { (action, view, handler) in
+            self.delegate?.songsTable(self, addSongToListWithIndex: indexPath.section)
+        }
+        addingAction.image = R.image.mu_image_song_add_list()
+        addingAction.title = "添加到"
+        let config = UISwipeActionsConfiguration(actions: [deleteAction, addingAction])
+        return config
     }
     
     // header / footer

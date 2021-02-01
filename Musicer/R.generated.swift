@@ -320,7 +320,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 61 images.
+  /// This `R.image` struct is generated, and contains static references to 63 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
@@ -354,6 +354,10 @@ struct R: Rswift.Validatable {
     static let mu_image_nav_bg = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_bg")
     /// Image `mu_image_portrait_placeholder`.
     static let mu_image_portrait_placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_portrait_placeholder")
+    /// Image `mu_image_song_add_list`.
+    static let mu_image_song_add_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_add_list")
+    /// Image `mu_image_song_delete`.
+    static let mu_image_song_delete = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_delete")
     /// Image `mu_image_song_list`.
     static let mu_image_song_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_list")
     /// Image `mu_image_songs_folder_icon_all`.
@@ -554,6 +558,20 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_portrait_placeholder", bundle: ..., traitCollection: ...)`
     static func mu_image_portrait_placeholder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_portrait_placeholder, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_song_add_list", bundle: ..., traitCollection: ...)`
+    static func mu_image_song_add_list(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_song_add_list, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_song_delete", bundle: ..., traitCollection: ...)`
+    static func mu_image_song_delete(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_song_delete, compatibleWith: traitCollection)
     }
     #endif
 

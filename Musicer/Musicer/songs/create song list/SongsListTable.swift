@@ -7,6 +7,21 @@
 
 import UIKit
 
+protocol SongsListTableDelegate: NSObjectProtocol {
+    
+    /// 选中某一个歌单的回调
+    /// - Parameters:
+    ///   - table: SongsListTable 实例
+    ///   - index: 所选中的列表的索引
+    func songsListTable(_ table: SongsListTable, didSelectListAtIndex index: Int)
+    
+    /// 删除一个歌单
+    /// - Parameters:
+    ///   - table: SongsListTable 实例
+    ///   - index: 所要删除的列表的索引
+    func songsListTable(_ table: SongsListTable, deleteListAtIndex index: Int)
+}
+
 class SongsListTable: UIView {
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -20,6 +35,8 @@ class SongsListTable: UIView {
         self.titles = names
         self.table.reloadData()
     }
+    
+    var delegate: SongsListTableDelegate?
     
     //MARK: -- private
     private var table: UITableView = { UITableView(frame: .zero, style: .grouped) }()
@@ -77,7 +94,7 @@ extension SongsListTable: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        self.delegate?.songsListTable(self, didSelectListAtIndex: indexPath.section)
     }
     
     // header / footer

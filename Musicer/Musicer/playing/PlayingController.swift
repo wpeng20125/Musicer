@@ -59,7 +59,7 @@ fileprivate extension PlayingController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 Toaster.hideLoading()
                 guard let wrappedSongs = songs else {
-                    Toaster.flash(withText: "暂无歌曲数据", backgroundColor: R.color.mu_color_orange_dark())
+                    Toaster.flash(withText: "暂无歌曲数据")
                     return
                 }
                 self.songs = wrappedSongs

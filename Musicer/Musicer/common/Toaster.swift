@@ -17,8 +17,8 @@ fileprivate let kTipLblInset: CGFloat = 10.0
 fileprivate let kTipTextInset: CGFloat = 2.5
 
 class Toaster: NSObject {
-        
-    static func flash(withText text: String, backgroundColor color: UIColor? = R.color.mu_color_gray_dark()) {
+    
+    static func flash(withText text: String, backgroundColor color: UIColor? = R.color.mu_color_black_alpha_8()) {
         guard text.count > 0 else { return }
         self.make(withBackgroundColor: color)
         self.makeTipToast(withText: text)
