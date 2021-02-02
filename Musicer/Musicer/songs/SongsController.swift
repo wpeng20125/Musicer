@@ -9,24 +9,22 @@ import UIKit
 
 class SongsController: BaseViewController {
     
-    var listName: String?
-    var editable: Bool = false
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.setupSubViews()
+        self.refresh()
     }
+
+    var listName: String?
+    var editable: Bool = false
     
+    //MARK: -- private lazy
     private(set) lazy var table: SongsTable = { SongsTable() }()
+    private lazy var songs: Array<Song> = { Array<Song>() }()
 }
 
-extension SongsController {
+fileprivate extension SongsController {
     
     func setupSubViews() {
         
@@ -41,24 +39,38 @@ extension SongsController {
         }
         titleBar.configure()
         
+        self.table.dataSource = self
+        self.table.delegate = self
         self.view.addSubview(self.table)
         self.table.snp.makeConstraints { (make) in
             make.top.equalTo(titleBar.snp.bottom)
             make.left.bottom.right.equalTo(self.view)
         }
     }
-}
-
-extension SongsController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate {
     
-    func itemDidClick(atPosition p: ItemPosition) {
-        switch p {
-        case .left: self.navigationController?.popViewController(animated: true)
-        case .right: return
-        default: return
+    func refresh() {
+        guard let wrappedName = self.listName else { return }
+        Toaster.showLoading()
+        ffprint("正在加载\(wrappedName)歌单中的歌曲文件")
+        SongManager.default.songs(forList: wrappedName) { (songs) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Toaster.hideLoading()
+                guard let wrappedSongs = songs else {
+                    Toaster.flash(withText: "暂无歌曲数据")
+                    return
+                }
+                self.songs = wrappedSongs
+                self.table.reload(self.songs)
+                ffprint("\(wrappedName)歌单中的歌曲文件加载完毕")
+            }
         }
     }
     
+}
+
+extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSource ,SongsTableDelegate {
+    
+    //MARK: -- TitleBarDataSource / TitleBarDelegate
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let property = ItemProperty()
         switch p {
@@ -75,11 +87,30 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate, SongsTableDeleg
         }
     }
     
+    func itemDidClick(atPosition p: ItemPosition) {
+        switch p {
+        case .left: self.navigationController?.popViewController(animated: true)
+        case .right: return
+        default: return
+        }
+    }
+    
+    //MARK: -- SongsTableDataSource / SongsTableDelegate
+    func couldCellBeEditableForSongsTbale(_ table: SongsTable) -> Bool {
+        guard let wrappedName = self.listName else { return false }
+        guard wrappedName == k_list_name_toatl else { return true }
+        return false
+    }
+    
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
         
     }
     
-    func songsTableCellEditable() -> Bool {
-        return self.editable
+    func songsTable(_ table: SongsTable, addSongToListWithIndex index: Int) {
+        
+    }
+    
+    func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) {
+        
     }
 }

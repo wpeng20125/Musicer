@@ -87,6 +87,7 @@ fileprivate extension SongManager {
         return path
     }
     
+    // total list
     func fetch_total_lists()->[String] {
         guard let wrappedLists = UserDefaults.standard.array(forKey: k_total_list_local_saving_key) as? [String] else {
             let list = [k_list_name_toatl, k_list_name_found]
@@ -96,6 +97,7 @@ fileprivate extension SongManager {
         return wrappedLists
     }
     
+    // songs for list
     func fetch_songs_for_list(_ name: String, _ complete: @escaping ([Song]?)->Void) {
         let files = UserDefaults.standard.array(forKey: name) as? [String]
         guard nil != files else {
@@ -105,6 +107,7 @@ fileprivate extension SongManager {
         self.map(files!, complete)
     }
     
+    // create folder
     func create_folder(_ name: String)->MUError {
         var lists = self.fetch_total_lists()
         if (lists.count - 2) >= k_list_limit_count { return MUError.some(desc: "最多创建\(k_list_limit_count)个歌单") }
@@ -120,6 +123,7 @@ fileprivate extension SongManager {
         return MUError.none(info: "歌单创建成功")
     }
     
+    // add
     func add_song(_ song: Song, _ list: String)->MUError {
         guard var wrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
             let songs = [song.fileName]
@@ -131,27 +135,47 @@ fileprivate extension SongManager {
         return MUError.none(info: "歌曲添加成功")
     }
     
+    // delete
     func del(_ song: Song, _ list: String, _ with: Bool)->MUError {
+        guard with else {  // only delete reference form list
+            guard self.deleteReference(song, list) else { return MUError.some(desc: "歌曲移除失败") }
+            return MUError.none(info: "歌曲已从列表移除")
+        }
+        // delete file
+        guard self.deleteFile(song) else { return MUError.some(desc: "歌曲文件删除失败") }
+        // delete reference all list
+        let lists = self.totalLists()
+        for name in lists {
+            if let wrappedSongs = UserDefaults.standard.array(forKey: name) as? [String] {
+                if wrappedSongs.contains(song.fileName) { self.deleteReference(song, name) }
+            }
+        }
+        return MUError.none(info: "歌曲已从列表移除")
+    }
+    
+    @discardableResult
+    func deleteReference(_ song: Song, _ list: String)->Bool {
         guard var wrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
-            return MUError.some(desc: "未知错误")
+            return false
         }
         wrappedSongs = wrappedSongs.filter { $0 != song.fileName }
         UserDefaults.standard.setValue(wrappedSongs, forKey: list)
-        if !with { return MUError.none(info: "歌曲删除成功") }
-        
-        guard let folder = self.baseFolder else { return MUError.some(desc: "文件目录损坏") }
+        return true
+    }
+    
+    func deleteFile(_ song: Song)->Bool {
+        guard let folder = self.baseFolder else { return false }
         let path = folder + "/" + song.fileName
         guard FileManager.default.fileExists(atPath: path) else {
-            return MUError.some(desc: "歌曲文件不存在")
+            return false
         }
         do {
             try FileManager.default.removeItem(atPath: path)
-            return MUError.none(info: "歌曲文件删除成功")
+            return true
         } catch _ {
-            return MUError.none(info: "歌曲文件删除失败")
+            return false
         }
     }
-    
     
     //MARK: -- Song 实体创建
     func map(_ files: [String], _ complete: @escaping ([Song]?)->Void) {

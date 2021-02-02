@@ -36,6 +36,7 @@ fileprivate extension SongsListController {
         titleBar.configure()
         
         self.table = SongsListTable()
+        self.table?.delegate = self
         self.view.addSubview(self.table!)
         self.table!.snp.makeConstraints { (make) in
             make.top.equalTo(titleBar.snp.bottom)
@@ -148,15 +149,9 @@ fileprivate extension SongsListController {
 }
 
 //MARK: -- navigation bar
-extension SongsListController: TitleBarDelegate, TitleBarDataSource {
-    func itemDidClick(atPosition p: ItemPosition) {
-        switch p {
-        case .left: self.navigationController?.popViewController(animated: true)
-        case .right: self.showCreateView()
-        default: return
-        }
-    }
-    
+extension SongsListController: TitleBarDelegate, TitleBarDataSource, SongsListTableDelegate {
+   
+    //MARK: -- TitleBarDataSource / TitleBarDelegate
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let property = ItemProperty()
         switch p {
@@ -173,5 +168,26 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource {
             property.itemEdgeInset = 22.0;
             return property
         }
+    }
+    
+    func itemDidClick(atPosition p: ItemPosition) {
+        switch p {
+        case .left: self.navigationController?.popViewController(animated: true)
+        case .right: self.showCreateView()
+        default: return
+        }
+    }
+    
+    //MARK: -- SongsListTableDelegate
+    func songsListTable(_ table: SongsListTable, didSelectListAtIndex index: Int) {
+        guard let wrappedNames = self.listNames else { return }
+        let songsVc = SongsController()
+        songsVc.listName = wrappedNames[index]
+        songsVc.editable = true
+        self.navigationController?.pushViewController(songsVc, animated: true)
+    }
+    
+    func songsListTable(_ table: SongsListTable, deleteListAtIndex index: Int) {
+        
     }
 }

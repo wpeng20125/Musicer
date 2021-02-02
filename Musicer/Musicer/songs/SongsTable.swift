@@ -46,7 +46,7 @@ extension SongsTableDelegate {
     func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) { }
 }
 
-
+//MARK: -- 列表类
 class SongsTable: UIView {
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -113,17 +113,18 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let editable = self.dataSource?.couldCellBeEditableForSongsTbale(self) else { return nil }
         guard editable else { return nil }
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, handler) in
+        let deleteAction = UIContextualAction(style: .normal, title: nil) { (action, view, handler) in
             self.delegate?.songsTable(self, deleteSongWithIndex: indexPath.section)
         }
-        deleteAction.image = R.image.mu_image_song_delete()
-        deleteAction.title = "删除"
+        deleteAction.image = R.image.mu_image_song_remove()
+        deleteAction.backgroundColor = R.color.mu_color_orange_dark()
         
         let addingAction = UIContextualAction(style: .normal, title: nil) { (action, view, handler) in
             self.delegate?.songsTable(self, addSongToListWithIndex: indexPath.section)
         }
         addingAction.image = R.image.mu_image_song_add_list()
-        addingAction.title = "添加到"
+        addingAction.backgroundColor = R.color.mu_color_gray_light()
+        
         let config = UISwipeActionsConfiguration(actions: [deleteAction, addingAction])
         return config
     }
