@@ -63,7 +63,7 @@ fileprivate extension PlayingController {
                     return
                 }
                 self.songs = wrappedSongs
-                self.table.reload(self.songs)
+                self.table.reload(songs: self.songs)
                 ffprint("本地歌曲文件加载完毕")
             }
         }
@@ -110,6 +110,6 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
         
     //MARK: -- SongsTableDelegate
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
-        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index)
+        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index, forList: "")
     }
 }

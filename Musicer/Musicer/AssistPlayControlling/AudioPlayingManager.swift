@@ -9,18 +9,21 @@ import UIKit
 import AVFoundation
 
 class AudioPlayingManager: NSObject {
-    
+   
     override init() {
         super.init()
         self.config()
     }
     
+    //MARK: -- readonly
+    private(set) var listName: String?
+    private(set) var songs: [Song]?
+    private(set) var playingIndex = 0
+    private(set) var isAssistShowing = false
+    
+    //MARK: -- private
     private var player: MusicPlayer?
     private var assist: PlayControllingAssist?
-    
-    private var songs: [Song]?
-    private var playingIndex = 0
-    private var isAssistShowing = false
 }
 
 extension AudioPlayingManager {
@@ -40,19 +43,22 @@ extension AudioPlayingManager {
     /// - Parameters:
     ///   - songs: 歌曲列表
     ///   - index: 将要播放的歌曲在列表中的索引
-    func letsPlay(songs: [Song], withPlayingIndex index: Int) {
-        self.config()
-        self.songs = songs
-        self.playingIndex = index
-        self.player?.reloadData()
-        self.assist?.reloadData()
-        if !self.isAssistShowing {
+    func letsPlay(songs: [Song], withPlayingIndex index: Int, forList list: String) {
+        guard self.isAssistShowing else {
+            self.prepare(data: songs, withPlayingIndex: index, forList: list)
             self.showAssist { self.player!.play() }
-        }else {
+            return
+        }
+        guard self.songs == songs && self.playingIndex == index else {
+            self.prepare(data: songs, withPlayingIndex: index, forList: list)
             self.player?.pause()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { self.player?.play() }
+            return
         }
     }
+    
+    /// 停止播放
+    func letsStop() { self.stopPlay() }
 }
 
 fileprivate extension AudioPlayingManager {
@@ -68,6 +74,14 @@ fileprivate extension AudioPlayingManager {
             self.assist!.dataSource = self
             self.assist!.delegate = self
         }
+    }
+    
+    func prepare(data songs: [Song], withPlayingIndex index: Int, forList list: String) {
+        self.songs = songs
+        self.playingIndex = index
+        self.listName = list
+        self.player?.reloadData()
+        self.assist?.reloadData()
     }
     
     func showAssist(complete: @escaping ()->Void) {
@@ -129,19 +143,23 @@ fileprivate extension AudioPlayingManager {
         wrappedPlayer.play()
     }
     
-    func stopPlay() {
-        let alert = UIAlertController(title: "",
-                                      message: "关闭悬浮窗并停止播放！",
+    func stop() {
+        let alert = UIAlertController(title: "关闭浮窗？",
+                                      message: "关闭悬浮窗后,\n正在播放的音乐将停止播放！",
                                       preferredStyle: .alert)
         let cancel = UIAlertAction(title: "再听一会儿", style: .cancel, handler: nil)
-        let confiem = UIAlertAction(title: "不想听了", style: .default) { (action) in
-            self.hideAssist()
-            if let wrappedPlayer = self.player { wrappedPlayer.stop() }
-            self.player = nil
+        let confiem = UIAlertAction(title: "不想听了", style: .destructive) { (action) in
+            self.stopPlay()
         }
         alert.addAction(cancel)
         alert.addAction(confiem)
         UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    func stopPlay() {
+        self.hideAssist()
+        if let wrappedPlayer = self.player { wrappedPlayer.stop() }
+        self.player = nil
     }
 }
 
@@ -174,7 +192,7 @@ extension AudioPlayingManager: PlayControllingAssistDataSource, PlayControllingA
         case .last:
             self.playLast()
         case .stop:
-            self.stopPlay()
+            self.stop()
         }
     }
 }

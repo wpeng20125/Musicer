@@ -99,7 +99,7 @@ fileprivate extension PlayControllingAssist {
         switch pan.state {
         case .changed:
             self.center = pan.location(in: UIApplication.shared.windows.first)
-        case .ended:
+        case .ended, .cancelled, .failed:
             var point = pan.location(in: UIApplication.shared.windows.first)
             if point.x <= ScreenWidth / 2 {
                 if point.y <= ScreenHeight / 2 {  //左上区域
@@ -167,7 +167,6 @@ fileprivate extension PlayControllingAssist {
                 }else {
                     self.loc = .bottom
                 }
-                print(self.loc)
             }
         default: ()
         }

@@ -60,12 +60,27 @@ fileprivate extension SongsController {
                     return
                 }
                 self.songs = wrappedSongs
-                self.table.reload(self.songs)
+                self.table.reload(songs: self.songs)
                 ffprint("\(wrappedName)歌单中的歌曲文件加载完毕")
             }
         }
     }
     
+    func delete(song: Song, withFile flag: Bool) {
+        Toaster.showLoading()
+        let error = SongManager.default.delete(song: song, from: self.listName!, withFile: flag)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            Toaster.hideLoading()
+            switch error {
+            case let .some(desc):
+                Toaster.flash(withText: desc)
+            case let .none(info):
+                self.songs = self.songs.filter{ $0.fileName != song.fileName }
+                self.table.reload(songs: self.songs)
+                Toaster.flash(withText: info)
+            }
+        }
+    }
 }
 
 extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSource ,SongsTableDelegate {
@@ -103,7 +118,8 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSo
     }
     
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
-        
+        guard let wrappedName = self.listName else { return }
+        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index, forList: wrappedName)
     }
     
     func songsTable(_ table: SongsTable, addSongToListWithIndex index: Int) {
@@ -111,6 +127,23 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSo
     }
     
     func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) {
-        
+        let alert = UIAlertController(title: "是否删除歌曲文件？\n",
+                                      message: "删除歌曲文件，同时也会把该歌曲从所有包含该歌曲的歌单中移除。\n请谨慎操作！",
+                                      preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: "取消", style: .cancel) { (action) in
+            self.table.reloadCell(index: index)
+        }
+        let deleteRef = UIAlertAction(title: "仅从本歌单移除", style: .default) { (action) in
+            self.delete(song: self.songs[index], withFile: false)
+        }
+        let deleteFile = UIAlertAction(title: "同时删除文件", style: .destructive) { (action) in
+            self.delete(song: self.songs[index], withFile: true)
+        }
+        alert.addAction(deleteRef)
+        alert.addAction(deleteFile)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
     }
+    
+    
 }

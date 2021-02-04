@@ -149,10 +149,10 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
     func itemDidClick(atPosition p: ItemPosition) {
         if case ItemPosition.right = p {
             let alert = UIAlertController(title: "提示",
-                                          message: "请确保所有歌曲已传输完毕，否则关闭该页面，传输会停止",
+                                          message: "请确保所有歌曲已传输完毕，否则关闭该页面，传输会停止!",
                                           preferredStyle: .alert)
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
-            let confiem = UIAlertAction(title: "确定", style: .default) { (action) in
+            let confiem = UIAlertAction(title: "确定", style: .destructive) { (action) in
                 self.uploader.disconnect()
                 if self.uploader.files.modified {
                     UserDefaults.standard.setValue(self.uploader.files.names, forKey: k_list_name_toatl)

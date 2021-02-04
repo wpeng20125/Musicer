@@ -139,21 +139,20 @@ fileprivate extension SongManager {
     func del(_ song: Song, _ list: String, _ with: Bool)->MUError {
         guard with else {  // only delete reference form list
             guard self.deleteReference(song, list) else { return MUError.some(desc: "歌曲移除失败") }
-            return MUError.none(info: "歌曲已从列表移除")
+            return MUError.none(info: "歌曲已从歌单移除")
         }
         // delete file
         guard self.deleteFile(song) else { return MUError.some(desc: "歌曲文件删除失败") }
         // delete reference all list
         let lists = self.totalLists()
+        var names = [String]()
         for name in lists {
-            if let wrappedSongs = UserDefaults.standard.array(forKey: name) as? [String] {
-                if wrappedSongs.contains(song.fileName) { self.deleteReference(song, name) }
-            }
+            if !self.deleteReference(song, name) {  names.append(name) }
         }
-        return MUError.none(info: "歌曲已从列表移除")
+        guard names.count > 0 else { return MUError.none(info: "歌曲已从歌单移除") }
+        return MUError.none(info: "歌单：\(names.joined(separator: " | ")) 中的该歌曲移除失败，您可以尝试去相应的歌单单独删除")
     }
     
-    @discardableResult
     func deleteReference(_ song: Song, _ list: String)->Bool {
         guard var wrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
             return false

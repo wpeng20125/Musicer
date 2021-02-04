@@ -58,9 +58,17 @@ class SongsTable: UIView {
     }
     
     /// 刷新列表数据
-    func reload(_ songs: [Song]) {
+    func reload(songs: [Song]) {
         self.songs = songs
         self.tableView.reloadData()
+    }
+    
+    func reloadCell(index: Int) {
+        
+    }
+    
+    func deleteCell(index: Int) {
+        
     }
     
     weak var delegate: SongsTableDelegate?
@@ -113,7 +121,7 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let editable = self.dataSource?.couldCellBeEditableForSongsTbale(self) else { return nil }
         guard editable else { return nil }
-        let deleteAction = UIContextualAction(style: .normal, title: nil) { (action, view, handler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, handler) in
             self.delegate?.songsTable(self, deleteSongWithIndex: indexPath.section)
         }
         deleteAction.image = R.image.mu_image_song_remove()

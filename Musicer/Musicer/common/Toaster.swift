@@ -18,19 +18,28 @@ fileprivate let kTipTextInset: CGFloat = 2.5
 
 class Toaster: NSObject {
     
-    static func flash(withText text: String, backgroundColor color: UIColor? = R.color.mu_color_black_alpha_8()) {
+    /// 展示 Toast 提示
+    /// - Parameters:
+    ///   - text: 提示信息
+    ///   - color: 提示框背景色，默认 mu_color_black_alpha_8
+    ///   - duration: 提示框停留时间，默认 1.0 秒
+    static func flash(withText text: String, backgroundColor color: UIColor? = R.color.mu_color_black_alpha_8(), staying duration: Float = 1.0) {
         guard text.count > 0 else { return }
         self.make(withBackgroundColor: color)
         self.makeTipToast(withText: text)
-        self.show(comlete: { DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) { self.hide() } })
+        let delay = DispatchTime.now() + .milliseconds(Int(fabsf(duration) * 1000))
+        self.show(comlete: { DispatchQueue.main.asyncAfter(deadline: delay) { self.hide() } })
     }
     
+    /// 展示 Loading 提示框
+    /// - Parameter color: 提示框背景色，默认 mu_color_clear
     static func showLoading(withBackgroundColor color: UIColor? = R.color.mu_color_clear()) {
         self.make(withBackgroundColor: color)
         self.makeLoading()
         self.show(comlete: { self.startAnimation() })
     }
     
+    /// 隐藏 loading 提示框
     static func hideLoading() {
         self.stopAnimation()
         self.hide()

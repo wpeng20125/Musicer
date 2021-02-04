@@ -11,7 +11,7 @@ enum FFormat {
     case mp3(desc: String)
 }
 
-struct Song {
+struct Song: Equatable {
     var name: String = "Unknown"
     var fileName: String
     var fileURL: URL
@@ -19,4 +19,6 @@ struct Song {
     var duration: Float = 0
     var format: FFormat?
     var album: (name: String?, image: UIImage?)
+    
+    static func == (lhs: Song, rhs: Song) -> Bool { lhs.fileURL == rhs.fileURL }
 }

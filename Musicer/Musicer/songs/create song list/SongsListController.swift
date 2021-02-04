@@ -159,7 +159,7 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource, SongsListTa
             property.image = R.image.mu_image_nav_back()
             return property
         case .middle:
-            property.title = "全部列表"
+            property.title = "全部歌单"
             property.titleColor = R.color.mu_color_white()
             property.fontSize = 16.0
             return property
