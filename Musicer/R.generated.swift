@@ -309,7 +309,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 63 images.
+  /// This `R.image` struct is generated, and contains static references to 65 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
@@ -349,6 +349,8 @@ struct R: Rswift.Validatable {
     static let mu_image_song_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_list")
     /// Image `mu_image_song_remove`.
     static let mu_image_song_remove = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_song_remove")
+    /// Image `mu_image_songs_all_list`.
+    static let mu_image_songs_all_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_all_list")
     /// Image `mu_image_songs_folder_icon_all`.
     static let mu_image_songs_folder_icon_all = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_songs_folder_icon_all")
     /// Image `mu_image_songs_folder_icon_custom_1`.
@@ -375,6 +377,8 @@ struct R: Rswift.Validatable {
     static let mu_image_toast_loading_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_toast_loading_2")
     /// Image `mu_image_upload_close`.
     static let mu_image_upload_close = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_upload_close")
+    /// Image `mu_image_upload_file`.
+    static let mu_image_upload_file = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_upload_file")
     /// Image `mu_image_upload_wifi`.
     static let mu_image_upload_wifi = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_upload_wifi")
     /// Image `mu_imge_music_note_10`.
@@ -572,6 +576,13 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_songs_all_list", bundle: ..., traitCollection: ...)`
+    static func mu_image_songs_all_list(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_songs_all_list, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_songs_folder_icon_all", bundle: ..., traitCollection: ...)`
     static func mu_image_songs_folder_icon_all(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_songs_folder_icon_all, compatibleWith: traitCollection)
@@ -659,6 +670,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_upload_close", bundle: ..., traitCollection: ...)`
     static func mu_image_upload_close(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_upload_close, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_upload_file", bundle: ..., traitCollection: ...)`
+    static func mu_image_upload_file(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_upload_file, compatibleWith: traitCollection)
     }
     #endif
 

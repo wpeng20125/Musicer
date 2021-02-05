@@ -11,7 +11,7 @@ import FLEX.FLEXManager
 import UIKit
 
 class PlayingController: BaseViewController {
-        
+    #warning("TODO: 这个类应该记录的是当前正在播放的列表，而且应该记住上次播放的列表，甚至播放的歌曲以及进度")
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = R.color.mu_color_gray_dark()
@@ -77,7 +77,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
         let item = ItemProperty()
         switch p {
         case .left:
-            item.image = R.image.mu_image_song_list()
+            item.image = R.image.mu_image_songs_all_list()
             return item
         case .middle:
             item.title = "全部歌曲"
@@ -85,7 +85,7 @@ extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDel
             item.fontSize = 16.0
             return item
         case .right:
-            item.image = R.image.mu_image_add()
+            item.image = R.image.mu_image_upload_file()
             return item
         }
     }

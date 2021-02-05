@@ -133,6 +133,12 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
         addingAction.image = R.image.mu_image_song_add_list()
         addingAction.backgroundColor = R.color.mu_color_gray_light()
         
+        let likeAction = UIContextualAction(style: .normal, title: nil) { (action, view, handler) in
+            self.delegate?.songsTable(self, addSongToListWithIndex: indexPath.section)
+        }
+        addingAction.image = R.image.mu_image_song_add_list()
+        addingAction.backgroundColor = R.color.mu_color_gray_light()
+        
         let config = UISwipeActionsConfiguration(actions: [deleteAction, addingAction])
         return config
     }

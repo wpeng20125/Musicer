@@ -127,8 +127,11 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSo
     }
     
     func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) {
-        let alert = UIAlertController(title: "是否删除歌曲文件？\n",
-                                      message: "删除歌曲文件，同时也会把该歌曲从所有包含该歌曲的歌单中移除。\n请谨慎操作！",
+        
+        #warning("TODO: 删除的时候需要判断是否是当前正在播放的歌曲；如果删除的是播放器持有的列表中的一首的时候，播放器列表要跟着更新！！")
+        
+        let alert = UIAlertController(title: "是否删除歌曲文件?",
+                                      message: "删除歌曲文件，同时也会把该歌曲\n从所有包含该歌曲的歌单中移除。",
                                       preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "取消", style: .cancel) { (action) in
             self.table.reloadCell(index: index)
@@ -144,6 +147,4 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSo
         alert.addAction(cancel)
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
 }
