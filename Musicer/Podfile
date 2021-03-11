@@ -7,10 +7,12 @@ target 'Musicer' do
 
   pod 'R.swift'
   pod 'SnapKit', '~> 5.0.1'
-  pod 'NVActivityIndicatorView'
+#  pod 'NVActivityIndicatorView'
   #pod "GCDWebServer", "~> 3.0"
   pod "GCDWebServer/WebUploader", "~> 3.0"
   pod 'FLEX', :configurations => ['Debug']
-  pod 'Kingfisher'
+  pod 'Kingfisher', '~> 6.1.0'
+#  pod 'RealmSwift', '~> 10.5.0'
+  pod 'WCDB.swift', '~> 1.0.8.2'
 
 end

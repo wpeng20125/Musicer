@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 6/8/14.
-//  Copyright (c) 2020 Flipboard. All rights reserved.
+//  Copyright (c) 2020 FLEX Team. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -96,11 +96,19 @@ typedef NS_ENUM(NSInteger, FLEXRuntimeUtilityErrorCode) {
     return superClasses;
 }
 
++ (NSString *)safeClassNameForObject:(id)object {
+    // Don't assume that we have an NSObject subclass
+    if ([self safeObject:object respondsToSelector:@selector(class)]) {
+        return NSStringFromClass([object class]);
+    }
+
+    return NSStringFromClass(object_getClass(object));
+}
+
 /// Could be nil
 + (NSString *)safeDescriptionForObject:(id)object {
-    // Don't assume that we have an NSObject subclass.
-    // Check to make sure the object responds to the description method
-    if ([object respondsToSelector:@selector(description)]) {
+    // Don't assume that we have an NSObject subclass; not all objects respond to -description
+    if ([self safeObject:object respondsToSelector:@selector(description)]) {
         return [object description];
     }
 
@@ -111,9 +119,7 @@ typedef NS_ENUM(NSInteger, FLEXRuntimeUtilityErrorCode) {
 + (NSString *)safeDebugDescriptionForObject:(id)object {
     NSString *description = nil;
 
-    // Don't assume that we have an NSObject subclass.
-    // Check to make sure the object responds to the description method
-    if ([object respondsToSelector:@selector(debugDescription)]) {
+    if ([self safeObject:object respondsToSelector:@selector(debugDescription)]) {
         description = [object debugDescription];
     } else {
         description = [self safeDescriptionForObject:object];
@@ -135,7 +141,7 @@ typedef NS_ENUM(NSInteger, FLEXRuntimeUtilityErrorCode) {
     NSString *description = nil;
 
     // Special case BOOL for better readability.
-    if ([value isKindOfClass:[NSValue class]]) {
+    if ([self safeObject:value isKindOfClass:[NSValue class]]) {
         const char *type = [value objCType];
         if (strcmp(type, @encode(BOOL)) == 0) {
             BOOL boolValue = NO;
@@ -161,6 +167,34 @@ typedef NS_ENUM(NSInteger, FLEXRuntimeUtilityErrorCode) {
     }
 
     return description;
+}
+
++ (BOOL)safeObject:(id)object isKindOfClass:(Class)cls {
+    static BOOL (*isKindOfClass)(id, SEL, Class) = nil;
+    static BOOL (*isKindOfClass_meta)(id, SEL, Class) = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        isKindOfClass = (BOOL(*)(id, SEL, Class))[NSObject instanceMethodForSelector:@selector(isKindOfClass:)];
+        isKindOfClass_meta = (BOOL(*)(id, SEL, Class))[NSObject methodForSelector:@selector(isKindOfClass:)];
+    });
+    
+    BOOL isClass = object_isClass(object);
+    return (isClass ? isKindOfClass_meta : isKindOfClass)(object, @selector(isKindOfClass:), cls);
+}
+
++ (BOOL)safeObject:(id)object respondsToSelector:(SEL)sel {
+    // If we're given a class, we want to know if classes respond to this selector.
+    // Similarly, if we're given an instance, we want to know if instances respond. 
+    BOOL isClass = object_isClass(object);
+    Class cls = isClass ? object : object_getClass(object);
+    // BOOL isMetaclass = class_isMetaClass(cls);
+    
+    if (isClass) {
+        // In theory, this should also work for metaclasses...
+        return class_getClassMethod(cls, sel) != nil;
+    } else {
+        return class_getInstanceMethod(cls, sel) != nil;
+    }
 }
 
 
@@ -267,7 +301,7 @@ typedef NS_ENUM(NSInteger, FLEXRuntimeUtilityErrorCode) {
     });
 
     // Bail if the object won't respond to this selector.
-    if (![object respondsToSelector:selector]) {
+    if (![self safeObject:object respondsToSelector:selector]) {
         if (error) {
             NSString *msg = [NSString
                 stringWithFormat:@"%@ does not respond to the selector %@",

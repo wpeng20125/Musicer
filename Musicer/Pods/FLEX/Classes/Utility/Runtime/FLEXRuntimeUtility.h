@@ -3,7 +3,7 @@
 //  Flipboard
 //
 //  Created by Ryan Olson on 6/8/14.
-//  Copyright (c) 2020 Flipboard. All rights reserved.
+//  Copyright (c) 2020 FLEX Team. All rights reserved.
 //
 
 #import "FLEXRuntimeConstants.h"
@@ -53,8 +53,12 @@
 
 /// Used to describe an object in brief within an explorer row
 + (NSString *)summaryForObject:(id)value;
++ (NSString *)safeClassNameForObject:(id)object;
 + (NSString *)safeDescriptionForObject:(id)object;
 + (NSString *)safeDebugDescriptionForObject:(id)object;
+
++ (BOOL)safeObject:(id)object isKindOfClass:(Class)cls;
++ (BOOL)safeObject:(id)object respondsToSelector:(SEL)sel;
 
 // Property Helpers
 + (BOOL)tryAddPropertyWithName:(const char *)name

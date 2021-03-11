@@ -9,16 +9,65 @@ import UIKit
 
 extension UIView {
     
-    func addRoundCorner(withRadius radius: Float) {
-        let p: UIRectCorner = UIRectCorner.init([.topLeft, .topRight, .bottomLeft, .bottomRight])
-        self.addRoundCorner(withRadius: radius, position: p, bounds: self.bounds)
+    // handy frame setter
+    var kw_x: Double {
+        set {
+            var f = self.frame
+            f.origin.x = CGFloat(newValue)
+            self.frame = f
+        }
+        get {
+            Double(self.frame.origin.x)
+        }
     }
     
-    func addRoundCorner(withRadius radius: Float, position p: UIRectCorner) {
-        self.addRoundCorner(withRadius: radius, position: p, bounds: self.bounds)
+    var kw_y: Double {
+        set {
+            var f = self.frame
+            f.origin.y = CGFloat(newValue)
+            self.frame = f
+        }
+        get {
+            Double(self.frame.origin.y)
+        }
     }
     
-    func addRoundCorner(withRadius radius: Float, position p: UIRectCorner, bounds b: CGRect) {
-        
+    var kw_w: Double {
+        set {
+            var f = self.frame
+            f.size.width = CGFloat(newValue)
+            self.frame = f
+        }
+        get {
+            Double(self.frame.size.width)
+        }
+    }
+    
+    var kw_h: Double {
+        set {
+            var f = self.frame
+            f.size.height = CGFloat(newValue)
+            self.frame = f
+        }
+        get {
+            Double(self.frame.size.height)
+        }
+    }
+    
+    var kw_size: CGSize {
+        set {
+            var f = self.frame
+            f.size = newValue
+            self.frame = f
+        }
+        get {
+            self.frame.size
+        }
+    }
+    
+    // init with backgroundColor
+    convenience init(backgroundColor: UIColor?) {
+        self.init()
+        if let color = backgroundColor { self.backgroundColor = color }
     }
 }

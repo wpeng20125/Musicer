@@ -3,7 +3,7 @@
 //  FLEX
 //
 //  Created by Tanner Bennett on 8/28/19.
-//  Copyright © 2019 Flipboard. All rights reserved.
+//  Copyright © 2020 FLEX Team. All rights reserved.
 //
 
 #import "FLEXObjectExplorer.h"
@@ -86,7 +86,7 @@
 - (NSString *)objectDescription {
     if (!_objectDescription) {
         // Hard-code UIColor description
-        if ([self.object isKindOfClass:[UIColor class]]) {
+        if ([FLEXRuntimeUtility safeObject:self.object isKindOfClass:[UIColor class]]) {
             CGFloat h, s, l, r, g, b, a;
             [self.object getRed:&r green:&g blue:&b alpha:&a];
             [self.object getHue:&h saturation:&s brightness:&l alpha:nil];
@@ -136,7 +136,10 @@
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     BOOL hideBackingIvars = defaults.flex_explorerHidesPropertyIvars;
     BOOL hidePropertyMethods = defaults.flex_explorerHidesPropertyMethods;
+    BOOL hidePrivateMethods = defaults.flex_explorerHidesPrivateMethods;
     BOOL showMethodOverrides = defaults.flex_explorerShowsMethodOverrides;
+    
+    NSMutableArray<NSArray<FLEXMethod *> *> *allMethods = [NSMutableArray new];
 
     // Loop over each class and each superclass, collect
     // the fresh and unique metadata in each category
@@ -165,7 +168,7 @@
             kind:FLEXMetadataKindIvars
             skip:NO
         ]];
-        [_allMethods addObject:[self
+        [allMethods addObject:[self
             metadataUniquedByName:[cls flex_allInstanceMethods]
             superclass:superclass
             kind:FLEXMetadataKindMethods
@@ -221,8 +224,7 @@
     
     // Potentially filter property-backing methods
     if (hidePropertyMethods) {
-        NSArray<NSArray<FLEXMethod *> *> *methods = _allMethods.copy;
-        _allMethods = [methods flex_mapped:^id(NSArray<FLEXMethod *> *list, NSUInteger idx) {
+        allMethods = [allMethods flex_mapped:^id(NSArray<FLEXMethod *> *list, NSUInteger idx) {
             // Get a set of all property method names for the current class in the hierarchy
             NSSet *methodNames = [NSSet setWithArray:({
                 [properties[idx] flex_flatmapped:^NSArray *(FLEXProperty *p, NSUInteger idx) {
@@ -240,17 +242,32 @@
                 }];
             })];
             
-            // Remove ivars whose name is in the ivar names list
+            // Remove methods whose name is in the property method names list
             return [list flex_filtered:^BOOL(FLEXMethod *method, NSUInteger idx) {
                 return ![methodNames containsObject:method.selectorString];
             }];
         }];
     }
+    
+    if (hidePrivateMethods) {
+        allMethods = [allMethods flex_mapped:^id(NSArray<FLEXMethod *> *list, NSUInteger idx) {
+            // Remove methods which contain an underscore
+            return [list flex_filtered:^BOOL(FLEXMethod *method, NSUInteger idx) {
+                return ![method.selectorString containsString:@"_"];
+            }];
+        }];
+    }
+    
+    _allMethods = allMethods;
 
     // Set up UIKit helper data
     // Really, we only need to call this on properties and ivars
     // because no other metadata types support editing.
-    for (NSArray *matrix in @[_allProperties, _allIvars, /* _allMethods, _allClassMethods, _allConformedProtocols */]) {
+    NSArray<NSArray *>*metadatas = @[
+        _allProperties, _allClassProperties, _allIvars,
+       /* _allMethods, _allClassMethods, _allConformedProtocols */
+    ];
+    for (NSArray *matrix in metadatas) {
         for (NSArray *metadataByClass in matrix) {
             [FLEXObjectExplorer configureDefaultsForItems:metadataByClass];
         }
@@ -279,8 +296,8 @@
 - (NSArray *)metadataUniquedByName:(NSArray *)list
                         superclass:(Class)superclass
                               kind:(FLEXMetadataKind)kind
-                              skip:(BOOL)skip {
-    if (skip) {
+                              skip:(BOOL)skipUniquing {
+    if (skipUniquing) {
         return list;
     }
     

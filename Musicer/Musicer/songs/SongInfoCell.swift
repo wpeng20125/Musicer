@@ -75,14 +75,14 @@ fileprivate extension SongInfoCell {
         self.titleLbl.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(20.0)
             make.bottom.equalTo(self.contentView.snp.centerY).offset(-5.0)
-            make.right.equalTo(self.contentView).offset(-20.0)
+            make.right.equalTo(self.contentView).offset(-60.0)
         }
         
         self.contentView.addSubview(self.authorLbl)
         self.authorLbl.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(20.0)
             make.top.equalTo(self.contentView.snp.centerY).offset(5.0)
-            make.right.equalTo(self.contentView).offset(-20.0)
+            make.right.equalTo(self.contentView).offset(-60.0)
         }
         
         self.contentView.addSubview(self.timeLbl)
