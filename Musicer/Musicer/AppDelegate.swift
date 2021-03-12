@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AudioPlayingManager.default.setAudioSessionCategory()
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = BaseNavigationController(rootViewController: PlayingController())
+        self.window?.rootViewController = BaseNavigationController(rootViewController: PlayingListController())
         self.window?.makeKeyAndVisible()
         
         return true

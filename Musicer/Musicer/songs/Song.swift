@@ -20,5 +20,9 @@ struct Song: Equatable {
     var format: FFormat?
     var album: (name: String?, image: UIImage?)
     
-    static func == (lhs: Song, rhs: Song) -> Bool { lhs.fileURL == rhs.fileURL }
+    static func == (lhs: Song, rhs: Song) -> Bool {
+        lhs.fileURL == rhs.fileURL
+    }
+    
+    
 }

@@ -9,12 +9,7 @@ import UIKit
 import AVFoundation
 
 class AudioPlayingManager: NSObject {
-   
-    override init() {
-        super.init()
-        self.config()
-    }
-    
+       
     //MARK: -- readonly
     private(set) var listName: String?
     private(set) var songs: [Song]?
@@ -44,12 +39,13 @@ extension AudioPlayingManager {
     ///   - songs: 歌曲列表
     ///   - index: 将要播放的歌曲在列表中的索引
     func letsPlay(songs: [Song], withPlayingIndex index: Int, forList list: String) {
+        self.config()
         guard self.isAssistShowing else {
             self.prepare(data: songs, withPlayingIndex: index, forList: list)
             self.showAssist { self.player!.play() }
             return
         }
-        guard self.songs == songs && self.playingIndex == index else {
+        guard self.listName == list && self.playingIndex == index else {
             self.prepare(data: songs, withPlayingIndex: index, forList: list)
             self.player?.pause()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { self.player?.play() }
@@ -95,23 +91,18 @@ fileprivate extension AudioPlayingManager {
         }
     }
     
-    func hideAssist() {
+    func hideAssist(complete: @escaping ()->Void) {
         self.isAssistShowing = false
         guard let wrappedAssist = self.assist else { return }
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
             switch wrappedAssist.loc {
-            case .top:
-                wrappedAssist.kw_y = -wrappedAssist.kw_h
-            case .left:
-                wrappedAssist.kw_x = -wrappedAssist.kw_w
-            case .bottom:
-                wrappedAssist.kw_y = Double(ScreenHeight)
-            case .right:
-                wrappedAssist.kw_x = Double(ScreenWidth)
+            case .top: wrappedAssist.kw_y = -wrappedAssist.kw_h
+            case .left: wrappedAssist.kw_x = -wrappedAssist.kw_w
+            case .bottom: wrappedAssist.kw_y = Double(ScreenHeight)
+            case .right: wrappedAssist.kw_x = Double(ScreenWidth)
             }
         } completion: { (flag) in
-            wrappedAssist.removeFromSuperview()
-            self.assist = nil
+            if flag { complete() }
         }
     }
     
@@ -157,9 +148,15 @@ fileprivate extension AudioPlayingManager {
     }
     
     func stopPlay() {
-        self.hideAssist()
-        if let wrappedPlayer = self.player { wrappedPlayer.stop() }
-        self.player = nil
+        self.hideAssist {
+            self.assist?.removeFromSuperview()
+            self.player?.stop()
+            self.playingIndex = 0;
+            self.assist = nil
+            self.player = nil
+            self.songs = nil;
+            self.listName = nil;
+        }
     }
 }
 

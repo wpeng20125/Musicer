@@ -10,7 +10,7 @@ import FLEX.FLEXManager
 
 import UIKit
 
-class PlayingController: BaseViewController {
+class PlayingListController: BaseViewController {
     #warning("TODO: 这个类应该记录的是当前正在播放的列表，而且应该记住上次播放的列表，甚至播放的歌曲以及进度")
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,7 @@ class PlayingController: BaseViewController {
 }
 
 //MARK: -- setup subviews
-fileprivate extension PlayingController {
+fileprivate extension PlayingListController {
     
     func configure() {
         
@@ -50,7 +50,7 @@ fileprivate extension PlayingController {
 }
 
 //MARK: -- load data
-fileprivate extension PlayingController {
+fileprivate extension PlayingListController {
     
     func refresh() {
         ffprint("正在加载本地歌曲文件")
@@ -70,7 +70,7 @@ fileprivate extension PlayingController {
     }
 }
 
-extension PlayingController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate {
+extension PlayingListController: TitleBarDataSource, TitleBarDelegate, SongsTableDelegate {
     
     //MARK: -- TitleBarDataSource
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
