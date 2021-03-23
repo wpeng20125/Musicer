@@ -9,7 +9,9 @@ import UIKit
 import AVFoundation
 
 class AudioPlayingManager: NSObject {
-       
+    
+    private override init() { }
+    
     //MARK: -- readonly
     private(set) var listName: String?
     private(set) var songs: [Song]?
@@ -31,6 +33,7 @@ extension AudioPlayingManager {
     ///   设置 category 最好是在 application 的生命周期方法中进行，冷启动的时候在 didFinishLaunchingWithOptions 中设置
     ///   前后台切换的时候，可以判断当前的 session 是否被其他 app 占用，以决定是否重新设置
     func setAudioSessionCategory() {
+        self.config()
         self.player?.setCategory()
     }
     

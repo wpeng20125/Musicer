@@ -9,11 +9,9 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    #if DEBUG
     deinit {
         ffprint("\(type(of: self)) is released")
     }
-    #endif
     
     override func viewDidLoad() {
         super.viewDidLoad()
