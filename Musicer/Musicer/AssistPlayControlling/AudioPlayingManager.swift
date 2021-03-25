@@ -51,7 +51,7 @@ extension AudioPlayingManager {
         guard self.listName == list && self.playingIndex == index else {
             self.prepare(data: songs, withPlayingIndex: index, forList: list)
             self.player?.pause()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { self.player?.play() }
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { self.player?.play() }
             return
         }
     }
@@ -85,10 +85,10 @@ fileprivate extension AudioPlayingManager {
     
     func showAssist(complete: @escaping ()->Void) {
         self.isAssistShowing = true
-        guard let wrappedAssist = self.assist else { return }
-        UIApplication.shared.windows.first?.addSubview(wrappedAssist)
+        guard let unwrappedAssist = self.assist else { return }
+        UIApplication.shared.windows.first?.addSubview(unwrappedAssist)
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-            wrappedAssist.kw_x = Double(ScreenWidth) - wrappedAssist.kw_w
+            unwrappedAssist.kw_x = Double(ScreenWidth) - unwrappedAssist.kw_w
         } completion: { (flag) in
             if flag { complete() }
         }
@@ -96,13 +96,13 @@ fileprivate extension AudioPlayingManager {
     
     func hideAssist(complete: @escaping ()->Void) {
         self.isAssistShowing = false
-        guard let wrappedAssist = self.assist else { return }
+        guard let unwrappedAssist = self.assist else { return }
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-            switch wrappedAssist.loc {
-            case .top: wrappedAssist.kw_y = -wrappedAssist.kw_h
-            case .left: wrappedAssist.kw_x = -wrappedAssist.kw_w
-            case .bottom: wrappedAssist.kw_y = Double(ScreenHeight)
-            case .right: wrappedAssist.kw_x = Double(ScreenWidth)
+            switch unwrappedAssist.loc {
+            case .top: unwrappedAssist.kw_y = -unwrappedAssist.kw_h
+            case .left: unwrappedAssist.kw_x = -unwrappedAssist.kw_w
+            case .bottom: unwrappedAssist.kw_y = Double(ScreenHeight)
+            case .right: unwrappedAssist.kw_x = Double(ScreenWidth)
             }
         } completion: { (flag) in
             if flag { complete() }
@@ -110,15 +110,15 @@ fileprivate extension AudioPlayingManager {
     }
     
     func playNext(afterDelay: Bool) {
-        guard let wrappedPlayer = self.player, let wrappedAssist = self.assist else { return }
-        guard let songs = self.songs else { return }
-        wrappedPlayer.pause()
-        if songs.count - 1 == self.playingIndex {  return }
+        guard let unwrappedPlayer = self.player, let unwrappedAssist = self.assist else { return }
+        guard let unwrappedSongs = self.songs else { return }
+        unwrappedPlayer.pause()
+        if unwrappedSongs.count - 1 == self.playingIndex {  return }
         let closure = {
             self.playingIndex += 1
-            wrappedPlayer.reloadData()
-            wrappedAssist.reloadData()
-            wrappedPlayer.play()
+            unwrappedPlayer.reloadData()
+            unwrappedAssist.reloadData()
+            unwrappedPlayer.play()
         }
         if afterDelay {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {  closure() }
@@ -128,13 +128,13 @@ fileprivate extension AudioPlayingManager {
     }
     
     func playLast() {
-        guard let wrappedPlayer = self.player, let wrappedAssist = self.assist else { return }
-        wrappedPlayer.pause()
+        guard let unwrappedPlayer = self.player, let unwrappedAssist = self.assist else { return }
+        unwrappedPlayer.pause()
         if 0 == self.playingIndex {  return }
         self.playingIndex -= 1
-        wrappedPlayer.reloadData()
-        wrappedAssist.reloadData()
-        wrappedPlayer.play()
+        unwrappedPlayer.reloadData()
+        unwrappedAssist.reloadData()
+        unwrappedPlayer.play()
     }
     
     func stop() {
@@ -167,13 +167,13 @@ fileprivate extension AudioPlayingManager {
 extension AudioPlayingManager: PlayControllingAssistDataSource, PlayControllingAssistDelegate {
     
     func imageToDisplayForPlayControllingAssist(_ assist: PlayControllingAssist) -> UIImage? {
-        guard let songs = self.songs else { return nil }
-        return songs[self.playingIndex].album.image
+        guard let unwrappedSongs = self.songs else { return nil }
+        return unwrappedSongs[self.playingIndex].album.image
     }
     
     func disableNextButtonForPlayControllingAssist(_ assist: PlayControllingAssist) -> Bool {
-        guard let songs = self.songs else { return true }
-        return songs.count - 1 == self.playingIndex
+        guard let unwrappedSongs = self.songs else { return true }
+        return unwrappedSongs.count - 1 == self.playingIndex
     }
     
     func disableLastButtonForPlayControllingAssist(_ assist: PlayControllingAssist) -> Bool {
@@ -181,12 +181,12 @@ extension AudioPlayingManager: PlayControllingAssistDataSource, PlayControllingA
     }
     
     func playControllingAssist(_ assist: PlayControllingAssist, didTriggerAction action: AssistActionType) {
-        guard let wrappedPlayer = self.player else { return }
+        guard let unwrappedPlayer = self.player else { return }
         switch action {
         case .play:
-            wrappedPlayer.play()
+            unwrappedPlayer.play()
         case .pause:
-            wrappedPlayer.pause()
+            unwrappedPlayer.pause()
         case .next:
             self.playNext(afterDelay: false)
         case .last:
@@ -201,8 +201,8 @@ extension AudioPlayingManager: PlayControllingAssistDataSource, PlayControllingA
 extension AudioPlayingManager: MusicPlayerDataSource, MusicPlayerDelegate {
     
     func musicToPlay(forPlayer player: MusicPlayer) -> Music? {
-        guard let songs = self.songs else { return nil }
-        let song = songs[self.playingIndex]
+        guard let unwrappedSongs = self.songs else { return nil }
+        let song = unwrappedSongs[self.playingIndex]
         let music = Music(fileURL: song.fileURL,
                           duration: UInt(ceilf(song.duration)),
                           songName: song.name,
@@ -221,18 +221,18 @@ extension AudioPlayingManager: MusicPlayerDataSource, MusicPlayerDelegate {
     }
     
     func audioPlayer(_ player: MusicPlayer, stateChanged state: PlayerState) {
-        guard let wrappedAssist = self.assist else { return }
+        guard let unwrappedAssist = self.assist else { return }
         switch state {
         case .play:
-            wrappedAssist.play()
+            unwrappedAssist.play()
         case .pause:
-            wrappedAssist.pause()
+            unwrappedAssist.pause()
         }
     }
     
     func audioPlayer(_ player: MusicPlayer, playingByProgress progress: Float) {
-        guard let wrappedAssist = self.assist else { return }
-        wrappedAssist.updateProgress(progress: progress)
+        guard let unwrappedAssist = self.assist else { return }
+        unwrappedAssist.updateProgress(progress: progress)
     }
     
     func audioPlayer(_ player: MusicPlayer, didFinishPlayingMusic music: Music) {

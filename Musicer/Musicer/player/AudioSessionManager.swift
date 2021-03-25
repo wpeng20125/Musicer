@@ -89,19 +89,19 @@ fileprivate extension AudioSessionManager {
     
     //MARK: -- 打断处理
     @objc func interruptionHandle(noti: Notification) {
-        guard let userInfo = noti.userInfo else { return }
+        guard let unwrappedUserInfo = noti.userInfo else { return }
         if AVAudioSession.interruptionNotification == noti.name {
-            guard let value = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-                  let type = AVAudioSession.InterruptionType(rawValue: value) else { return }
-            switch type {
+            guard let unwrappedValue = unwrappedUserInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  let unwrappedType = AVAudioSession.InterruptionType(rawValue: unwrappedValue) else { return }
+            switch unwrappedType {
             case .began: self.interruptionBegin()
             case .ended: self.interruptionFinish()
             default: ()
             }
         }else {
-            guard let value = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
-                  let type = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: value) else { return }
-            switch type {
+            guard let unwrappedValue = unwrappedUserInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
+                  let unwrappedType = AVAudioSession.SilenceSecondaryAudioHintType(rawValue: unwrappedValue) else { return }
+            switch unwrappedType {
             case .begin: self.interruptionBegin()
             case .end: self.interruptionFinish()
             default: ()
@@ -123,14 +123,14 @@ fileprivate extension AudioSessionManager {
     
     //MARK: -- 外设改变处理
     @objc func routeChange(noti: Notification) {
-        guard let userInfo = noti.userInfo,
-              let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
-              let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else { return }
+        guard let unwrappedUserInfo = noti.userInfo,
+              let unwrappedReasonValue = unwrappedUserInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let unwrappedReason = AVAudioSession.RouteChangeReason(rawValue: unwrappedReasonValue) else { return }
         
         var playing = true
-        if reason == .oldDeviceUnavailable {
-            if let priviousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
-                playing = priviousRoute.outputs.filter({$0.portType == .headphones}).isEmpty
+        if unwrappedReason == .oldDeviceUnavailable {
+            if let unwrappedPriviousRoute = unwrappedUserInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
+                playing = unwrappedPriviousRoute.outputs.filter({$0.portType == .headphones}).isEmpty
             }
         }
         self.delegate?.sessionManager(self, shouldContinuePlayingWithRouteChanged: playing)

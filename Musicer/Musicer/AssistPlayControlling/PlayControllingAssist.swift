@@ -40,14 +40,14 @@ extension PlayControllingAssist {
     
     /// 刷新数据
     func reloadData() {
-        if let img = self.dataSource?.imageToDisplayForPlayControllingAssist(self) {
-            self.assistView.setImage(img: img)
+        if let unwrappedImg = self.dataSource?.imageToDisplayForPlayControllingAssist(self) {
+            self.assistView.setImage(img: unwrappedImg)
         }
-        if let disable = self.dataSource?.disableNextButtonForPlayControllingAssist(self) {
-            self.assistView.disableNext(disable)
+        if let unwrappedDisable = self.dataSource?.disableNextButtonForPlayControllingAssist(self) {
+            self.assistView.disableNext(unwrappedDisable)
         }
-        if let disable = self.dataSource?.disableLastButtonForPlayControllingAssist(self) {
-            self.assistView.disableLast(disable)
+        if let unwrappedDisable = self.dataSource?.disableLastButtonForPlayControllingAssist(self) {
+            self.assistView.disableLast(unwrappedDisable)
         }
     }
     

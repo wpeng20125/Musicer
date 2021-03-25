@@ -14,7 +14,6 @@ class PlayingListController: BaseViewController {
     #warning("TODO: 这个类应该记录的是当前正在播放的列表，而且应该记住上次播放的列表，甚至播放的歌曲以及进度")
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.configure()
         self.refresh()
     }
@@ -56,13 +55,13 @@ fileprivate extension PlayingListController {
         ffprint("正在加载本地歌曲文件")
         Toaster.showLoading()
         SongManager.default.songs(forList: k_list_name_toatl) { (songs) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 Toaster.hideLoading()
-                guard let wrappedSongs = songs else {
+                guard let unwrappedSongs = songs else {
                     Toaster.flash(withText: "暂无歌曲数据")
                     return
                 }
-                self.songs = wrappedSongs
+                self.songs = unwrappedSongs
                 self.table.reload(songs: self.songs)
                 ffprint("本地歌曲文件加载完毕")
             }

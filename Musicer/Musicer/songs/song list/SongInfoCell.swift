@@ -50,7 +50,7 @@ fileprivate extension SongInfoCell {
     static var identifier: String { "k_song_info_cell_reuseable_identifier" }
     
     static func cell(_ table: UITableView)->SongInfoCell {
-        guard let wrappedCell = table.dequeueReusableCell(withIdentifier: identifier) else {
+        guard let unwrappedCell = table.dequeueReusableCell(withIdentifier: identifier) as? SongInfoCell else {
             let cell = SongInfoCell(style: .default, reuseIdentifier: identifier)
             cell.backgroundColor = R.color.mu_color_gray_dark()
             cell.contentView.backgroundColor = R.color.mu_color_gray_dark()
@@ -58,7 +58,7 @@ fileprivate extension SongInfoCell {
             cell.setupSubViews()
             return cell
         }
-        return wrappedCell as! SongInfoCell
+        return unwrappedCell
     }
     
     func setupSubViews() {

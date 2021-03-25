@@ -11,13 +11,11 @@ class SongsController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.setupSubViews()
         self.refresh()
     }
 
     var listName: String?
-    var editable: Bool = false
     
     //MARK: -- private lazy
     private(set) lazy var table: SongsTable = { SongsTable() }()
@@ -49,19 +47,19 @@ fileprivate extension SongsController {
     }
     
     func refresh() {
-        guard let wrappedName = self.listName else { return }
+        guard let unwrappedName = self.listName else { return }
         Toaster.showLoading()
-        ffprint("正在加载\(wrappedName)歌单中的歌曲文件")
-        SongManager.default.songs(forList: wrappedName) { (songs) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        ffprint("正在加载\(unwrappedName)歌单中的歌曲文件")
+        SongManager.default.songs(forList: unwrappedName) { (songs) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 Toaster.hideLoading()
-                guard let wrappedSongs = songs else {
+                guard let unwrappedSongs = songs else {
                     Toaster.flash(withText: "暂无歌曲数据")
                     return
                 }
-                self.songs = wrappedSongs
+                self.songs = unwrappedSongs
                 self.table.reload(songs: self.songs)
-                ffprint("\(wrappedName)歌单中的歌曲文件加载完毕")
+                ffprint("\(unwrappedName)歌单中的歌曲文件加载完毕")
             }
         }
     }
@@ -69,7 +67,7 @@ fileprivate extension SongsController {
     func delete(song: Song, withFile flag: Bool) {
         Toaster.showLoading()
         let error = SongManager.default.delete(song: song, from: self.listName!, withFile: flag)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
             Toaster.hideLoading()
             switch error {
             case let .some(desc):
@@ -112,18 +110,26 @@ extension SongsController: TitleBarDataSource, TitleBarDelegate,SongsTableDataSo
     
     //MARK: -- SongsTableDataSource / SongsTableDelegate
     func couldCellBeEditableForSongsTbale(_ table: SongsTable) -> Bool {
-        guard let wrappedName = self.listName else { return false }
-        guard wrappedName == k_list_name_toatl else { return true }
-        return false
+        guard nil != self.listName else { return false }
+        return true
+    }
+    
+    func editActionsForSongsTbale(_ table: SongsTable) -> EditAction {
+        if k_list_name_toatl == self.listName! { return .add }
+        return .both
     }
     
     func songsTable(_ table: SongsTable, didSelectAtIndex index: Int) {
-        guard let wrappedName = self.listName else { return }
-        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index, forList: wrappedName)
+        guard let unwrappedName = self.listName else { return }
+        AudioPlayingManager.default.letsPlay(songs: self.songs, withPlayingIndex: index, forList: unwrappedName)
     }
     
     func songsTable(_ table: SongsTable, addSongToListWithIndex index: Int) {
-        
+        guard let unwrappedListName = self.listName else { return }
+        let selectListVc = SongsListSelectController()
+        selectListVc.sourceList = unwrappedListName
+        selectListVc.addedSong = self.songs[index]
+        self.present(selectListVc, animated: true, completion: nil)
     }
     
     func songsTable(_ table: SongsTable, deleteSongWithIndex index: Int) {

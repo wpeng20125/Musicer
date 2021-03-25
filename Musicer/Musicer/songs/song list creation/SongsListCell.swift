@@ -31,6 +31,10 @@ class SongsListCell: UITableViewCell {
         lbl.textColor = R.color.mu_color_white()
         return lbl
     }()
+    
+    private(set) lazy var arrowView: UIImageView = {
+       return UIImageView(image: R.image.mu_image_arrow_right())
+    }()
 }
 
 fileprivate extension SongsListCell {
@@ -38,15 +42,15 @@ fileprivate extension SongsListCell {
     static var identifier: String { "k_song_list_cell_reuseable_identifier" }
     
     static func cell(_ table: UITableView)->SongsListCell {
-        guard let wrappedCell = table.dequeueReusableCell(withIdentifier: identifier) as? SongsListCell else {
+        guard let unwrappedCell = table.dequeueReusableCell(withIdentifier: identifier) as? SongsListCell else {
             let cell = SongsListCell(style: .default, reuseIdentifier: identifier)
             cell.backgroundColor = R.color.mu_color_gray_dark()
             cell.contentView.backgroundColor = R.color.mu_color_gray_dark()
-            cell.selectionStyle = .gray
+            cell.selectionStyle = .none
             cell.setupSubViews()
             return cell
         }
-        return wrappedCell
+        return unwrappedCell
     }
     
     func setupSubViews() {
@@ -58,10 +62,8 @@ fileprivate extension SongsListCell {
             make.size.equalTo(CGSize(width: 25.0, height: 25.0))
         }
         
-        let arrow = UIImageView()
-        arrow.image = R.image.mu_image_arrow_right()
-        self.contentView.addSubview(arrow)
-        arrow.snp.makeConstraints { (make) in
+        self.contentView.addSubview(self.arrowView)
+        self.arrowView.snp.makeConstraints { (make) in
             make.right.equalTo(self.contentView).offset(-20.0)
             make.centerY.equalTo(self.contentView)
             make.size.equalTo(CGSize(width: 15.0, height: 15.0));
@@ -70,7 +72,7 @@ fileprivate extension SongsListCell {
         self.contentView.addSubview(self.titleLbl)
         self.titleLbl.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(20.0)
-            make.right.equalTo(arrow.snp.left).offset(-20.0)
+            make.right.equalTo(self.arrowView.snp.left).offset(-20.0)
             make.centerY.equalTo(self.contentView)
             make.height.equalTo(25.0)
         }

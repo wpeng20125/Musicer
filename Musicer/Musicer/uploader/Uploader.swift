@@ -13,10 +13,10 @@ class Uploader: NSObject {
     fileprivate var server: Server?
     
     private(set) lazy var files: (names: [String], modified: Bool) = {
-        guard let f = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
+        guard let unwrappedFiles = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
             return ([String](), false)
         }
-        return (f, false)
+        return (unwrappedFiles, false)
     }()
     
     func connect()->MUError { self.f_connect() }
@@ -27,28 +27,28 @@ class Uploader: NSObject {
 fileprivate extension Uploader {
     
     func f_connect()->MUError {
-        guard let wrappedPath = SongManager.default.baseFolder else {
+        guard let unwrappedPath = SongManager.default.baseFolder else {
             return MUError.some(desc: "文件目录创建失败，请退出重试")
         }
-        self.server = Server.server(withPath: wrappedPath)
-        guard let wrappedServer = self.server else {
+        self.server = Server.server(withPath: unwrappedPath)
+        guard let unwrappedServer = self.server else {
             return MUError.some(desc: "服务器初始化失败，请退出重试")
         }
-        wrappedServer.delegate = self
+        unwrappedServer.delegate = self
         let port = UInt.random(in: 8000...8999)
-        if !wrappedServer.start(withPort: port, bonjourName: "") {
+        if !unwrappedServer.start(withPort: port, bonjourName: "") {
             return MUError.some(desc: "服务器启动失败，请退出重试")
         }
-        guard let address = wrappedServer.serverURL?.absoluteString else {
+        guard let unwrappedAddress = unwrappedServer.serverURL?.absoluteString else {
             return MUError.some(desc: "服务器地址获取失败，请退出重试")
         }
-        ffprint(address)
-        return MUError.none(info: address)
+        ffprint(unwrappedAddress)
+        return MUError.none(info: unwrappedAddress)
     }
     
     func f_disconnect() {
-        guard let wrappedServer = self.server else { return }
-        wrappedServer.stop()
+        guard let unwrappedServer = self.server else { return }
+        unwrappedServer.stop()
         self.server = nil
     }
 }

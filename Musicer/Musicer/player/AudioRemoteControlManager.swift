@@ -63,11 +63,11 @@ fileprivate extension AudioRemoteControlManager {
         })
         // 拖拽进度条
         self.seekCommand = MPRemoteCommandCenter.shared().changePlaybackPositionCommand.addTarget(handler: { (event) -> MPRemoteCommandHandlerStatus in
-            guard let seekEvent = event as? MPChangePlaybackPositionCommandEvent,
-                  let playingInfo = self.nowPlayingInfo else {
+            guard let unwrappedSeekEvent = event as? MPChangePlaybackPositionCommandEvent,
+                  let unwrappedPlayingInfo = self.nowPlayingInfo else {
                 return .commandFailed
             }
-            let progres = Float(seekEvent.positionTime) / Float(playingInfo.duration)
+            let progres = Float(unwrappedSeekEvent.positionTime) / Float(unwrappedPlayingInfo.duration)
             self.remote_seek(progres)
             return .success
         })
@@ -86,22 +86,22 @@ fileprivate extension AudioRemoteControlManager {
     }
     
     func setNowPlayingInfo() {
-        guard let info = self.dataSource?.remoteControlNowPlayingInfo() else { return }
-        self.nowPlayingInfo = info;
+        guard let unwrappedInfo = self.dataSource?.remoteControlNowPlayingInfo() else { return }
+        self.nowPlayingInfo = unwrappedInfo;
         var nowPlayingInfo = [String : Any]()
         // 歌曲名称
-        nowPlayingInfo[MPMediaItemPropertyTitle] = info.songName
+        nowPlayingInfo[MPMediaItemPropertyTitle] = unwrappedInfo.songName
         // 歌曲时长
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = info.duration
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = unwrappedInfo.duration
         // 专辑名称
-        if let albumName = info.albumName { nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = albumName }
+        if let unwrappedAlbumName = unwrappedInfo.albumName { nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = unwrappedAlbumName }
         // 歌手
-        if let singer = info.singer { nowPlayingInfo[MPMediaItemPropertyArtist] = singer }
+        if let unwrappedSinger = unwrappedInfo.singer { nowPlayingInfo[MPMediaItemPropertyArtist] = unwrappedSinger }
         // 专辑封面
-        if let albumImage = info.albumImage {
-            let artwork = MPMediaItemArtwork(boundsSize: albumImage.size) { (size) -> UIImage in
-                guard let image = albumImage.resize(size) else { return albumImage }
-                return image
+        if let unwrappedAlbumImage = unwrappedInfo.albumImage {
+            let artwork = MPMediaItemArtwork(boundsSize: unwrappedAlbumImage.size) { (size) -> UIImage in
+                guard let unwrappedImage = unwrappedAlbumImage.resize(size) else { return unwrappedAlbumImage }
+                return unwrappedImage
             }
             nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
         }

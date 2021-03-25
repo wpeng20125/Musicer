@@ -19,8 +19,8 @@ var HasSafeArea : (has: Bool, inset: UIEdgeInsets) {
     let inset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     let version = UIDevice.current.systemVersion
     let idx = version.firstIndex(of: ".") ?? version.endIndex
-    guard let floatVersion = Float(String(version[..<idx])) else { return (false, inset) }
-    if floatVersion < 11.0 { return (false, inset) }
+    guard let unwrappedFloatVersion = Float(String(version[..<idx])) else { return (false, inset) }
+    if unwrappedFloatVersion < 11.0 { return (false, inset) }
     guard let unwrapedWindow = UIApplication.shared.delegate!.window! else { return (false, inset) }
     return (unwrapedWindow.safeAreaInsets.bottom > 0, unwrapedWindow.safeAreaInsets)
 }

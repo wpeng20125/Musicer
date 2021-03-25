@@ -232,9 +232,9 @@
 			children = (
 				AABE93AE256667CA00B27370 /* SongsController.swift */,
 				AA474BE6255E674C00359F73 /* SongsTable.swift */,
+				AA474BE8255E679500359F73 /* SongInfoCell.swift */,
 				AAD482612609E0B700F364ED /* SongsListSelectController.swift */,
 				AAD4825F2609DCDF00F364ED /* SongsListSelectView.swift */,
-				AA474BE8255E679500359F73 /* SongInfoCell.swift */,
 			);
 			path = "song list";
 			sourceTree = "<group>";

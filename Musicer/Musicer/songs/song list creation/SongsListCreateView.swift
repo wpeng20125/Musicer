@@ -109,26 +109,26 @@ fileprivate extension SongsListCreateView {
     }
     
     @objc func cancel(_ sender: UIButton) {
-        guard let wrappedCancel = self.cancel else { return }
-        wrappedCancel()
+        guard let unwrappedCancel = self.cancel else { return }
+        unwrappedCancel()
     }
     
     @objc func confirm(_ sender: UIButton) {
-        guard let wrappedConfirm = self.confirm else { return }
-        guard var text = self.textField.text else {
-            wrappedConfirm(MUError.some(desc: "请输入名称"))
+        guard let unwrappedConfirm = self.confirm else { return }
+        guard var unwrappedText = self.textField.text else {
+            unwrappedConfirm(MUError.some(desc: "请输入名称"))
             return
         }
-        if 0 == text.count {
-            wrappedConfirm(MUError.some(desc: "请输入名称"))
+        if 0 == unwrappedText.count {
+            unwrappedConfirm(MUError.some(desc: "请输入名称"))
             return
         }
-        text = text.replacingOccurrences(of: " ", with: "")
-        if 0 == text.count {
-            wrappedConfirm(MUError.some(desc: "不能只输入空格"))
+        unwrappedText = unwrappedText.replacingOccurrences(of: " ", with: "")
+        if 0 == unwrappedText.count {
+            unwrappedConfirm(MUError.some(desc: "不能只输入空格"))
             return
         }
-        wrappedConfirm(MUError.none(info: text))
+        unwrappedConfirm(MUError.none(info: unwrappedText))
     }
 }
 

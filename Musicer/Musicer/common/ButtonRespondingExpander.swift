@@ -20,12 +20,12 @@ extension UIButton {
     }
     
     open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let unwrappedInset = objc_getAssociatedObject(self, &AssociatedObjectKey.edgeInsetsKey) as? UIEdgeInsets
-        guard let wrappedInset = unwrappedInset else { return super.point(inside: point, with: event) }
-        let expanded_x = self.frame.origin.x - wrappedInset.left
-        let expanded_y = self.frame.origin.y - wrappedInset.top
-        let expanded_w = self.frame.size.width + wrappedInset.left + wrappedInset.right
-        let expanded_h = self.frame.size.height + wrappedInset.top + wrappedInset.bottom
+        let wrappedInset = objc_getAssociatedObject(self, &AssociatedObjectKey.edgeInsetsKey) as? UIEdgeInsets
+        guard let unwrappedInset = wrappedInset else { return super.point(inside: point, with: event) }
+        let expanded_x = self.frame.origin.x - unwrappedInset.left
+        let expanded_y = self.frame.origin.y - unwrappedInset.top
+        let expanded_w = self.frame.size.width + unwrappedInset.left + unwrappedInset.right
+        let expanded_h = self.frame.size.height + unwrappedInset.top + unwrappedInset.bottom
         let expanded_rect = CGRect(x: expanded_x, y: expanded_y, width: expanded_w, height: expanded_h)
         let convertPoint = self.convert(point, to: self.superview)
         if expanded_rect.contains(convertPoint) { return true }

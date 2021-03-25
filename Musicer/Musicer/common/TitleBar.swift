@@ -53,46 +53,46 @@ fileprivate extension TitleBar {
     
     func setupSubViews() {
         
-        if let (prorpty, subview) = getItem(atPosition: .left) {
-            self.addSubview(subview)
-            subview.snp.makeConstraints { (make) in
+        if let (unwrappedProrpty, wrappedSubview) = getItem(atPosition: .left) {
+            self.addSubview(wrappedSubview)
+            wrappedSubview.snp.makeConstraints { (make) in
                 make.centerY.equalTo(self.snp.bottom).offset(-22.0)
-                if let left = prorpty.itemEdgeInset {
-                    make.left.equalTo(self).offset(left)
+                if let unwrappedLeftMargin = unwrappedProrpty.itemEdgeInset {
+                    make.left.equalTo(self).offset(unwrappedLeftMargin)
                 }else {
                     make.left.equalTo(self).offset(20.0)
                 }
                 
-                if let size = prorpty.itemSize {
-                    make.size.equalTo(size)
+                if let unwrappedSize = unwrappedProrpty.itemSize {
+                    make.size.equalTo(unwrappedSize)
                 }else {
                     make.size.equalTo(CGSize(width: 20.0, height: 20.0))
                 }
             }
         }
         
-        if let (prorpty, subview) = getItem(atPosition: .middle) {
-            self.addSubview(subview)
-            subview.snp.makeConstraints { (make) in
+        if let (unwrappedProrpty, wrappedSubview) = getItem(atPosition: .middle) {
+            self.addSubview(wrappedSubview)
+            wrappedSubview.snp.makeConstraints { (make) in
                 make.centerX.equalTo(self)
                 make.centerY.equalTo(self.snp.bottom).offset(-22.0)
-                if let size = prorpty.itemSize {
-                    make.size.equalTo(size)
+                if let unwrappedSize = unwrappedProrpty.itemSize {
+                    make.size.equalTo(unwrappedSize)
                 }
             }
         }
         
-        if let (prorpty, subview) = getItem(atPosition: .right) {
-            self.addSubview(subview)
-            subview.snp.makeConstraints { (make) in
+        if let (unwrappedProrpty, wrappedSubview) = getItem(atPosition: .right) {
+            self.addSubview(wrappedSubview)
+            wrappedSubview.snp.makeConstraints { (make) in
                 make.centerY.equalTo(self.snp.bottom).offset(-22.0)
-                if let right = prorpty.itemEdgeInset {
-                    make.right.equalTo(self).offset(-right)
+                if let unwrappedRightMargin = unwrappedProrpty.itemEdgeInset {
+                    make.right.equalTo(self).offset(-unwrappedRightMargin)
                 }else {
                     make.right.equalTo(self).offset(-20.0)
                 }
-                if let size = prorpty.itemSize {
-                    make.size.equalTo(size)
+                if let unwrappedSize = unwrappedProrpty.itemSize {
+                    make.size.equalTo(unwrappedSize)
                 }else {
                     make.size.equalTo(CGSize(width: 20.0, height: 20.0))
                 }
@@ -101,29 +101,29 @@ fileprivate extension TitleBar {
     }
     
     func getItem(atPosition p: ItemPosition)->(pp: ItemProperty, view: UIView)? {
-        guard let property = dataSource?.property(forNavigationBar: self, atPosition: p) else { return nil }
+        guard let unwrappedProperty = dataSource?.property(forNavigationBar: self, atPosition: p) else { return nil }
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
         btn.tag = p.rawValue
-        if let title = property.title { btn.setTitle(title, for: .normal) }
-        if let titleColor = property.titleColor { btn.setTitleColor(titleColor, for: .normal) }
-        if let fontSize = property.fontSize { btn.titleLabel?.font = UIFont.systemFont(ofSize: CGFloat(fontSize)) }
-        if let img = property.image { btn.setImage(img, for: .normal) }
-        if let backImg = property.backgroundImage { btn.setImage(backImg, for: .normal) }
-        if let backColor = property.backgroundColor { btn.backgroundColor = backColor }
-        if let boarderColor = property.boarderColor { btn.layer.borderColor = boarderColor.cgColor }
-        if let boarderWidth = property.boarderWidth { btn.layer.borderWidth = CGFloat(boarderWidth) }
-        if let cornerRadius = property.cornerRadius {
-            btn.layer.cornerRadius = CGFloat(cornerRadius)
+        if let unwrappedTitle = unwrappedProperty.title { btn.setTitle(unwrappedTitle, for: .normal) }
+        if let unwrappedTitleColor = unwrappedProperty.titleColor { btn.setTitleColor(unwrappedTitleColor, for: .normal) }
+        if let unwrappedFontSize = unwrappedProperty.fontSize { btn.titleLabel?.font = UIFont.systemFont(ofSize: CGFloat(unwrappedFontSize)) }
+        if let unwrappedImg = unwrappedProperty.image { btn.setImage(unwrappedImg, for: .normal) }
+        if let unwrappedBackImg = unwrappedProperty.backgroundImage { btn.setImage(unwrappedBackImg, for: .normal) }
+        if let unwrappedBackColor = unwrappedProperty.backgroundColor { btn.backgroundColor = unwrappedBackColor }
+        if let unwrappedBoarderColor = unwrappedProperty.boarderColor { btn.layer.borderColor = unwrappedBoarderColor.cgColor }
+        if let unwrappedBoarderWidth = unwrappedProperty.boarderWidth { btn.layer.borderWidth = CGFloat(unwrappedBoarderWidth) }
+        if let unwrappedCornerRadius = unwrappedProperty.cornerRadius {
+            btn.layer.cornerRadius = CGFloat(unwrappedCornerRadius)
             btn.layer.masksToBounds = true
         }
         btn.addTarget(self, action:#selector(clickItem(_:)), for: .touchUpInside)
         btn.expand(10.0, 10.0, 10.0, 10.0)
-        return (property, btn)
+        return (unwrappedProperty, btn)
     }
     
     @objc func clickItem(_ item: UIButton) {
-        guard let p = ItemPosition(rawValue: item.tag) else { return }
-        self.delegate?.itemDidClick(atPosition: p)
+        guard let unwrappedPosition = ItemPosition(rawValue: item.tag) else { return }
+        self.delegate?.itemDidClick(atPosition: unwrappedPosition)
     }
 }

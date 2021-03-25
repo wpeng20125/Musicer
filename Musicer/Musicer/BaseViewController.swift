@@ -16,7 +16,7 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.isModalInPresentation = true
-        self.view.backgroundColor = R.color.mu_color_white()
+        self.view.backgroundColor = R.color.mu_color_gray_dark()
     }
 
     override func viewWillAppear(_ animated: Bool) {

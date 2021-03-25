@@ -54,16 +54,16 @@ fileprivate extension Toaster {
     }
     
     static func show(comlete cp: @escaping ()->Void) {
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        var unwrappedBackground: TBackgoundView? = nil
-        for subview in subviews.reversed() {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        var background: TBackgoundView? = nil
+        for subview in unwrappedSubviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            unwrappedBackground = subview as? TBackgoundView
+            background = subview as? TBackgoundView
             break
         }
-        guard let background = unwrappedBackground else { return }
+        guard let unwrappedBackground = background else { return }
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            background.alpha = 1.0
+            unwrappedBackground.alpha = 1.0
         } completion: { (complete) in
             guard complete else { return }
             cp()
@@ -71,18 +71,18 @@ fileprivate extension Toaster {
     }
     
     static func hide() {
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        var unwrappedBackground: TBackgoundView? = nil
-        for subview in subviews {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        var background: TBackgoundView? = nil
+        for subview in unwrappedSubviews {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            unwrappedBackground = subview as? TBackgoundView
+            background = subview as? TBackgoundView
             break
         }
-        guard let background = unwrappedBackground else { return }
+        guard let unwrappedBackground = background else { return }
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            background.alpha = 0
+            unwrappedBackground.alpha = 0
         } completion: { (complete) in
-            background.removeFromSuperview()
+            unwrappedBackground.removeFromSuperview()
         }
     }
 }
@@ -122,15 +122,15 @@ fileprivate extension Toaster {
         lbl.font = UIFont.systemFont(ofSize: 15.0)
         lbl.textColor = R.color.mu_color_white()
         
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        for subview in subviews.reversed() {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        for subview in unwrappedSubviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            guard let backgroundView = subview as? TBackgoundView else { return }
-            backgroundView.customBackgroundView.addSubview(lbl)
-            backgroundView.customBackgroundView.kw_x = Double(x)
-            backgroundView.customBackgroundView.kw_y = Double(y)
-            backgroundView.customBackgroundView.kw_w = Double(w)
-            backgroundView.customBackgroundView.kw_h = Double(h)
+            guard let unwrappedBackgroundView = subview as? TBackgoundView else { return }
+            unwrappedBackgroundView.customBackgroundView.addSubview(lbl)
+            unwrappedBackgroundView.customBackgroundView.kw_x = Double(x)
+            unwrappedBackgroundView.customBackgroundView.kw_y = Double(y)
+            unwrappedBackgroundView.customBackgroundView.kw_w = Double(w)
+            unwrappedBackgroundView.customBackgroundView.kw_h = Double(h)
             break
         }
     }
@@ -141,26 +141,26 @@ fileprivate extension Toaster {
     
     static func makeLoading() {
                 
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        for subview in subviews.reversed() {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        for subview in unwrappedSubviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            if let customBgView = (subview as? TBackgoundView)?.customBackgroundView {
+            if let unwrappedCustomBgView = (subview as? TBackgoundView)?.customBackgroundView {
                 
                 let imgView_one = UIImageView()
                 imgView_one.image = R.image.mu_image_toast_loading_2()
-                imgView_one.kw_x = (customBgView.kw_w - 50.0) / 2
-                imgView_one.kw_y = (customBgView.kw_h - 50.0) / 2
+                imgView_one.kw_x = (unwrappedCustomBgView.kw_w - 50.0) / 2
+                imgView_one.kw_y = (unwrappedCustomBgView.kw_h - 50.0) / 2
                 imgView_one.kw_size = CGSize(width: 50.0, height: 50.0)
                 imgView_one.tag = kLoadingImageViewTagOne
-                customBgView.addSubview(imgView_one)
+                unwrappedCustomBgView.addSubview(imgView_one)
                 
                 let imgView_two = UIImageView()
                 imgView_two.image = R.image.mu_image_toast_loading_1()
-                imgView_two.kw_x = (customBgView.kw_w - 70.0) / 2
-                imgView_two.kw_y = (customBgView.kw_h - 70.0) / 2
+                imgView_two.kw_x = (unwrappedCustomBgView.kw_w - 70.0) / 2
+                imgView_two.kw_y = (unwrappedCustomBgView.kw_h - 70.0) / 2
                 imgView_two.kw_size = CGSize(width: 70.0, height: 70.0)
                 imgView_two.tag = kLoadingImageViewTagTwo
-                customBgView.addSubview(imgView_two)
+                unwrappedCustomBgView.addSubview(imgView_two)
                 
                 break
             }
@@ -168,50 +168,48 @@ fileprivate extension Toaster {
     }
     
     static func startAnimation() {
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        var unwrappedImgViewOne: UIImageView? = nil
-        var unwrappedImgViewTwo: UIImageView? = nil
-        for subview in subviews.reversed() {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        var imgViewOne: UIImageView? = nil
+        var imgViewTwo: UIImageView? = nil
+        for subview in unwrappedSubviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            if let customBgView = (subview as? TBackgoundView)?.customBackgroundView {
-                unwrappedImgViewOne = customBgView.viewWithTag(kLoadingImageViewTagOne) as? UIImageView
-                unwrappedImgViewTwo = customBgView.viewWithTag(kLoadingImageViewTagTwo) as? UIImageView
+            if let unwrappedCustomBgView = (subview as? TBackgoundView)?.customBackgroundView {
+                imgViewOne = unwrappedCustomBgView.viewWithTag(kLoadingImageViewTagOne) as? UIImageView
+                imgViewTwo = unwrappedCustomBgView.viewWithTag(kLoadingImageViewTagTwo) as? UIImageView
                 break
             }
         }
-        guard let imgView_one = unwrappedImgViewOne else { return }
-        guard let imgView_two = unwrappedImgViewTwo else { return }
+        guard let unwrappedImgViewOne = imgViewOne,
+              let unwrappedImgViewTwo = imgViewTwo else { return }
         let animation_one = CABasicAnimation(keyPath: "transform.rotation.z")
         animation_one.duration = 1
         animation_one.fromValue = 0
         animation_one.toValue = Double.pi * 2
         animation_one.repeatCount = MAXFLOAT
-        imgView_one.layer.add(animation_one, forKey: "kClockwiseRotationAnimationKey")
+        unwrappedImgViewOne.layer.add(animation_one, forKey: "kClockwiseRotationAnimationKey")
         
         let animation_two = CABasicAnimation(keyPath: "transform.rotation.z")
         animation_two.duration = 1
         animation_two.fromValue = 0
         animation_two.toValue = -Double.pi * 2
         animation_two.repeatCount = MAXFLOAT
-        imgView_two.layer.add(animation_two, forKey: "kAnticlockwiseRotationAnimationKey")
+        unwrappedImgViewTwo.layer.add(animation_two, forKey: "kAnticlockwiseRotationAnimationKey")
     }
     
     static func stopAnimation() {
-        guard let subviews = UIApplication.shared.windows.first?.subviews else { return }
-        var unwrappedImgViewOne: UIImageView? = nil
-        var unwrappedImgViewTwo: UIImageView? = nil
-        for subview in subviews.reversed() {
+        guard let unwrappedSubviews = UIApplication.shared.windows.first?.subviews else { return }
+        var imgViewOne: UIImageView? = nil
+        var imgViewTwo: UIImageView? = nil
+        for subview in unwrappedSubviews.reversed() {
             if !subview.isKind(of: TBackgoundView.self) { continue }
-            if let customBgView = (subview as? TBackgoundView)?.customBackgroundView {
-                unwrappedImgViewOne = customBgView.viewWithTag(kLoadingImageViewTagOne) as? UIImageView
-                unwrappedImgViewTwo = customBgView.viewWithTag(kLoadingImageViewTagTwo) as? UIImageView
+            if let unwrappedCustomBgView = (subview as? TBackgoundView)?.customBackgroundView {
+                imgViewOne = unwrappedCustomBgView.viewWithTag(kLoadingImageViewTagOne) as? UIImageView
+                imgViewTwo = unwrappedCustomBgView.viewWithTag(kLoadingImageViewTagTwo) as? UIImageView
                 break
             }
         }
-        guard let imgView_one = unwrappedImgViewOne else { return }
-        imgView_one.layer.removeAllAnimations()
-        guard let imgView_two = unwrappedImgViewTwo else { return }
-        imgView_two.layer.removeAllAnimations()
+        if let unwrappedImgViewOne = imgViewOne { unwrappedImgViewOne.layer.removeAllAnimations() }
+        if let unwrappedImgViewTwo = imgViewTwo { unwrappedImgViewTwo.layer.removeAllAnimations() }
     }
 }
 

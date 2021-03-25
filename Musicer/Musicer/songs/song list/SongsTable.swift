@@ -7,16 +7,28 @@
 
 import UIKit
 
+enum EditAction {
+    case add
+    case delete
+    case both
+}
+
 protocol SongsTableDataSource: NSObjectProtocol {
     
     /// 该函数返回 cell 是否可以进行编辑
     /// - Parameter table: SongsTable 实例
     /// - Returns: 返回值，表示是否可以编辑
     func couldCellBeEditableForSongsTbale(_ table: SongsTable)->Bool
+    
+    /// 该函数返回 cell 支持的编辑事件
+    /// - Parameter table: SongsTable 实例
+    /// - Returns: 返回值，表示支持哪些编辑事件
+    func editActionsForSongsTbale(_ table: SongsTable)->EditAction
 }
 
 extension SongsTableDataSource {
     func couldCellBeEditableForSongsTbale(_ table: SongsTable)->Bool { false }
+    func editActionsForSongsTbale(_ table: SongsTable)->EditAction { .both }
 }
 
 protocol SongsTableDelegate: NSObjectProtocol {
@@ -119,8 +131,10 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let editable = self.dataSource?.couldCellBeEditableForSongsTbale(self) else { return nil }
-        guard editable else { return nil }
+        guard let unwrappedEditable = self.dataSource?.couldCellBeEditableForSongsTbale(self) else { return nil }
+        guard unwrappedEditable else { return nil }
+        guard let unwrappedAction = self.dataSource?.editActionsForSongsTbale(self) else { return nil }
+        
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, handler) in
             self.delegate?.songsTable(self, deleteSongWithIndex: indexPath.section)
         }
@@ -132,9 +146,15 @@ extension SongsTable: UITableViewDelegate, UITableViewDataSource {
         }
         addingAction.image = R.image.mu_image_song_add_list()
         addingAction.backgroundColor = R.color.mu_color_gray_light()
-                
-        let config = UISwipeActionsConfiguration(actions: [deleteAction, addingAction])
-        return config
+        
+        var actions = [UIContextualAction]()
+        switch unwrappedAction {
+        case .add: actions = [addingAction]
+        case .delete: actions = [deleteAction]
+        case .both: actions = [deleteAction, addingAction]
+        }
+        
+        return UISwipeActionsConfiguration(actions: actions)
     }
     
     // header / footer

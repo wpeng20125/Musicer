@@ -68,6 +68,6 @@ extension UIView {
     // init with backgroundColor
     convenience init(backgroundColor: UIColor?) {
         self.init()
-        if let color = backgroundColor { self.backgroundColor = color }
+        if let unwrappedColor = backgroundColor { self.backgroundColor = unwrappedColor }
     }
 }

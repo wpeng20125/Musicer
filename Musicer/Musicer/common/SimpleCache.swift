@@ -71,12 +71,12 @@ fileprivate extension SimpleCache {
     
     func cache(_ value: Value?, _ forKey: Key) {
         self.lock.wait()
-        guard let wrappedValue = value else {
+        guard let unwrappedValue = value else {
             self.map.removeValue(forKey: forKey)
             self.lock.signal()
             return
         }
-        self.map[forKey] = wrappedValue
+        self.map[forKey] = unwrappedValue
         self.lock.signal()
     }
     

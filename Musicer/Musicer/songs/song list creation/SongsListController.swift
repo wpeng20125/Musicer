@@ -11,7 +11,6 @@ class SongsListController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = R.color.mu_color_gray_dark()
         self.setupSubViews()
         self.refresh()
     }
@@ -51,13 +50,13 @@ fileprivate extension SongsListController {
     func refresh() {
         Toaster.showLoading()
         self.listNames = SongManager.default.totalLists()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
             Toaster.hideLoading()
-            guard let wrappedNames = self.listNames else {
+            guard let unwrappedNames = self.listNames else {
                 Toaster.flash(withText: "暂无歌单，您可以点击 + 创建")
                 return
             }
-            self.table?.refersh(withNames: wrappedNames)
+            self.table?.refersh(withNames: unwrappedNames)
         }
     }
 }
@@ -108,8 +107,8 @@ fileprivate extension SongsListController {
     }
     
     func hideCreateView() {
-        guard let createView = self.view.viewWithTag(1989),
-              let maskView = self.view.viewWithTag(1979) else { return }
+        guard let unwrappedCreateView = self.view.viewWithTag(1989),
+              let unwrappedMaskView = self.view.viewWithTag(1979) else { return }
         
         let opacityAnimation = CABasicAnimation(keyPath: "opacity")
         opacityAnimation.fromValue = 1.0
@@ -128,14 +127,14 @@ fileprivate extension SongsListController {
         group.fillMode = .forwards
         
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            maskView.alpha = 0
+            unwrappedMaskView.alpha = 0
         }) { (complete) in
-            maskView.removeFromSuperview()
+            unwrappedMaskView.removeFromSuperview()
         }
         
         CATransaction.begin()
-        CATransaction.setCompletionBlock { createView.removeFromSuperview() }
-        createView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
+        CATransaction.setCompletionBlock { unwrappedCreateView.removeFromSuperview() }
+        unwrappedCreateView.layer.add(group, forKey: "kCreateViewHideAnimationKey")
         CATransaction.commit()
     }
     
@@ -180,10 +179,9 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource, SongsListTa
     
     //MARK: -- SongsListTableDelegate
     func songsListTable(_ table: SongsListTable, didSelectListAtIndex index: Int) {
-        guard let wrappedNames = self.listNames else { return }
+        guard let unwrappedNames = self.listNames else { return }
         let songsVc = SongsController()
-        songsVc.listName = wrappedNames[index]
-        songsVc.editable = true
+        songsVc.listName = unwrappedNames[index]
         self.navigationController?.pushViewController(songsVc, animated: true)
     }
     

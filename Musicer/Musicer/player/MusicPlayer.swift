@@ -55,45 +55,45 @@ extension MusicPlayer {
 fileprivate extension MusicPlayer {
     
     func reload_data() {
-        guard let wrappedMusic = self.dataSource?.musicToPlay(forPlayer: self) else {
+        guard let unwrappedMusic = self.dataSource?.musicToPlay(forPlayer: self) else {
             self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "数据不能为空"))
             return
         }
-        self.music = wrappedMusic
-        guard let player = try? AVAudioPlayer(contentsOf: self.music!.fileURL) else {
+        self.music = unwrappedMusic
+        guard let unwrappedPlayer = try? AVAudioPlayer(contentsOf: self.music!.fileURL) else {
             self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "播放器初始化失败"))
             return
         }
-        player.delegate = self
-        self.player = player
+        unwrappedPlayer.delegate = self
+        self.player = unwrappedPlayer
         if !self.player!.prepareToPlay() {
             self.delegate?.audioPlayer(self, didErrorOccur: MUError.some(desc: "播放器准备失败"))
         }
     }
     
     func play_music() {
-        guard let player = self.player else { return }
+        guard let unwrappedPlayer = self.player else { return }
         // 配置信息
         self.sessionManager.active()
         self.remoteControlManager.configRemoteControl()
         self.remoteControlManager.configNowPlayingInfo()
-        player.play()
+        unwrappedPlayer.play()
         self.startTimer()
         // 回调播放器的状态
         self.delegate?.audioPlayer(self, stateChanged: .play)
     }
     
     func pause_music() {
-        guard let player = self.player else { return }
-        player.pause()
+        guard let unwrappedPlayer = self.player else { return }
+        unwrappedPlayer.pause()
         self.cancelTimer()
         // 回调播放器的状态
         self.delegate?.audioPlayer(self, stateChanged: .pause)
     }
     
     func stop_music() {
-        guard let player = self.player else { return }
-        player.stop()
+        guard let unwrappedPlayer = self.player else { return }
+        unwrappedPlayer.stop()
         self.player = nil
         self.music = nil
         self.cancelTimer()
@@ -123,9 +123,9 @@ fileprivate extension MusicPlayer {
     }
     
     func updateProgress() {
-        guard let player = self.player else { return }
+        guard let unwrappedPlayer = self.player else { return }
         var progress: Float = 0
-        if(player.duration > 0) { progress = Float(player.currentTime / player.duration) }
+        if(unwrappedPlayer.duration > 0) { progress = Float(unwrappedPlayer.currentTime / unwrappedPlayer.duration) }
         if(progress < 0) { progress = 0 }
         if(progress > 1.0) { progress = 1.0 }
         self.delegate?.audioPlayer(self, playingByProgress: progress)
@@ -136,8 +136,8 @@ fileprivate extension MusicPlayer {
 extension MusicPlayer: AVAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        guard let wrappedMusic = self.music else { return }
-        self.delegate?.audioPlayer(self, didFinishPlayingMusic: wrappedMusic)
+        guard let unwrappedMusic = self.music else { return }
+        self.delegate?.audioPlayer(self, didFinishPlayingMusic: unwrappedMusic)
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
@@ -169,26 +169,26 @@ extension MusicPlayer: AudioSessionDelegate {
 extension MusicPlayer: AudioRemoteControlDataSource, AudioRemoteControlDelegate {
     
     func remoteControlNowPlayingInfo() -> NowPlayingInfo? {
-        guard let music = self.music else { return nil }
-        let nowPlayingInfo = NowPlayingInfo(songName: music.songName,
-                                            duration: music.duration,
-                                            singer: music.singer,
-                                            albumName: music.albumName,
-                                            albumImage: music.albumImage)
+        guard let unwrappedMusic = self.music else { return nil }
+        let nowPlayingInfo = NowPlayingInfo(songName: unwrappedMusic.songName,
+                                            duration: unwrappedMusic.duration,
+                                            singer: unwrappedMusic.singer,
+                                            albumName: unwrappedMusic.albumName,
+                                            albumImage: unwrappedMusic.albumImage)
         return nowPlayingInfo
     }
     
     func remoteControl(didTriggerAction action: NowPlayingAction, withParam param: Any?) {
-        guard let wrappedMusic = self.music else { return }
+        guard let unwrappedMusic = self.music else { return }
         switch action {
         case .play: self.play()
         case .pause: self.pause()
-        case .next: self.delegate?.audioPlayer(self, willPlayNextMusic: wrappedMusic)
-        case .last: self.delegate?.audioPlayer(self, willPlayLastMusic: wrappedMusic)
+        case .next: self.delegate?.audioPlayer(self, willPlayNextMusic: unwrappedMusic)
+        case .last: self.delegate?.audioPlayer(self, willPlayLastMusic: unwrappedMusic)
         case .seek:
-            guard let wrappedProgress = param as? Float else { return }
-            guard let music = self.music else { return }
-            let sec = ceill(Double(music.duration) * Double(wrappedProgress))
+            guard let unwrappedProgress = param as? Float,
+                  let unwrappedMusic = self.music else { return }
+            let sec = ceill(Double(unwrappedMusic.duration) * Double(unwrappedProgress))
             self.player?.currentTime = sec
         }
     }

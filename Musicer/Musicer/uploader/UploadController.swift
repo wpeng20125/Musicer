@@ -17,7 +17,7 @@ class UploadController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Toaster.showLoading(withBackgroundColor: R.color.mu_color_gray_dark())
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
             self.connect()
         }
     }
@@ -121,8 +121,8 @@ fileprivate extension UploadController {
     
     @objc func longPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
-        guard let str = self.addressLbl.text else { return }
-        let address = str.trimmingCharacters(in: CharacterSet.whitespaces)
+        guard let unwrappedStr = self.addressLbl.text else { return }
+        let address = unwrappedStr.trimmingCharacters(in: CharacterSet.whitespaces)
         guard address.count > 0 else { return }
         UIPasteboard.general.string = address
         Toaster.flash(withText: "链接地址已复制")
@@ -157,9 +157,9 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
                 if self.uploader.files.modified {
                     UserDefaults.standard.setValue(self.uploader.files.names, forKey: k_list_name_toatl)
                 }
-                if let wrappedWillDismiss = self.willDismiss { wrappedWillDismiss() }
+                if let unwrappedWillDismiss = self.willDismiss { unwrappedWillDismiss() }
                 self.dismiss(animated: true) {
-                    if let wrappedDidDismiss = self.didDismiss { wrappedDidDismiss() }
+                    if let unwrappedDidDismiss = self.didDismiss { unwrappedDidDismiss() }
                 }
             }
             alert.addAction(cancel)

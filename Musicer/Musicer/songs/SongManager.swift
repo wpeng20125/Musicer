@@ -5,8 +5,6 @@
 //  Created by 王朋 on 2020/11/11.
 //
 
-#warning("这个对歌曲进行存取的类将来要换成使用数据库对歌曲进行管理")
-
 import UIKit
 import AVFoundation
 
@@ -39,9 +37,15 @@ extension SongManager {
     ///
     /// - Parameters:
     ///   - name: 要创建的列表名称
-    ///   - comp: 回调，通过闭包返回包含 Song 实体的数组
     /// - Returns: 歌单创建是否成功
     func creatFolder(withName name: String)->MUError { self.create_folder(name) }
+    
+    /// 删除一个歌单
+    ///
+    /// - Parameters:
+    ///   - name: 要删除的歌单名称
+    /// - Returns: 歌单删除是否成功
+    func deleteFolder(withName name: String)->MUError { self.delete_folder(name) }
     
     /// 将歌曲添加到一个歌单
     ///
@@ -72,9 +76,8 @@ fileprivate extension SongManager {
     }
     
     func creat_base_folder()->String? {
-        let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-        guard let wrappedDoc = unwrappedDoc else { return nil }
-        let path = wrappedDoc + "/songs"
+        guard let unwrappedDoc = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return nil }
+        let path = unwrappedDoc + "/songs"
         let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
         let exist = FileManager.default.fileExists(atPath: path, isDirectory: isDir)
         if !exist || !isDir.pointee.boolValue {
@@ -91,22 +94,25 @@ fileprivate extension SongManager {
     
     // total list
     func fetch_total_lists()->[String] {
-        guard let wrappedLists = UserDefaults.standard.array(forKey: k_total_list_local_saving_key) as? [String] else {
+        guard let unwrappedLists = UserDefaults.standard.array(forKey: k_total_list_local_saving_key) as? [String] else {
             let list = [k_list_name_toatl, k_list_name_found]
             UserDefaults.standard.setValue(list, forKey: k_total_list_local_saving_key)
             return list
         }
-        return wrappedLists
+        return unwrappedLists
     }
     
     // songs for list
     func fetch_songs_for_list(_ name: String, _ complete: @escaping ([Song]?)->Void) {
-        let files = UserDefaults.standard.array(forKey: name) as? [String]
-        guard nil != files else {
+        guard let unwrappedFiles = UserDefaults.standard.array(forKey: name) as? [String] else {
             complete(nil)
             return
         }
-        self.map(files!, complete)
+        guard unwrappedFiles.count > 0 else {
+            complete(nil)
+            return
+        }
+        self.map(unwrappedFiles, complete)
     }
     
     // create folder
@@ -125,15 +131,28 @@ fileprivate extension SongManager {
         return MUError.none(info: "歌单创建成功")
     }
     
+    // delete folder
+    func delete_folder(_ name: String)->MUError {
+        let totalLists = self.fetch_total_lists().filter { $0 != name }
+        // delete list
+        UserDefaults.standard.setValue(totalLists, forKey: k_total_list_local_saving_key)
+        // remove songs that contained in list
+        UserDefaults.standard.setValue(nil, forKey: name)
+        return MUError.none(info: "歌单已解散")
+    }
+    
     // add
     func add_song(_ song: Song, _ list: String)->MUError {
-        guard var wrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
+        guard var unwrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
             let songs = [song.fileName]
             UserDefaults.standard.setValue(songs, forKey: list)
             return MUError.none(info: "歌曲添加成功")
         }
-        wrappedSongs.append(song.fileName)
-        UserDefaults.standard.setValue(wrappedSongs, forKey: list)
+        guard nil == unwrappedSongs.firstIndex(of: song.fileName) else {
+            return MUError.none(info: "歌曲已在该列表中")
+        }
+        unwrappedSongs.append(song.fileName)
+        UserDefaults.standard.setValue(unwrappedSongs, forKey: list)
         return MUError.none(info: "歌曲添加成功")
     }
     
@@ -156,17 +175,17 @@ fileprivate extension SongManager {
     }
     
     func deleteReference(_ song: Song, _ list: String)->Bool {
-        guard var wrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
+        guard var unwrappedSongs = UserDefaults.standard.array(forKey: list) as? [String] else {
             return false
         }
-        wrappedSongs = wrappedSongs.filter { $0 != song.fileName }
-        UserDefaults.standard.setValue(wrappedSongs, forKey: list)
+        unwrappedSongs = unwrappedSongs.filter { $0 != song.fileName }
+        UserDefaults.standard.setValue(unwrappedSongs, forKey: list)
         return true
     }
     
     func deleteFile(_ song: Song)->Bool {
-        guard let folder = self.baseFolder else { return false }
-        let path = folder + "/" + song.fileName
+        guard let unwrappedFolder = self.baseFolder else { return false }
+        let path = unwrappedFolder + "/" + song.fileName
         guard FileManager.default.fileExists(atPath: path) else {
             return false
         }
@@ -180,21 +199,21 @@ fileprivate extension SongManager {
     
     //MARK: -- Song 实体创建
     func map(_ files: [String], _ complete: @escaping ([Song]?)->Void) {
-        guard let wrappedAssets = self.getAssetTuples(files) else { return }
+        guard let unwrappedAssets = self.getAssetTuples(files) else { return }
         let group = DispatchGroup()
         let keys = ["duration", "commonMetadata"]
-        for tuple in wrappedAssets {
+        for tuple in unwrappedAssets {
             group.enter()
             tuple.asset.loadValuesAsynchronously(forKeys: keys) {
-                let unwrappedSong = self.getSong(withAsset: tuple.asset, tuple.songName, tuple.file)
-                if let song = unwrappedSong { self.cache![tuple.songName] = song }
+                let wrappedSong = self.getSong(withAsset: tuple.asset, tuple.songName, tuple.file)
+                if let unwrappedSong = wrappedSong { self.cache![tuple.songName] = unwrappedSong }
                 group.leave()
             }
         }
         group.notify(qos: .default, flags: [], queue: .main) {
             var songs: [Song] = [Song]()
             for songName in files {
-                if let song = self.cache![songName] { songs.append(song) }
+                if let unwrappedSong = self.cache![songName] { songs.append(unwrappedSong) }
             }
             DispatchQueue.main.async {
                 complete(songs)
@@ -204,10 +223,10 @@ fileprivate extension SongManager {
     }
     
     func getAssetTuples(_ files: [String])->[(songName: String, file: URL, asset: AVAsset)]? {
-        guard let folder = self.baseFolder else { return nil }
+        guard let unwrappedFolder = self.baseFolder else { return nil }
         let tumples = files.map { ($0,
-                                   URL(fileURLWithPath: (folder + "/" + $0)),
-                                   AVAsset(url: URL(fileURLWithPath: (folder + "/" + $0)))) }
+                                   URL(fileURLWithPath: (unwrappedFolder + "/" + $0)),
+                                   AVAsset(url: URL(fileURLWithPath: (unwrappedFolder + "/" + $0)))) }
         return tumples
     }
     
@@ -235,7 +254,7 @@ fileprivate extension SongManager {
             if "albumName" == item.commonKey?.rawValue { song.album.name = item.stringValue }
             if "artwork" == item.commonKey?.rawValue {
                 var img: UIImage? = nil
-                if let data = item.dataValue { img = UIImage(data: data) }
+                if let unwrappedData = item.dataValue { img = UIImage(data: unwrappedData) }
                 song.album.image = img
             }
         }
