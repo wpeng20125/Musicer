@@ -149,7 +149,7 @@ fileprivate extension SongManager {
             return MUError.none(info: "歌曲添加成功")
         }
         guard nil == unwrappedSongs.firstIndex(of: song.fileName) else {
-            return MUError.none(info: "歌曲已在该列表中")
+            return MUError.some(desc: "歌曲已在该列表中")
         }
         unwrappedSongs.append(song.fileName)
         UserDefaults.standard.setValue(unwrappedSongs, forKey: list)

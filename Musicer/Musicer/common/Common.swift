@@ -44,3 +44,21 @@ func ffprint<T>(_ msg: T, _ file: String = #file, _ line:Int = #line, _ method: 
 """)
     #endif
 }
+
+// 时间戳相关
+typealias Timestamp = Date
+typealias TimestampValue = Double
+extension Timestamp {
+    /// 返回一个当前的时间戳，这个方法返回的是一个原始的时间戳，可能带小数点
+    static func current()->TimestampValue { Date().timeIntervalSince1970 }
+    /// 返回一个任意时间的时间戳，这个方法返回的是一个原始的时间戳，可能带小数点
+    func custom()->TimestampValue { self.timeIntervalSince1970 }
+}
+extension TimestampValue {
+    /// 返回一个 秒 级的时间戳，四舍五入取整
+    func sec()->String { "\(Int(roundl(self)))" }
+    /// 返回一个 毫秒 级的时间戳，四舍五入取整
+    func millisec()->String { "\(Int(roundl(self * 1000)))" }
+    /// 返回一个 微秒 级的时间戳，四舍五入取整
+    func microsec()->String { "\(Int(roundl(self * 1000 * 1000)))" }
+}

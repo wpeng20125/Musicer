@@ -14,6 +14,12 @@ class UploadController: BaseViewController {
     /// 当前 controller 已经 dismiss，并且 dismiss 动画执行完毕
     var didDismiss: (()->Void)?
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = R.color.mu_color_orange_light()
+        self.setupSubViews()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Toaster.showLoading(withBackgroundColor: R.color.mu_color_gray_dark())
@@ -22,13 +28,15 @@ class UploadController: BaseViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = R.color.mu_color_orange_light()
-        self.setupSubViews()
-    }
-    
     //MARK: -- lazy
+    private(set) lazy var files: (names: [String], modified: Bool) = {
+        guard let unwrappedFiles = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
+            return ([String](), false)
+        }
+        return (unwrappedFiles, false)
+
+    }()
+    
     private lazy var addressLbl: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 14.0)
@@ -111,6 +119,7 @@ fileprivate extension UploadController {
     }
     
     func connect() {
+        self.uploader.delegate = self
         let error: MUError = self.uploader.connect()
         switch error {
         case let .none(info): self.addressLbl.text = info
@@ -129,7 +138,7 @@ fileprivate extension UploadController {
     }
 }
 
-extension UploadController: TitleBarDelegate, TitleBarDataSource {
+extension UploadController: TitleBarDelegate, TitleBarDataSource, UploaderProtocol {
     
     func property(forNavigationBar nav: TitleBar, atPosition p: ItemPosition) -> ItemProperty? {
         let property = ItemProperty()
@@ -154,8 +163,8 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
             let cancel = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let confiem = UIAlertAction(title: "确定", style: .destructive) { (action) in
                 self.uploader.disconnect()
-                if self.uploader.files.modified {
-                    UserDefaults.standard.setValue(self.uploader.files.names, forKey: k_list_name_toatl)
+                if self.files.modified {
+                    UserDefaults.standard.setValue(self.files.names, forKey: k_list_name_toatl)
                 }
                 if let unwrappedWillDismiss = self.willDismiss { unwrappedWillDismiss() }
                 self.dismiss(animated: true) {
@@ -166,5 +175,14 @@ extension UploadController: TitleBarDelegate, TitleBarDataSource {
             alert.addAction(confiem)
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func uploader(_ uploader: Uploader, didFinishedUploadingWithPath path: String) {
+        
+        #warning("这里的文名要改成 md5 值")
+        
+        let file = NSString(string: path).lastPathComponent
+        self.files.names.append(file)
+        if !self.files.modified { self.files.modified = true }
     }
 }

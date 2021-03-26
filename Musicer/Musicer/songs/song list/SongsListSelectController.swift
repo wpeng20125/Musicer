@@ -69,8 +69,10 @@ fileprivate extension SongsListSelectController {
         }
         let error = SongManager.default.addSong(song: unwrappedSong, toList: toList)
         switch error {
-        case let .none(info): Toaster.flash(withText: info)
-        case let .some(desc): Toaster.flash(withText: desc)
+        case let .some(desc):
+            Toaster.flash(withText: desc)
+            return
+        default: ()
         }
         self.dismiss(animated: true, completion: nil)
     }

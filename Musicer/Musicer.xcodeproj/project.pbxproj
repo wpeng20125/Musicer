@@ -32,6 +32,7 @@
 		AA687C2E25BFF74D0070D828 /* PlayControllingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA687C2D25BFF74D0070D828 /* PlayControllingView.swift */; };
 		AA687C3025C0F7A60070D828 /* PlayControllingAssistProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA687C2F25C0F7A60070D828 /* PlayControllingAssistProtocol.swift */; };
 		AA687C3225C14BA00070D828 /* AudioPlayingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA687C3125C14BA00070D828 /* AudioPlayingManager.swift */; };
+		AA6FB159260DDC7500F9708C /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6FB158260DDC7500F9708C /* StringExtension.swift */; };
 		AABE93AD2566671200B27370 /* SongsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AC2566671200B27370 /* SongsListController.swift */; };
 		AABE93AF256667CA00B27370 /* SongsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABE93AE256667CA00B27370 /* SongsController.swift */; };
 		AAC3272F253E78AB00DF4030 /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC3272E253E78AB00DF4030 /* Uploader.swift */; };
@@ -78,6 +79,7 @@
 		AA687C2D25BFF74D0070D828 /* PlayControllingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayControllingView.swift; sourceTree = "<group>"; };
 		AA687C2F25C0F7A60070D828 /* PlayControllingAssistProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayControllingAssistProtocol.swift; sourceTree = "<group>"; };
 		AA687C3125C14BA00070D828 /* AudioPlayingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayingManager.swift; sourceTree = "<group>"; };
+		AA6FB158260DDC7500F9708C /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		AABE93AC2566671200B27370 /* SongsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsListController.swift; sourceTree = "<group>"; };
 		AABE93AE256667CA00B27370 /* SongsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsController.swift; sourceTree = "<group>"; };
 		AAC3272E253E78AB00DF4030 /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			children = (
 				AA56E2B52536F10700EA50C3 /* TitleBar.swift */,
 				AA2EDDF025397C6200D18524 /* Toaster.swift */,
+				AA6FB158260DDC7500F9708C /* StringExtension.swift */,
 				AA4F68E1255D46D6005E6495 /* ButtonRespondingExpander.swift */,
 				AA474BEA255E84C700359F73 /* UIViewExtension.swift */,
 				AA206CF025BAA3F700281EE3 /* UIImageExtension.swift */,
@@ -405,6 +408,7 @@
 				AA4F68E2255D46D6005E6495 /* ButtonRespondingExpander.swift in Sources */,
 				AA206CF125BAA3F700281EE3 /* UIImageExtension.swift in Sources */,
 				AA687C2825BED35B0070D828 /* PlayControllingAssist.swift in Sources */,
+				AA6FB159260DDC7500F9708C /* StringExtension.swift in Sources */,
 				AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */,
 				AA206C2B25B7C88300281EE3 /* AudioSessionProtocol.swift in Sources */,
 				AAEB3F4A25762BEA00912198 /* BaseNavigationController.swift in Sources */,

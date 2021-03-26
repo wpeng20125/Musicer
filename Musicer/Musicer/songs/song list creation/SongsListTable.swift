@@ -75,15 +75,8 @@ extension SongsListTable: UITableViewDelegate, UITableViewDataSource {
         let cell = SongsListCell.cell(withTableView: tableView)
         var img: UIImage?
         if 0 == indexPath.section { img = R.image.mu_image_songs_folder_icon_all() }
-        if 1 == indexPath.section { img = R.image.mu_image_songs_folder_icon_like() }
-        if 2 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_1() }
-        if 3 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_2() }
-        if 4 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_3() }
-        if 5 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_4() }
-        if 6 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_5() }
-        if 7 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_6() }
-        if 8 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_7() }
-        if 9 == indexPath.section { img = R.image.mu_image_songs_folder_icon_custom_8() }
+        else if 1 == indexPath.section { img = R.image.mu_image_songs_folder_icon_like() }
+        else { img = UIImage(named: "mu_image_songs_folder_icon_custom_" + "\(indexPath.section - 1)") }
         cell.refresh(withTitle: self.titles[indexPath.section], image: img)
         return cell
     }
@@ -123,5 +116,16 @@ extension SongsListTable: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 2.0
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if 0 == indexPath.section || 1 == indexPath.section { return nil }
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, handler) in
+            self.delegate?.songsListTable(self, deleteListAtIndex: indexPath.section)
+        }
+        deleteAction.image = R.image.mu_image_list_remove()
+        deleteAction.backgroundColor = R.color.mu_color_orange_dark()
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

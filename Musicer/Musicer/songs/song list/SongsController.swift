@@ -72,11 +72,11 @@ fileprivate extension SongsController {
             switch error {
             case let .some(desc):
                 Toaster.flash(withText: desc)
-            case let .none(info):
-                self.songs = self.songs.filter{ $0.fileName != song.fileName }
-                self.table.reload(songs: self.songs)
-                Toaster.flash(withText: info)
+                return
+            default: ()
             }
+            self.songs = self.songs.filter{ $0.fileName != song.fileName }
+            self.table.reload(songs: self.songs)
         }
     }
 }

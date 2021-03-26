@@ -186,6 +186,11 @@ extension SongsListController: TitleBarDelegate, TitleBarDataSource, SongsListTa
     }
     
     func songsListTable(_ table: SongsListTable, deleteListAtIndex index: Int) {
-        
+        guard let unwrappedNames = self.listNames else { return }
+        let error = SongManager.default.deleteFolder(withName: unwrappedNames[index])
+        switch error {
+        case let .some(desc): Toaster.flash(withText: desc)
+        case .none(_): self.refresh()
+        }
     }
 }

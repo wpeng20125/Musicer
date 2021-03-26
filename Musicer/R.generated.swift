@@ -309,12 +309,14 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 65 images.
+  /// This `R.image` struct is generated, and contains static references to 67 images.
   struct image {
     /// Image `LaunchScreen`.
     static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaunchScreen")
     /// Image `mu_image_add`.
     static let mu_image_add = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_add")
+    /// Image `mu_image_album_placeholder`.
+    static let mu_image_album_placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_album_placeholder")
     /// Image `mu_image_arrow_down`.
     static let mu_image_arrow_down = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_arrow_down")
     /// Image `mu_image_arrow_left`.
@@ -337,6 +339,8 @@ struct R: Rswift.Validatable {
     static let mu_image_assist_pause = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_pause")
     /// Image `mu_image_assist_play`.
     static let mu_image_assist_play = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_assist_play")
+    /// Image `mu_image_list_remove`.
+    static let mu_image_list_remove = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_list_remove")
     /// Image `mu_image_nav_back`.
     static let mu_image_nav_back = Rswift.ImageResource(bundle: R.hostingBundle, name: "mu_image_nav_back")
     /// Image `mu_image_nav_bg`.
@@ -457,6 +461,13 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_album_placeholder", bundle: ..., traitCollection: ...)`
+    static func mu_image_album_placeholder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_album_placeholder, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "mu_image_arrow_down", bundle: ..., traitCollection: ...)`
     static func mu_image_arrow_down(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_arrow_down, compatibleWith: traitCollection)
@@ -530,6 +541,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "mu_image_assist_play", bundle: ..., traitCollection: ...)`
     static func mu_image_assist_play(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mu_image_assist_play, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mu_image_list_remove", bundle: ..., traitCollection: ...)`
+    static func mu_image_list_remove(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mu_image_list_remove, compatibleWith: traitCollection)
     }
     #endif
 

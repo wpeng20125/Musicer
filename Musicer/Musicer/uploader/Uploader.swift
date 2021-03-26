@@ -8,19 +8,21 @@
 import Foundation
 import GCDWebServer
 
+protocol UploaderProtocol: NSObject {
+    
+    func uploader(_ uploader: Uploader, didFinishedUploadingWithPath path: String)
+}
+
 class Uploader: NSObject {
     
     fileprivate var server: Server?
     
-    private(set) lazy var files: (names: [String], modified: Bool) = {
-        guard let unwrappedFiles = UserDefaults.standard.array(forKey: k_list_name_toatl) as? [String] else {
-            return ([String](), false)
-        }
-        return (unwrappedFiles, false)
-    }()
+    weak var delegate: UploaderProtocol?
     
+    // 建立连接
     func connect()->MUError { self.f_connect() }
     
+    // 断开连接
     func disconnect() { self.f_disconnect() }
 }
 
@@ -56,9 +58,7 @@ fileprivate extension Uploader {
 extension Uploader: GCDWebUploaderDelegate {
     
     func webUploader(_ uploader: GCDWebUploader, didUploadFileAtPath path: String) {
-        let file = NSString(string: path).lastPathComponent
-        self.files.names.append(file)
-        if !self.files.modified { self.files.modified = true }
+        self.delegate?.uploader(self, didFinishedUploadingWithPath: path)
     }
 }
 

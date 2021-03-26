@@ -96,7 +96,7 @@ fileprivate extension SongInfoCell {
 fileprivate extension SongInfoCell {
     
     func setData(_ song: Song) {
-        self.iconView.image = song.album.image
+        self.iconView.image = song.album.image ?? R.image.mu_image_album_placeholder()
         self.titleLbl.text = song.name
         self.authorLbl.text = song.author
         self.timeLbl.text = self.formatTime(time: song.duration)
