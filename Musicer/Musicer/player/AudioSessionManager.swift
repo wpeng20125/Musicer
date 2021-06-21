@@ -26,9 +26,7 @@ extension AudioSessionManager {
     /// 设置 AVAudioSession 的 category、mode、options
      func setCategory() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback,
-                                                            mode: .default,
-                                                            options: [.allowBluetoothA2DP, .defaultToSpeaker])
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
         } catch let error {
             ffprint("AudioSession Set Category Failed! Reason: \(error.localizedDescription)")
         }

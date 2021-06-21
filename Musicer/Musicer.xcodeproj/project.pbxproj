@@ -46,7 +46,6 @@
 		AAEB3F4C25763B6600912198 /* SongsListTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F4B25763B6600912198 /* SongsListTable.swift */; };
 		AAEB3F4E25763D1000912198 /* SongsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F4D25763D1000912198 /* SongsListCell.swift */; };
 		AAEB3F50257741DC00912198 /* SongsListCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEB3F4F257741DC00912198 /* SongsListCreateView.swift */; };
-		BCFF9EC6512F4B880103B042 /* Pods_Musicer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A56B6967E3363E13A9BC6D /* Pods_Musicer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,7 +100,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCFF9EC6512F4B880103B042 /* Pods_Musicer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,10 +218,10 @@
 		AA5C498425B6C1C600BC554A /* player */ = {
 			isa = PBXGroup;
 			children = (
-				AA5C497E25B5354500BC554A /* MusicPlayerProtocol.swift */,
 				AA474BE4255E64B800359F73 /* MusicPlayer.swift */,
-				AA206C2A25B7C88300281EE3 /* AudioSessionProtocol.swift */,
+				AA5C497E25B5354500BC554A /* MusicPlayerProtocol.swift */,
 				AA5C498525B6C6AD00BC554A /* AudioSessionManager.swift */,
+				AA206C2A25B7C88300281EE3 /* AudioSessionProtocol.swift */,
 				AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */,
 				AA206CEC25B964BD00281EE3 /* AudioRemoteControlManager.swift */,
 			);
@@ -583,7 +581,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer.Musicer;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -608,7 +607,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer.Musicer;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kxmusicer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

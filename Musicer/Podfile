@@ -6,7 +6,7 @@ target 'Musicer' do
   use_frameworks!
 
   pod 'R.swift'
-  pod 'SnapKit', '~> 5.0.1'
+  pod 'SnapKit'
 #  pod 'NVActivityIndicatorView'
   #pod "GCDWebServer", "~> 3.0"
   pod "GCDWebServer/WebUploader", "~> 3.0"

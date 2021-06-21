@@ -306,6 +306,150 @@ struct R: Rswift.Validatable {
     }
     #endif
 
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black_alpha_2", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black_alpha_2(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black_alpha_2.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black_alpha_3", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black_alpha_3(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black_alpha_3.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black_alpha_5", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black_alpha_5(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black_alpha_5.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black_alpha_6", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black_alpha_6(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black_alpha_6.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_black_alpha_8", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_black_alpha_8(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_black_alpha_8.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_clear", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_clear(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_clear.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_gray_dark", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_gray_dark(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_gray_dark.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_gray_light", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_gray_light(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_gray_light.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_lavender", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_lavender(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_lavender.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_5", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_lavender_alpha_5(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_lavender_alpha_5.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_6", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_lavender_alpha_6(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_lavender_alpha_6.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_lavender_alpha_8", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_lavender_alpha_8(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_lavender_alpha_8.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_orange_dark", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_orange_dark(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_orange_dark.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_orange_light", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_orange_light(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_orange_light.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_playing_progress", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_playing_progress(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_playing_progress.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_red", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_red(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_red.name)
+    }
+    #endif
+
+    #if os(watchOS)
+    /// `UIColor(named: "mu_color_white", bundle: ..., traitCollection: ...)`
+    @available(watchOSApplicationExtension 4.0, *)
+    static func mu_color_white(_: Void = ()) -> UIKit.UIColor? {
+      return UIKit.UIColor(named: R.color.mu_color_white.name)
+    }
+    #endif
+
     fileprivate init() {}
   }
 
