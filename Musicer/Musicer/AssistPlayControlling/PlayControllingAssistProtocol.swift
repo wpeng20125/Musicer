@@ -52,4 +52,7 @@ protocol PlayControllingAssistDelegate: NSObjectProtocol {
     ///   - assist: PlayControllingAssist 实例
     ///   - action: 触发的事件的类型，是一个 AssistActionType 枚举值
     func playControllingAssist(_ assist: PlayControllingAssist, didTriggerAction action: AssistActionType)
+    
+    /// 调起大播放器页面
+    func playControllingAssistCalloutPlayingController()
 }

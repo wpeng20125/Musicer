@@ -87,26 +87,16 @@ fileprivate extension AudioPlayingManager {
         self.isAssistShowing = true
         guard let unwrappedAssist = self.assist else { return }
         UIApplication.shared.windows.first?.addSubview(unwrappedAssist)
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-            unwrappedAssist.kw_x = Double(ScreenWidth) - unwrappedAssist.kw_w
-        } completion: { (flag) in
+        unwrappedAssist.show({ flag in
             if flag { complete() }
-        }
+        })
     }
     
     func hideAssist(complete: @escaping ()->Void) {
         self.isAssistShowing = false
-        guard let unwrappedAssist = self.assist else { return }
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-            switch unwrappedAssist.loc {
-            case .top: unwrappedAssist.kw_y = -unwrappedAssist.kw_h
-            case .left: unwrappedAssist.kw_x = -unwrappedAssist.kw_w
-            case .bottom: unwrappedAssist.kw_y = Double(ScreenHeight)
-            case .right: unwrappedAssist.kw_x = Double(ScreenWidth)
-            }
-        } completion: { (flag) in
+        self.assist?.hide({ flag in
             if flag { complete() }
-        }
+        })
     }
     
     func playNext(afterDelay: Bool) {
@@ -152,9 +142,9 @@ fileprivate extension AudioPlayingManager {
     
     func stopPlay() {
         self.hideAssist {
-            self.assist?.removeFromSuperview()
             self.player?.stop()
             self.playingIndex = 0;
+            self.assist?.removeFromSuperview()
             self.assist = nil
             self.player = nil
             self.songs = nil;
@@ -194,6 +184,10 @@ extension AudioPlayingManager: PlayControllingAssistDataSource, PlayControllingA
         case .stop:
             self.stop()
         }
+    }
+    
+    func playControllingAssistCalloutPlayingController() {
+        
     }
 }
 

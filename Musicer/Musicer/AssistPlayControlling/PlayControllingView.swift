@@ -9,6 +9,8 @@ import UIKit
 
 protocol PlayControllingViewDelegate: NSObjectProtocol {
     /// 播放
+    func playControllingView_tapIcon()
+    /// 播放
     func playControllingView_play()
     /// 暂停
     func playControllingView_pause()
@@ -32,14 +34,15 @@ class PlayControllingView: UIView {
     }
         
     //MARK: -- lazy
-    private lazy var iconView: UIImageView = {
+    private(set) lazy var iconView: UIImageView = {
         let imgV = UIImageView(frame: CGRect(x: 5.0, y: 5.0, width: 50.0, height: 50.0))
         imgV.isUserInteractionEnabled = true
         imgV.image = UIImage(named: "AppIcon")
+        imgV.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(iconTapGesture(tap:))))
         return imgV
     }()
     
-    private lazy var lastBtn: UIButton = {
+    private(set) lazy var lastBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(R.image.mu_image_assist_last_enabled(), for: .normal)
         btn.setImage(R.image.mu_image_assist_last_disabled(), for: .disabled)
@@ -47,7 +50,7 @@ class PlayControllingView: UIView {
         return btn
     }()
     
-    private lazy var playBtn: UIButton = {
+    private(set) lazy var playBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.isSelected = true
         btn.setImage(R.image.mu_image_assist_play(), for: .normal)
@@ -56,7 +59,7 @@ class PlayControllingView: UIView {
         return btn
     }()
     
-    private lazy var nextBtn: UIButton = {
+    private(set) lazy var nextBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(R.image.mu_image_assist_next_enabled(), for: .normal)
         btn.setImage(R.image.mu_image_assist_next_disabled(), for: .disabled)
@@ -64,14 +67,14 @@ class PlayControllingView: UIView {
         return btn
     }()
     
-    private lazy var closeBtn: UIButton = {
+    private(set) lazy var closeBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(R.image.mu_image_assist_close(), for: .normal)
         btn.addTarget(self, action: #selector(stopMusic(btn:)), for: .touchUpInside)
         return btn
     }()
     
-    private lazy var coverView: UIView = {
+    private(set) lazy var coverView: UIView = {
         let cover = UIView()
         cover.backgroundColor = UIColor.clear
         return cover
@@ -86,7 +89,7 @@ class PlayControllingView: UIView {
                                 clockwise: true)
         layer.bounds = CGRect(x: 0, y: 0, width: 50.0, height: 50.0)
         layer.position = CGPoint(x: 30.0, y: 30.0)
-        layer.lineWidth = 2.0
+        layer.lineWidth = 3.0
         layer.strokeStart = 0
         layer.strokeEnd = 0
         layer.path = path.cgPath
@@ -142,12 +145,13 @@ fileprivate extension PlayControllingView {
         
         self.iconView.layer.cornerRadius = 25.0
         self.iconView.layer.masksToBounds = true
-        self.iconView.layer.borderWidth = 2.0
+        self.iconView.layer.borderWidth = 3.0
         self.iconView.layer.borderColor = R.color.mu_color_lavender()?.cgColor
         self.addSubview(self.iconView)
         
         self.layer.addSublayer(self.progressLayer);
         
+        self.lastBtn.alpha = 0
         self.addSubview(self.lastBtn)
         self.lastBtn.snp.makeConstraints { (make) in
             make.left.equalTo(self.iconView.snp.right).offset(5.0)
@@ -155,6 +159,7 @@ fileprivate extension PlayControllingView {
             make.size.equalTo(CGSize(width: 25.0, height: 25.0))
         }
         
+        self.playBtn.alpha = 0
         self.addSubview(self.playBtn)
         self.playBtn.snp.makeConstraints { (make) in
             make.left.equalTo(self.lastBtn.snp.right).offset(2.5)
@@ -162,14 +167,15 @@ fileprivate extension PlayControllingView {
             make.size.equalTo(CGSize(width: 30.0, height: 30.0))
         }
         
+        self.nextBtn.alpha = 0
         self.addSubview(self.nextBtn)
         self.nextBtn.snp.makeConstraints { (make) in
             make.left.equalTo(self.playBtn.snp.right).offset(2.5)
             make.centerY.equalTo(self.playBtn)
             make.size.equalTo(CGSize(width: 25.0, height: 25.0))
-            
         }
         
+        self.closeBtn.alpha = 0
         self.addSubview(self.closeBtn)
         self.closeBtn.snp.makeConstraints { (make) in
             make.right.equalTo(self).offset(-10.0)
@@ -185,6 +191,10 @@ fileprivate extension PlayControllingView {
     }
     
     // actions
+    @objc func iconTapGesture(tap: UITapGestureRecognizer) {
+        self.delegate?.playControllingView_tapIcon()
+    }
+    
     @objc func playMusic(btn: UIButton) {
         self.coverView.isHidden = false
         CATransaction.begin()

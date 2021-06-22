@@ -12,6 +12,7 @@
 		AA206CEF25B9692700281EE3 /* AudioRemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */; };
 		AA206CF125BAA3F700281EE3 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA206CF025BAA3F700281EE3 /* UIImageExtension.swift */; };
 		AA2EDDF125397C6200D18524 /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2EDDF025397C6200D18524 /* Toaster.swift */; };
+		AA45980A2681BE26002B5906 /* MusicPlayingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4598092681BE26002B5906 /* MusicPlayingController.swift */; };
 		AA474BE5255E64B800359F73 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE4255E64B800359F73 /* MusicPlayer.swift */; };
 		AA474BE7255E674C00359F73 /* SongsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE6255E674C00359F73 /* SongsTable.swift */; };
 		AA474BE9255E679500359F73 /* SongInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA474BE8255E679500359F73 /* SongInfoCell.swift */; };
@@ -56,6 +57,7 @@
 		AA206CEE25B9692700281EE3 /* AudioRemoteControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRemoteControlProtocol.swift; sourceTree = "<group>"; };
 		AA206CF025BAA3F700281EE3 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		AA2EDDF025397C6200D18524 /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
+		AA4598092681BE26002B5906 /* MusicPlayingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayingController.swift; sourceTree = "<group>"; };
 		AA474BE4255E64B800359F73 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		AA474BE6255E674C00359F73 /* SongsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsTable.swift; sourceTree = "<group>"; };
 		AA474BE8255E679500359F73 /* SongInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfoCell.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				AA4F68D1255A9B36005E6495 /* PlayingListController.swift */,
+				AA4598092681BE26002B5906 /* MusicPlayingController.swift */,
 			);
 			path = playing;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				AABE93AF256667CA00B27370 /* SongsController.swift in Sources */,
 				AA474BEB255E84C700359F73 /* UIViewExtension.swift in Sources */,
 				AAEB3F46257625A100912198 /* PubHeaders.swift in Sources */,
+				AA45980A2681BE26002B5906 /* MusicPlayingController.swift in Sources */,
 				AA56E2B62536F10700EA50C3 /* TitleBar.swift in Sources */,
 				AA2EDDF125397C6200D18524 /* Toaster.swift in Sources */,
 				AA474BE7255E674C00359F73 /* SongsTable.swift in Sources */,
